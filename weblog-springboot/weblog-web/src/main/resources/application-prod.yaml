@@ -1,0 +1,33 @@
+# 与 deploy/nginx.conf 中 proxy_pass 一致：Nginx 须把 /api/... 原样转到本端口（见 location /api/ 注释）
+# prod 使用 context-path=/api，与前端 VITE_APP_BASE_API=/api 一致；平台若将 /api 直连 8080 也可工作。
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 本机 MySQL 用 127.0.0.1；若 MySQL 在 Docker 而应用在宿主机，可改为 172.17.0.1
+    url: jdbc:mysql://127.0.0.1:3306/weblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 9
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: Weblog-HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  
+#=================================================================
+# log
+#=================================================================
+logging:
+  config: classpath:logback-weblog.xml
+  file:
+    # 默认写当前工作目录下 logs/（在 ~/yupao 下启动则为 ~/yupao/logs）。
+    # 环境变量 LOGGING_FILE_PATH 会覆盖本项；若设成 /var/log/weblog 等，目录须对运行用户可写，否则 Logback 初始化失败。可用: sudo chown 运行用户 /var/log/weblog
+    path: logs
