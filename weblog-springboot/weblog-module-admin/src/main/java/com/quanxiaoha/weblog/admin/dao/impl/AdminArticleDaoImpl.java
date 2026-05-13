@@ -105,6 +105,34 @@ public class AdminArticleDaoImpl implements AdminArticleDao {
     }
 
     @Override
+    public int likeNumIncrease(Long articleId) {
+        UpdateWrapper<ArticleDO> wrapper = new UpdateWrapper<>();
+        wrapper.lambda().setSql("like_num = COALESCE(like_num, 0) + 1").eq(ArticleDO::getId, articleId);
+        return articleMapper.update(null, wrapper);
+    }
+
+    @Override
+    public int likeNumDecrease(Long articleId) {
+        UpdateWrapper<ArticleDO> wrapper = new UpdateWrapper<>();
+        wrapper.lambda().setSql("like_num = GREATEST(COALESCE(like_num, 0) - 1, 0)").eq(ArticleDO::getId, articleId);
+        return articleMapper.update(null, wrapper);
+    }
+
+    @Override
+    public int favoriteNumIncrease(Long articleId) {
+        UpdateWrapper<ArticleDO> wrapper = new UpdateWrapper<>();
+        wrapper.lambda().setSql("favorite_num = COALESCE(favorite_num, 0) + 1").eq(ArticleDO::getId, articleId);
+        return articleMapper.update(null, wrapper);
+    }
+
+    @Override
+    public int favoriteNumDecrease(Long articleId) {
+        UpdateWrapper<ArticleDO> wrapper = new UpdateWrapper<>();
+        wrapper.lambda().setSql("favorite_num = GREATEST(COALESCE(favorite_num, 0) - 1, 0)").eq(ArticleDO::getId, articleId);
+        return articleMapper.update(null, wrapper);
+    }
+
+    @Override
     public Long selectUserIdByArticleId(Long articleId) {
         ArticleDO a = articleMapper.selectById(articleId);
         return a == null ? null : a.getUserId();

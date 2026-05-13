@@ -1,0 +1,1354 @@
+ Consume Time：15 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT 1
+
+ Consume Time：2 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：9 ms 2026-05-13 15:02:13
+ Execute SQL：INSERT INTO t_visitor_record ( visitor, ip_address, ip_region, visit_time, is_notify ) VALUES ( 'agent', '10.30.147.161', 'Reserved-Reserved', '2026-05-13T15:02:13.932+0800', 0 )
+
+ Consume Time：0 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：14 ms 2026-05-13 15:02:13
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1 AND article_id IS NULL) ORDER BY update_time DESC,id DESC
+
+ Consume Time：0 ms 2026-05-13 15:04:02
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:04:03
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:03
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:04:03
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:03
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:04:03
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：3 ms 2026-05-13 15:04:03
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1 AND article_id IS NULL) ORDER BY update_time DESC,id DESC
+
+ Consume Time：3 ms 2026-05-13 15:04:03
+ Execute SQL：UPDATE t_article_draft SET user_id=1, title='verify-draft', content='verify-content', title_image='', description='verify-desc', tags='101,102', visibility='PRIVATE', update_time='2026-05-13T15:04:03.251+0800' WHERE id=2
+
+ Consume Time：3 ms 2026-05-13 15:04:03
+ Execute SQL：DELETE FROM t_article_draft WHERE id=1
+
+ Consume Time：0 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：2 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 3 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：2 ms 2026-05-13 15:04:50
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 3 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 3 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:04:59
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 3 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:02
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 3) ORDER BY update_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:05:03
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:03
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:03
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:03
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 3 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 3 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT COUNT(*) AS total FROM t_article WHERE (user_id = 3 AND is_deleted = 0 AND title LIKE '%%')
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,user_id,title,title_image,description,visibility,create_time,update_time,is_deleted,read_num,like_num,favorite_num FROM t_article WHERE (user_id = 3 AND is_deleted = 0 AND title LIKE '%%') ORDER BY create_time DESC LIMIT 10
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:04
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 3) ORDER BY update_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 3 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 3 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT COUNT(*) AS total FROM t_article WHERE (user_id = 3 AND is_deleted = 0 AND title LIKE '%%')
+
+ Consume Time：0 ms 2026-05-13 15:05:05
+ Execute SQL：SELECT id,user_id,title,title_image,description,visibility,create_time,update_time,is_deleted,read_num,like_num,favorite_num FROM t_article WHERE (user_id = 3 AND is_deleted = 0 AND title LIKE '%%') ORDER BY create_time DESC LIMIT 10
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 3 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:05:07
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 3 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:05:24
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:24
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:24
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:26
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:26
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:26
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：2 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:05:34
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:05:49
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：4 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 3 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:05:56
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 3 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:06:02
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 3 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：1 ms 2026-05-13 15:06:08
+ Execute SQL：SELECT id,blog_name,author,avatar,introduction,github_home,csdn_home,gitee_home,zhihu_home FROM t_blog_setting ORDER BY id ASC limit 1
+
+ Consume Time：0 ms 2026-05-13 15:06:18
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:18
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:18
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin')
+
+ Consume Time：0 ms 2026-05-13 15:06:18
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:18
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT( * ) FROM t_article WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT( 1 ) FROM t_category WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT( 1 ) FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COALESCE(SUM(read_num), 0) FROM t_article WHERE user_id = 1 AND is_deleted = 0
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：3 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT DATE(create_time) AS date, COUNT(*) AS count FROM t_article WHERE user_id = 1 AND is_deleted = 0 AND create_time >= '2025-12-01' AND create_time <= '2026-05-13' GROUP BY DATE(create_time) ORDER BY DATE(create_time)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,user_id,pv_date,pv_count,create_time,update_time FROM t_statistics_user_pv WHERE (user_id = 1 AND pv_date >= '2026-05-07' AND pv_date <= '2026-05-13') ORDER BY pv_date ASC
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT( * ) FROM t_article WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,user_id,pv_date,pv_count,create_time,update_time FROM t_statistics_user_pv WHERE (user_id = 1 AND pv_date >= '2026-05-06' AND pv_date <= '2026-05-12') ORDER BY pv_date ASC
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT( 1 ) FROM t_category WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,user_id,title,title_image,description,visibility,create_time,update_time,is_deleted,read_num,like_num,favorite_num FROM t_article WHERE (user_id = 1 AND is_deleted = false) ORDER BY read_num DESC LIMIT 10
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT( 1 ) FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：2 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-06')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COALESCE(SUM(read_num), 0) FROM t_article WHERE user_id = 1 AND is_deleted = 0
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,user_id,pv_date,pv_count,create_time,update_time FROM t_statistics_user_pv WHERE (user_id = 1 AND pv_date >= '2026-05-13' AND pv_date <= '2026-05-13') ORDER BY pv_date ASC
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-07')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-08')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-13')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-09')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-10')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-11')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT COUNT(DISTINCT visitor) AS distinctCount FROM t_visitor_record WHERE (DATE(visit_time) = '2026-05-12')
+
+ Consume Time：2 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：2 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT DATE(create_time) AS date, COUNT(*) AS count FROM t_article WHERE user_id = 1 AND is_deleted = 0 AND create_time >= '2025-05-14' AND create_time <= '2026-05-13' GROUP BY DATE(create_time) ORDER BY DATE(create_time)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：2 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT ip_region, COUNT(*) AS count FROM t_visitor_record GROUP BY ip_region ORDER BY count DESC
+
+ Consume Time：1 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id FROM t_article WHERE (user_id = 1 AND is_deleted = false)
+
+ Consume Time：0 ms 2026-05-13 15:06:19
+ Execute SQL：SELECT id FROM t_article WHERE (user_id = 1 AND is_deleted = false)
+
+ Consume Time：0 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:20
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT COUNT(*) AS total FROM t_tag WHERE (user_id = 1 AND is_deleted = 0 AND name LIKE '%%')
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0 AND name LIKE '%%') ORDER BY create_time DESC LIMIT 10
+
+ Consume Time：0 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 1 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:06:22
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT 1
+
+ Consume Time：1 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 1 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 1 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：1 ms 2026-05-13 15:06:36
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 1 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 1 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：4 ms 2026-05-13 15:06:53
+ Execute SQL：INSERT INTO t_ai_usage_record ( user_id, usage_date, article_gen_count, token_used, last_interaction_time ) VALUES ( 1, '2026-05-13T00:00:00.000+0800', 1, 740, '2026-05-13T15:06:53.633+0800' )
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:06:53
+ Execute SQL：SELECT id,user_id,usage_date,article_gen_count,token_used,last_interaction_time FROM t_ai_usage_record WHERE (user_id = 1 AND usage_date = '2026-05-13T00:00:00.000+0800')
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND name = 'vue3' AND is_deleted = false)
+
+ Consume Time：1 ms 2026-05-13 15:07:05
+ Execute SQL：INSERT INTO t_article ( user_id, title, title_image, description, visibility ) VALUES ( 1, 'Vue3与金钱：前端开发者的价值逻辑', '', 'Vue3与金钱：前端开发者的价值逻辑 文章分类： Vue3 文章标签： 前端、JS 引言 钱是数字，也是价值。在前端开发的世界里，Vue3 的核心魅力在于高效地处理和响应数据。将“钱”的概念引入 Vue3 的开发思维，能帮助我们更好地理解数据的价值与流转。 正文 在 Vue3 中，我们使用 ref 或 reactive 来定义状态。这就像管理我们的钱包余额：一旦数据发生变化（花费或收入），视图会立...', 'PUBLIC' )
+
+ Consume Time：1 ms 2026-05-13 15:07:05
+ Execute SQL：INSERT INTO t_article_content ( article_id, content ) VALUES ( 8, '# Vue3与金钱：前端开发者的价值逻辑 **文章分类：** Vue3 **文章标签：** 前端、JS ### 引言 钱是数字，也是价值。在前端开发的世界里，Vue3 的核心魅力在于高效地处理和响应数据。将“钱”的概念引入 Vue3 的开发思维，能帮助我们更好地理解数据的价值与流转。 ### 正文 在 Vue3 中，我们使用 `ref` 或 `reactive` 来定义状态。这就像管理我们的钱包余额：一旦数据发生变化（花费或收入），视图会立即响应更新。这种“数据驱动视图”的机制，正是前端开发的精髓。 对于前端开发者而言，代码就是我们的货币。通过掌握 Vue3 等技术，我们将抽象的逻辑转化为用户可见的交互体验，从而创造实际的经济价值。 ### 总结 无论是编写逻辑还是创造财富，本质都是对“数据”的精准驾驭。善用 Vue3 的响应式系统，让你的代码更具价值。' )
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：INSERT INTO t_article_category_rel ( article_id, category_id ) VALUES ( 8, 11 )
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:05
+ Execute SQL：INSERT INTO t_tag ( user_id, name, create_time, update_time, is_deleted ) VALUES ( 1, '前端', '2026-05-13T15:07:05.080+0800', '2026-05-13T15:07:05.080+0800', false )
+
+ Consume Time：0 ms 2026-05-13 15:07:05
+ Execute SQL：INSERT INTO t_tag ( user_id, name, create_time, update_time, is_deleted ) VALUES ( 1, 'js', '2026-05-13T15:07:05.084+0800', '2026-05-13T15:07:05.084+0800', false )
+
+ Consume Time：1 ms 2026-05-13 15:07:05
+ Execute SQL：INSERT INTO t_article_tag_rel (article_id,tag_id) VALUES (8,50) , (8,51)
+
+ Consume Time：1 ms 2026-05-13 15:07:05
+ Execute SQL：SELECT MAX(version_num) AS versionNum FROM t_article_version WHERE (article_id = 8)
+
+ Consume Time：0 ms 2026-05-13 15:07:06
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:06
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:06
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:06
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:06
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1 AND article_id IS NULL) ORDER BY update_time DESC,id DESC
+
+ Consume Time：3 ms 2026-05-13 15:07:06
+ Execute SQL：UPDATE t_article_draft SET user_id=1, title='Vue3与金钱：前端开发者的价值逻辑', content='# Vue3与金钱：前端开发者的价值逻辑 **文章分类：** Vue3 **文章标签：** 前端、JS ### 引言 钱是数字，也是价值。在前端开发的世界里，Vue3 的核心魅力在于高效地处理和响应数据。将“钱”的概念引入 Vue3 的开发思维，能帮助我们更好地理解数据的价值与流转。 ### 正文 在 Vue3 中，我们使用 `ref` 或 `reactive` 来定义状态。这就像管理我们的钱包余额：一旦数据发生变化（花费或收入），视图会立即响应更新。这种“数据驱动视图”的机制，正是前端开发的精髓。 对于前端开发者而言，代码就是我们的货币。通过掌握 Vue3 等技术，我们将抽象的逻辑转化为用户可见的交互体验，从而创造实际的经济价值。 ### 总结 无论是编写逻辑还是创造财富，本质都是对“数据”的精准驾驭。善用 Vue3 的响应式系统，让你的代码更具价值。', title_image='', description='Vue3与金钱：前端开发者的价值逻辑 文章分类： Vue3 文章标签： 前端、JS 引言 钱是数字，也是价值。在前端开发的世界里，Vue3 的核心魅力在于高效地处理和响应数据。将“钱”的概念引入 Vue3 的开发思维，能帮助我们更好地理解数据的价值与流转。 正文 在 Vue3 中，我们使用 ref 或 reactive 来定义状态。这就像管理我们的钱包余额：一旦数据发生变化（花费或收入），视图会立...', category_id=11, tags='前端,js', visibility='PRIVATE', update_time='2026-05-13T15:07:06.180+0800' WHERE id=2
+
+ Consume Time：0 ms 2026-05-13 15:07:07
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:07
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:07
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:08
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:08
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:08
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:08
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:08
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1) ORDER BY update_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT COUNT(*) AS total FROM t_article WHERE (user_id = 1 AND is_deleted = 0 AND title LIKE '%%')
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1) ORDER BY update_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,user_id,title,title_image,description,visibility,create_time,update_time,is_deleted,read_num,like_num,favorite_num FROM t_article WHERE (user_id = 1 AND is_deleted = 0 AND title LIKE '%%') ORDER BY create_time DESC LIMIT 10
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:10
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:21
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:21
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:07:21
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:23
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1) ORDER BY update_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:07:24
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:24
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:24
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:24
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT COUNT(*) AS total FROM t_article WHERE (user_id = 1 AND is_deleted = 0 AND title LIKE '%%')
+
+ Consume Time：1 ms 2026-05-13 15:07:25
+ Execute SQL：SELECT id,user_id,title,title_image,description,visibility,create_time,update_time,is_deleted,read_num,like_num,favorite_num FROM t_article WHERE (user_id = 1 AND is_deleted = 0 AND title LIKE '%%') ORDER BY create_time DESC LIMIT 10
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：1 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:26
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1) ORDER BY update_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:07:27
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:27
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:27
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:27
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：1 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT COUNT(*) AS total FROM t_article WHERE (user_id = 1 AND is_deleted = 0 AND title LIKE '%%')
+
+ Consume Time：1 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,user_id,article_id,title,content,title_image,description,category_id,tags,visibility,create_time,update_time FROM t_article_draft WHERE (user_id = 1) ORDER BY update_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,user_id,title,title_image,description,visibility,create_time,update_time,is_deleted,read_num,like_num,favorite_num FROM t_article WHERE (user_id = 1 AND is_deleted = 0 AND title LIKE '%%') ORDER BY create_time DESC LIMIT 10
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE (user_id = 1 AND is_deleted = 0) ORDER BY create_time DESC
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:28
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:35
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:35
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:35
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：SELECT 1
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：SELECT id,username,role,create_time FROM t_user_role WHERE (username = 'admin1')
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：SELECT id,username,password,nickname,avatar,bio,website,github_home,gitee_home,csdn_home,zhihu_home,create_time,update_time,is_deleted FROM t_user WHERE (username = 'admin1' AND is_deleted = 0)
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_category WHERE id=11 
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：INSERT INTO t_article ( user_id, title, title_image, description, visibility ) VALUES ( 1, 'Vue3与金钱：前端开发者的价值逻辑', 'http://127.0.0.1:8081/uploads/d1bdcd135c9b4e7290ccf8403be0e474.png', 'Vue3与金钱：前端开发者的价值逻辑 文章分类： Vue3 文章标签： 前端、JS 引言 钱是数字，也是价值。在前端开发的世界里，Vue3 的核心魅力在于高效地处理和响应数据。将“钱”的概念引入 Vue3 的开发思维，能帮助我们更好地理解数据的价值与流转。 正文 在 Vue3 中，我们使用 ref 或 reactive 来定义状态。这就像管理我们的钱包余额：一旦数据发生变化（花费或收入），视图会立...', 'PUBLIC' )
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：INSERT INTO t_article_content ( article_id, content ) VALUES ( 9, '# Vue3与金钱：前端开发者的价值逻辑 **文章分类：** Vue3 **文章标签：** 前端、JS ### 引言 钱是数字，也是价值。在前端开发的世界里，Vue3 的核心魅力在于高效地处理和响应数据。将“钱”的概念引入 Vue3 的开发思维，能帮助我们更好地理解数据的价值与流转。 ### 正文 在 Vue3 中，我们使用 `ref` 或 `reactive` 来定义状态。这就像管理我们的钱包余额：一旦数据发生变化（花费或收入），视图会立即响应更新。这种“数据驱动视图”的机制，正是前端开发的精髓。 对于前端开发者而言，代码就是我们的货币。通过掌握 Vue3 等技术，我们将抽象的逻辑转化为用户可见的交互体验，从而创造实际的经济价值。 ### 总结 无论是编写逻辑还是创造财富，本质都是对“数据”的精准驾驭。善用 Vue3 的响应式系统，让你的代码更具价值。' )
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：INSERT INTO t_article_category_rel ( article_id, category_id ) VALUES ( 9, 11 )
+
+ Consume Time：0 ms 2026-05-13 15:07:43
+ Execute SQL：SELECT id,user_id,name,create_time,update_time,is_deleted FROM t_tag WHERE (user_id = 1 AND is_deleted = 0)
+
+ Consume Time：1 ms 2026-05-13 15:07:43
+ Execute SQL：INSERT INTO t_tag ( user_id, create_time, update_time, is_deleted ) VALUES ( 1, '2026-05-13T15:07:43.379+0800', '2026-05-13T15:07:43.379+0800', false )
+
+

@@ -73,17 +73,17 @@ public class GlobalExceptionHandler {
         return Response.fail(errorCode, message);
     }
 
-    // /**
-    //  * 401
-    //  * @return
-    //  */
-    // @ExceptionHandler({ AuthenticationException.class })
-    // @ResponseBody
-    // @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    // public Response<Object> handleException(HttpServletRequest request, AuthenticationException e) {
-    //     log.error("{} request error, ", request.getRequestURI(), e);
-    //     return Response.fail(ResponseCodeEnum.UNAUTHORIZED);
-    // }
+    /**
+     * 401
+     * @return
+     */
+    @ExceptionHandler({ AuthenticationException.class })
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response<Object> handleException(HttpServletRequest request, AuthenticationException e) {
+        log.error("{} request error, ", request.getRequestURI(), e);
+        return Response.fail(ResponseCodeEnum.UNAUTHORIZED);
+    }
 
 
     /**

@@ -40,6 +40,19 @@ minio:
   bucketName: xxx
 
 #=================================================================
+# AI 功能配置（API Key 仅在后端使用，绝不暴露给前端）
+#=================================================================
+ai:
+  api-key: ${AI_API_KEY:748420c178094a38ae1fb797cc52e7a9.1Hpj7aLDKgd85JiC}
+  api-url: ${AI_API_URL:https://open.bigmodel.cn/api/paas/v4/chat/completions}
+  model: ${AI_MODEL:glm-4.7-flash}
+  max-tokens-per-request: 131072
+  max-tokens-per-request-upper: 131072
+  daily-article-gen-limit: 20
+  interaction-interval-seconds: 60
+  daily-token-limit: 500000
+
+#=================================================================
 # IP归属地信息库文件路径 ip2region.xdb
 #=================================================================
 xdb:

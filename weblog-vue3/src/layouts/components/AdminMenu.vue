@@ -75,6 +75,12 @@ const menus = [{
     'icon': 'Setting',
     'path': '/admin/blog/setting',
     'child': []
+},
+{
+    'name': 'AI 工作台',
+    'icon': 'MagicStick',
+    'path': '/admin/ai/workbench',
+    'child': []
 }
 ]
 

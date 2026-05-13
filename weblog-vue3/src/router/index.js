@@ -55,6 +55,12 @@ const routes = [
             meta: {
                 title: '博客设置'
             }
+        }, {
+            path: '/admin/ai/workbench',
+            component: () => import('@/pages/admin/ai-workbench.vue'),
+            meta: {
+                title: 'AI 工作台'
+            }
         }]
 
     },
@@ -138,6 +144,13 @@ const routes = [
         meta: {
             title: '个人主页'
         },
+    },
+    {
+        path: '/u/:username/favorites',
+        component: () => import('@/pages/frontend/favorite-list.vue'),
+        meta: {
+            title: '收藏列表'
+        }
     },
     {
         path: '/:pathMatch(.*)*',

@@ -1,0 +1,199 @@
+- generic [ref=e65]:
+  - complementary [ref=e66]:
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - generic [ref=e69]: H
+        - generic [ref=e70]:
+          - strong [ref=e71]: WebLog Admin
+          - generic [ref=e72]: Content Console
+      - menubar [ref=e73]:
+        - menuitem "仪表盘" [ref=e74] [cursor=pointer]:
+          - img [ref=e76]
+          - generic [ref=e78]: 仪表盘
+        - menuitem "文章管理" [ref=e79] [cursor=pointer]:
+          - img [ref=e81]
+          - generic [ref=e83]: 文章管理
+        - menuitem "草稿箱" [ref=e84] [cursor=pointer]:
+          - img [ref=e86]
+          - generic [ref=e89]: 草稿箱
+        - menuitem "分类管理" [ref=e90] [cursor=pointer]:
+          - img [ref=e92]
+          - generic [ref=e94]: 分类管理
+        - menuitem "标签管理" [ref=e95] [cursor=pointer]:
+          - img [ref=e97]
+          - generic [ref=e100]: 标签管理
+        - menuitem "我的资料" [ref=e101] [cursor=pointer]:
+          - img [ref=e103]
+          - generic [ref=e105]: 我的资料
+        - menuitem "AI 工作台" [active] [ref=e106] [cursor=pointer]:
+          - img [ref=e108]
+          - generic [ref=e110]: AI 工作台
+  - generic [ref=e111]:
+    - generic [ref=e114]:
+      - generic [ref=e115]:
+        - img [ref=e117] [cursor=pointer]
+        - generic [ref=e119]:
+          - generic [ref=e120]: Dashboard
+          - strong [ref=e121]: 管理控制台
+      - generic [ref=e123]:
+        - img [ref=e125] [cursor=pointer]
+        - img [ref=e128] [cursor=pointer]
+        - img [ref=e131] [cursor=pointer]
+        - button "admin 创作者后台" [ref=e134] [cursor=pointer]:
+          - generic [ref=e136]:
+            - strong [ref=e137]: admin
+            - generic [ref=e138]: 创作者后台
+          - img [ref=e140]
+    - main [ref=e142]:
+      - generic [ref=e339]:
+        - generic [ref=e341]:
+          - generic [ref=e342]: AI Workbench
+          - heading "AI 工作台" [level=1] [ref=e343]
+          - paragraph [ref=e344]: 统一使用 AI 能力：写文章、改写、润色、续写、SEO 优化，以及分类和标签推荐。
+        - generic [ref=e346]:
+          - generic [ref=e347]:
+            - generic [ref=e349]:
+              - generic [ref=e350]:
+                - img [ref=e352]
+                - text: 今日额度
+              - button "刷新" [ref=e354] [cursor=pointer]:
+                - generic [ref=e355]:
+                  - img [ref=e357]
+                  - text: 刷新
+            - generic [ref=e360]:
+              - generic [ref=e361]:
+                - generic [ref=e362]: 文章生成
+                - generic [ref=e363]:
+                  - strong [ref=e364]: "19"
+                  - text: / 20
+              - generic [ref=e365]:
+                - generic [ref=e366]: Token 余量
+                - generic [ref=e367]:
+                  - strong [ref=e368]: 49.9万
+                  - text: / 50.0万
+              - generic [ref=e369]:
+                - generic [ref=e370]: 冷却状态
+                - strong [ref=e372]: 就绪
+          - generic [ref=e373]:
+            - generic [ref=e376]:
+              - img [ref=e378]
+              - text: AI 写作
+            - generic [ref=e380]:
+              - generic [ref=e381]:
+                - generic [ref=e382]:
+                  - generic [ref=e383]: 写作要求
+                  - generic [ref=e385]:
+                    - textbox "写作要求" [ref=e386]:
+                      - /placeholder: 请描述您想要写的文章主题、风格、要点等...
+                    - generic [ref=e387]: 0 / 2000
+                - generic [ref=e388]:
+                  - generic [ref=e389]: 建议标题（可选）
+                  - textbox "建议标题（可选）" [ref=e393]:
+                    - /placeholder: 留空则由 AI 自动生成
+                - generic [ref=e394]:
+                  - generic [ref=e395]: 文章分类（可选）
+                  - generic [ref=e398] [cursor=pointer]:
+                    - generic:
+                      - combobox "文章分类（可选）" [ref=e400]
+                      - generic [ref=e401]: 请选择文章分类
+                    - img [ref=e404]
+                - generic [ref=e406]:
+                  - generic [ref=e407]: 文章标签（可选）
+                  - generic [ref=e410] [cursor=pointer]:
+                    - generic:
+                      - combobox "文章标签（可选）" [ref=e412]
+                      - generic [ref=e413]: 请选择文章标签
+                    - img [ref=e416]
+              - generic [ref=e418]: 当前前端支持生成最长约 12000 字的文章，超长内容建议拆分为多次生成。
+              - button "生成文章" [disabled] [ref=e419]:
+                - generic [ref=e420]:
+                  - img [ref=e422]
+                  - text: 生成文章
+          - generic [ref=e424]:
+            - generic [ref=e427]:
+              - img [ref=e429]
+              - text: AI 改写 / 润色 / 续写
+            - generic [ref=e431]:
+              - generic [ref=e432]:
+                - generic [ref=e433]:
+                  - generic [ref=e434]: 原始文本
+                  - generic [ref=e436]:
+                    - textbox "原始文本" [ref=e437]:
+                      - /placeholder: 请输入或粘贴需要处理的文本...
+                    - generic [ref=e438]: 0 / 5000
+                - generic [ref=e439]:
+                  - generic [ref=e440]: 操作类型
+                  - radiogroup "操作类型" [ref=e442]:
+                    - generic [ref=e443]:
+                      - radio "改写" [checked] [ref=e444]
+                      - generic [ref=e445] [cursor=pointer]: 改写
+                    - generic [ref=e446]:
+                      - radio "润色" [ref=e447]
+                      - generic [ref=e448] [cursor=pointer]: 润色
+                    - generic [ref=e449]:
+                      - radio "续写" [ref=e450]
+                      - generic [ref=e451] [cursor=pointer]: 续写
+                - generic [ref=e452]:
+                  - generic [ref=e453]: 附加指令（可选）
+                  - generic [ref=e455]:
+                    - textbox "附加指令（可选）" [ref=e456]:
+                      - /placeholder: 描述额外要求，如：更正式、更口语化...
+                    - generic [ref=e457]: 0 / 500
+              - button "开始改写" [disabled] [ref=e458]:
+                - generic [ref=e459]:
+                  - img [ref=e461]
+                  - text: 开始改写
+          - generic [ref=e463]:
+            - generic [ref=e466]:
+              - img [ref=e468]
+              - text: AI SEO 优化
+            - generic [ref=e470]:
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - generic [ref=e473]: 文章标题
+                  - textbox "文章标题" [ref=e477]:
+                    - /placeholder: 请输入文章标题
+                - generic [ref=e478]:
+                  - generic [ref=e479]: 鏂囩珷姝ｆ枃
+                  - generic [ref=e481]:
+                    - textbox "鏂囩珷姝ｆ枃" [ref=e482]:
+                      - /placeholder: 请输入文章正文...
+                    - generic [ref=e483]: 0 / 10000
+                - generic [ref=e484]:
+                  - generic [ref=e485]: 当前摘要（可选）
+                  - textbox "当前摘要（可选）" [ref=e489]:
+                    - /placeholder: 当前文章摘要
+              - button "开始优化" [disabled] [ref=e490]:
+                - generic [ref=e491]:
+                  - img [ref=e493]
+                  - text: 开始优化
+          - generic [ref=e495]:
+            - generic [ref=e498]:
+              - img [ref=e500]
+              - text: AI 分类 / 标签推荐
+            - generic [ref=e502]:
+              - generic [ref=e503]:
+                - generic [ref=e504]:
+                  - generic [ref=e505]: 文章正文
+                  - generic [ref=e507]:
+                    - textbox "文章正文" [ref=e508]:
+                      - /placeholder: 请输入文章正文，AI 将基于此推荐分类和标签...
+                    - generic [ref=e509]: 0 / 10000
+                - generic [ref=e510]:
+                  - generic [ref=e511]: 推荐要求（可选）
+                  - generic [ref=e513]:
+                    - textbox "推荐要求（可选）" [ref=e514]:
+                      - /placeholder: 描述您想要的风格或方向...
+                    - generic [ref=e515]: 0 / 500
+              - generic [ref=e516]:
+                - button "推荐分类" [disabled] [ref=e517]:
+                  - generic [ref=e518]:
+                    - img [ref=e520]
+                    - text: 推荐分类
+                - button "推荐标签" [disabled] [ref=e522]:
+                  - generic [ref=e523]:
+                    - img [ref=e525]
+                    - text: 推荐标签
+    - generic [ref=e330]:
+      - generic [ref=e331]: WebLog Admin
+      - generic [ref=e333]: "@2026 by WebLog"

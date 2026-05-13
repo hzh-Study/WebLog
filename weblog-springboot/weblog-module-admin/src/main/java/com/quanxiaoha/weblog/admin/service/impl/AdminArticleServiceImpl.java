@@ -3,12 +3,13 @@ package com.quanxiaoha.weblog.admin.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import com.quanxiaoha.weblog.admin.dao.*;
-import com.quanxiaoha.weblog.common.domain.dos.*;
-import com.quanxiaoha.weblog.common.domain.mapper.CategoryMapper;
 import com.quanxiaoha.weblog.admin.model.vo.article.*;
 import com.quanxiaoha.weblog.admin.service.AdminArticleService;
 import com.quanxiaoha.weblog.common.Response;
+import com.quanxiaoha.weblog.common.constant.AiArticleConstants;
 import com.quanxiaoha.weblog.common.constant.ArticleVisibilityConstants;
+import com.quanxiaoha.weblog.common.domain.dos.*;
+import com.quanxiaoha.weblog.common.domain.mapper.CategoryMapper;
 import com.quanxiaoha.weblog.common.enums.ResponseCodeEnum;
 import com.quanxiaoha.weblog.common.exception.BizException;
 import com.quanxiaoha.weblog.common.utils.SecurityUtils;
@@ -20,13 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author: 犬小哈
+ * @author: 鐘皬鍝?
  * @url: www.quanxiaoha.com
  * @date: 2023-04-17 12:08
  * @description: TODO
@@ -49,8 +48,9 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     private AdminUserDao userDao;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private AdminArticleVersionDao articleVersionDao;
 
-    // 手动事务
     private final TransactionTemplate transactionTemplate;
 
     @Autowired
@@ -59,21 +59,29 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Response publishArticle(PublishArticleReqVO publishArticleReqVO) {
         UserDO currentUser = getCurrentUser();
-        assertCategoryOwnedBy(publishArticleReqVO.getCategoryId(), currentUser.getId());
+        Long categoryId = resolveCategoryId(publishArticleReqVO, currentUser.getId());
+        final Long[] articleIdHolder = new Long[1];
+        final String[] titleHolder = new String[1];
+        final String[] descHolder = new String[1];
+        final String[] contentHolder = new String[1];
         boolean isExecuteSuccess = transactionTemplate.execute(status -> {
             ArticleDO articleDO = ArticleDO.builder()
                     .userId(currentUser.getId())
                     .title(publishArticleReqVO.getTitle())
-                    .titleImage(publishArticleReqVO.getTitleImage())
-                    .description(publishArticleReqVO.getDescription())
+                    .titleImage(normalizeTitleImage(publishArticleReqVO.getTitleImage()))
+                    .description(defaultIfEmpty(publishArticleReqVO.getDescription(),
+                            extractDescription(publishArticleReqVO.getContent())))
                     .visibility(normalizeVisibility(publishArticleReqVO.getVisibility()))
                     .build();
             articleDao.insertArticle(articleDO);
 
             Long articleId = articleDO.getId();
+            articleIdHolder[0] = articleId;
+            titleHolder[0] = articleDO.getTitle();
+            descHolder[0] = articleDO.getDescription();
+            contentHolder[0] = publishArticleReqVO.getContent();
 
             ArticleContentDO articleContentDO = ArticleContentDO.builder()
                     .articleId(articleId)
@@ -81,20 +89,29 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                     .build();
             articleContentDao.insertArticleContent(articleContentDO);
 
-            // 所属分类
-            ArticleCategoryRelDO articleCategoryRelDO = ArticleCategoryRelDO.builder()
-                    .articleId(articleId)
-                    .categoryId(publishArticleReqVO.getCategoryId())
-                    .build();
-            articleCategoryRelDao.insert(articleCategoryRelDO);
+            if (categoryId != null) {
+                ArticleCategoryRelDO articleCategoryRelDO = ArticleCategoryRelDO.builder()
+                        .articleId(articleId)
+                        .categoryId(categoryId)
+                        .build();
+                articleCategoryRelDao.insert(articleCategoryRelDO);
+            }
 
-            // 标签
-            // 提交的标签
             List<String> publishTags = publishArticleReqVO.getTags();
-            handleTagBiz(articleId, publishTags, currentUser.getId());
+            if (!CollectionUtils.isEmpty(publishTags)) {
+                handleTagBiz(articleId, publishTags, currentUser.getId());
+            }
             return true;
         });
 
+        if (isExecuteSuccess && articleIdHolder[0] != null) {
+            ArticleDO snapshotDO = ArticleDO.builder()
+                    .id(articleIdHolder[0])
+                    .title(titleHolder[0])
+                    .description(descHolder[0])
+                    .build();
+            createVersionSnapshot(snapshotDO, contentHolder[0], currentUser.getId(), "鏂囩珷鍙戝竷");
+        }
         return isExecuteSuccess ? Response.success() : Response.fail();
     }
 
@@ -103,17 +120,13 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         Long articleId = queryArticleDetailReqVO.getArticleId();
         ArticleDO articleDO = getOwnArticle(articleId);
         ArticleContentDO articleContentDO = articleContentDao.queryByArticleId(articleId);
-
-        // 所属分类
         ArticleCategoryRelDO articleCategoryRelDO = articleCategoryRelDao.selectByArticleId(articleId);
 
-        // 对应标签
         List<ArticleTagRelDO> articleTagRelDOS = articleTagRelDao.selectByArticleId(articleId);
         List<Long> tagIds = CollectionUtils.isEmpty(articleTagRelDOS)
                 ? Collections.emptyList()
-                : articleTagRelDOS.stream().map(p -> p.getTagId()).collect(Collectors.toList());
+                : articleTagRelDOS.stream().map(ArticleTagRelDO::getTagId).collect(Collectors.toList());
 
-        // 历史或异常数据下 content / 分类关联可能不存在，需防空指针（否则 500 被包装成“后台小哥努力修复中”）
         String content = articleContentDO == null ? "" : articleContentDO.getContent();
         Long categoryId = articleCategoryRelDO == null ? null : articleCategoryRelDO.getCategoryId();
 
@@ -151,15 +164,24 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         getOwnArticle(articleId);
         articleDao.deleteById(articleId);
         articleContentDao.deleteByArticleId(articleId);
+        articleCategoryRelDao.deleteByArticleId(articleId);
+        articleTagRelDao.deleteByArticleId(articleId);
         return Response.success();
     }
 
     @Override
-    // @Transactional(rollbackFor = Exception.class)
     public Response updateArticle(UpdateArticleReqVO updateArticleReqVO) {
         assertCategoryOwnedBy(updateArticleReqVO.getCategoryId(), getCurrentUser().getId());
+        final Long[] articleIdHolder = new Long[1];
+        final String[] titleHolder = new String[1];
+        final String[] descHolder = new String[1];
+        final String[] contentHolder = new String[1];
         boolean isExecuteSuccess = transactionTemplate.execute(status -> {
             Long articleId = updateArticleReqVO.getId();
+            articleIdHolder[0] = articleId;
+            titleHolder[0] = updateArticleReqVO.getTitle();
+            descHolder[0] = updateArticleReqVO.getDescription();
+            contentHolder[0] = updateArticleReqVO.getContent();
             getOwnArticle(articleId);
             UserDO currentUser = getCurrentUser();
 
@@ -177,13 +199,11 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                     .articleId(articleId)
                     .content(updateArticleReqVO.getContent())
                     .build();
-            // 仅 update 时若库中无 content 行会更新 0 行，需补 insert，避免详情永远无正文
             int contentRows = articleContentDao.updateByArticleId(articleContentDO);
             if (contentRows == 0) {
                 articleContentDao.insertArticleContent(articleContentDO);
             }
 
-            // 更新文章分类
             articleCategoryRelDao.deleteByArticleId(articleId);
             ArticleCategoryRelDO articleCategoryRelDO = ArticleCategoryRelDO.builder()
                     .articleId(articleId)
@@ -191,74 +211,102 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                     .build();
             articleCategoryRelDao.insert(articleCategoryRelDO);
 
-            // 更新文章标签
             articleTagRelDao.deleteByArticleId(articleId);
-            // 提交的标签
-            List<String> publishTags = updateArticleReqVO.getTags();
-            handleTagBiz(articleId, publishTags, currentUser.getId());
+            handleTagBiz(articleId, updateArticleReqVO.getTags(), currentUser.getId());
             return true;
         });
 
+        if (isExecuteSuccess && articleIdHolder[0] != null) {
+            ArticleDO snapshotDO = ArticleDO.builder()
+                    .id(articleIdHolder[0])
+                    .title(titleHolder[0])
+                    .description(descHolder[0])
+                    .build();
+            createVersionSnapshot(snapshotDO, contentHolder[0], getCurrentUser().getId(), "鏂囩珷鏇存柊");
+        }
         return isExecuteSuccess ? Response.success() : Response.fail();
     }
 
-    /**
-     * 处理标签相关业务
-     * @param articleId
-     * @param publishTags
-     */
+    private void createVersionSnapshot(ArticleDO articleDO, String content, Long userId, String changeSummary) {
+        try {
+            Integer maxVer = articleVersionDao.selectMaxVersionNum(articleDO.getId());
+            int newVer = (maxVer != null ? maxVer : 0) + 1;
+            ArticleVersionDO version = ArticleVersionDO.builder()
+                    .articleId(articleDO.getId())
+                    .userId(userId)
+                    .title(articleDO.getTitle() != null ? articleDO.getTitle() : "")
+                    .content(content != null ? content : "")
+                    .description(articleDO.getDescription())
+                    .changeSummary(changeSummary)
+                    .versionNum(newVer)
+                    .createTime(new Date())
+                    .build();
+            articleVersionDao.insert(version);
+            articleVersionDao.deleteOldestExceed(articleDO.getId(), 50);
+        } catch (Exception e) {
+            log.error("鍒涘缓鐗堟湰蹇収澶辫触: articleId={}", articleDO.getId(), e);
+        }
+    }
+
     public void handleTagBiz(Long articleId, List<String> publishTags, Long userId) {
         if (CollectionUtils.isEmpty(publishTags)) {
             return;
         }
+
         List<TagDO> tagDOS = tagDao.selectAllByUserId(userId);
-
-        // 筛选出库中不存在的标签
-        List<String> noExistTags = null;
-        // 库中已存在的标签
-        List<String> existTags = null;
-        if (!CollectionUtils.isEmpty(tagDOS)) {
-            List<String> tagIds = tagDOS.stream().map(p -> String.valueOf(p.getId())).collect(Collectors.toList());
-            noExistTags = publishTags.stream().filter(p -> !tagIds.contains(p)).collect(Collectors.toList());
-            existTags = publishTags.stream().filter(p -> tagIds.contains(p)).collect(Collectors.toList());
-        } else {
-            noExistTags = publishTags;
+        Map<String, Long> existedTagIdMap = new HashMap<>();
+        Map<String, Long> existedTagNameMap = new HashMap<>();
+        for (TagDO tagDO : tagDOS) {
+            existedTagIdMap.put(String.valueOf(tagDO.getId()), tagDO.getId());
+            if (tagDO.getName() != null) {
+                existedTagNameMap.put(tagDO.getName().trim(), tagDO.getId());
+            }
         }
 
-        // 不存在的标签先入库
-        if (!CollectionUtils.isEmpty(noExistTags)) {
-            List<ArticleTagRelDO> articleTagRelDOS = Lists.newArrayList();
-            noExistTags.forEach(noExistTag -> {
-                TagDO tagDO = TagDO.builder()
-                        .userId(userId)
-                        .name(noExistTag)
-                        .createTime(new Date())
-                        .updateTime(new Date())
-                        .isDeleted(false)
-                        .build();
+        LinkedHashSet<Long> relationTagIds = new LinkedHashSet<>();
+        List<String> newTagNames = Lists.newArrayList();
+        for (String rawTag : publishTags) {
+            String tagValue = rawTag == null ? "" : rawTag.trim();
+            if (tagValue.isEmpty()) {
+                continue;
+            }
 
-                tagDao.insert(tagDO);
-                Long tagId = tagDO.getId();
+            Long existedTagId = existedTagIdMap.get(tagValue);
+            if (existedTagId != null) {
+                relationTagIds.add(existedTagId);
+                continue;
+            }
 
-                ArticleTagRelDO articleTagRelDO = ArticleTagRelDO.builder()
-                        .articleId(articleId)
-                        .tagId(tagId)
-                        .build();
-                articleTagRelDOS.add(articleTagRelDO);
-            });
+            Long existedTagName = existedTagNameMap.get(tagValue);
+            if (existedTagName != null) {
+                relationTagIds.add(existedTagName);
+                continue;
+            }
 
-            articleTagRelDao.insertBatch(articleTagRelDOS);
+            if (!newTagNames.contains(tagValue)) {
+                newTagNames.add(tagValue);
+            }
         }
 
-        if (!CollectionUtils.isEmpty(existTags)) {
-            List<ArticleTagRelDO> articleTagRelDOS = Lists.newArrayList();
-            existTags.forEach(existTagId -> {
-                ArticleTagRelDO articleTagRelDO = ArticleTagRelDO.builder()
-                        .articleId(articleId)
-                        .tagId(Long.valueOf(existTagId))
-                        .build();
-                articleTagRelDOS.add(articleTagRelDO);
-            });
+        for (String newTagName : newTagNames) {
+            TagDO tagDO = TagDO.builder()
+                    .userId(userId)
+                    .name(newTagName)
+                    .createTime(new Date())
+                    .updateTime(new Date())
+                    .isDeleted(false)
+                    .build();
+            tagDao.insert(tagDO);
+            relationTagIds.add(tagDO.getId());
+        }
+
+        if (!relationTagIds.isEmpty()) {
+            List<ArticleTagRelDO> articleTagRelDOS = relationTagIds.stream()
+                    .map(tagId -> ArticleTagRelDO.builder()
+                            .articleId(articleId)
+                            .tagId(tagId)
+                            .build())
+                    .collect(Collectors.toList());
             articleTagRelDao.insertBatch(articleTagRelDOS);
         }
     }
@@ -271,6 +319,57 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         if (c == null || c.getUserId() == null || !c.getUserId().equals(userId) || Boolean.TRUE.equals(c.getIsDeleted())) {
             throw new BizException(ResponseCodeEnum.PARAM_ERROR);
         }
+    }
+
+    private Long resolveCategoryId(PublishArticleReqVO reqVO, Long userId) {
+        if (reqVO.getCategoryId() != null) {
+            assertCategoryOwnedBy(reqVO.getCategoryId(), userId);
+            return reqVO.getCategoryId();
+        }
+        if (reqVO.getCategoryName() != null && !reqVO.getCategoryName().trim().isEmpty()) {
+            String name = reqVO.getCategoryName().trim();
+            CategoryDO existing = categoryMapper.selectOne(
+                    new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<CategoryDO>()
+                            .eq(CategoryDO::getUserId, userId)
+                            .eq(CategoryDO::getName, name)
+                            .eq(CategoryDO::getIsDeleted, false)
+            );
+            if (existing != null) {
+                return existing.getId();
+            }
+            CategoryDO newCat = CategoryDO.builder()
+                    .userId(userId)
+                    .name(name)
+                    .createTime(new Date())
+                    .updateTime(new Date())
+                    .isDeleted(false)
+                    .build();
+            categoryMapper.insert(newCat);
+            return newCat.getId();
+        }
+        return null;
+    }
+
+    private String defaultIfEmpty(String value, String defaultValue) {
+        return value != null && !value.trim().isEmpty() ? value : defaultValue;
+    }
+
+    private String normalizeTitleImage(String titleImage) {
+        return defaultIfEmpty(titleImage, AiArticleConstants.DEFAULT_SCENERY_COVER);
+    }
+
+    private String extractDescription(String content) {
+        if (content == null || content.isEmpty()) {
+            return "";
+        }
+        String plain = content.replaceAll("<[^>]+>", "")
+                .replaceAll("#+\\s*", "")
+                .replaceAll("\\*\\*|__", "")
+                .replaceAll("\\*|_", "")
+                .replaceAll("`", "")
+                .replaceAll("\\n+", " ")
+                .trim();
+        return plain.length() > 200 ? plain.substring(0, 200) + "..." : plain;
     }
 
     private UserDO getCurrentUser() {
@@ -296,5 +395,4 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         }
         return ArticleVisibilityConstants.PUBLIC;
     }
-
 }

@@ -22,4 +22,8 @@ public class BizException extends RuntimeException {
         this.errorMessage = exception.getErrorMessage();
     }
 
+    public BizException(String errorCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+    }
 }

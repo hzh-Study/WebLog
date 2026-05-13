@@ -1,0 +1,145 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e65]:
+    - complementary [ref=e66]:
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]: H
+          - generic [ref=e70]:
+            - strong [ref=e71]: WebLog Admin
+            - generic [ref=e72]: Content Console
+        - menubar [ref=e73]:
+          - menuitem "仪表盘" [ref=e74] [cursor=pointer]:
+            - img [ref=e76]
+            - generic [ref=e78]: 仪表盘
+          - menuitem "文章管理" [ref=e79] [cursor=pointer]:
+            - img [ref=e81]
+            - generic [ref=e83]: 文章管理
+          - menuitem "草稿箱" [ref=e84] [cursor=pointer]:
+            - img [ref=e86]
+            - generic [ref=e89]: 草稿箱
+          - menuitem "分类管理" [ref=e90] [cursor=pointer]:
+            - img [ref=e92]
+            - generic [ref=e94]: 分类管理
+          - menuitem "标签管理" [ref=e95] [cursor=pointer]:
+            - img [ref=e97]
+            - generic [ref=e100]: 标签管理
+          - menuitem "我的资料" [ref=e101] [cursor=pointer]:
+            - img [ref=e103]
+            - generic [ref=e105]: 我的资料
+          - menuitem "AI 工作台" [ref=e106] [cursor=pointer]:
+            - img [ref=e108]
+            - generic [ref=e110]: AI 工作台
+    - generic [ref=e111]:
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - img [ref=e117] [cursor=pointer]
+          - generic [ref=e119]:
+            - generic [ref=e120]: Dashboard
+            - strong [ref=e121]: 管理控制台
+        - generic [ref=e123]:
+          - img [ref=e125] [cursor=pointer]
+          - img [ref=e128] [cursor=pointer]
+          - img [ref=e131] [cursor=pointer]
+          - button "admin 创作者后台" [ref=e134] [cursor=pointer]:
+            - generic [ref=e136]:
+              - strong [ref=e137]: admin
+              - generic [ref=e138]: 创作者后台
+            - img [ref=e140]
+      - main [ref=e142]:
+        - generic [ref=e143]:
+          - generic [ref=e145]:
+            - generic [ref=e146]: Dashboard
+            - heading "后台概览" [level=1] [ref=e147]
+            - paragraph [ref=e148]: 用更清晰的统计卡片和图表容器查看当前博客内容与访问趋势。
+          - generic [ref=e149]:
+            - generic [ref=e152]:
+              - img [ref=e155]
+              - generic [ref=e157]:
+                - generic [ref=e158]: 文章总数
+                - generic [ref=e159]: "3"
+            - generic [ref=e162]:
+              - img [ref=e165]
+              - generic [ref=e167]:
+                - generic [ref=e168]: 分类总数
+                - generic [ref=e169]: "2"
+            - generic [ref=e172]:
+              - img [ref=e175]
+              - generic [ref=e178]:
+                - generic [ref=e179]: 标签总数
+                - generic [ref=e180]: "7"
+            - generic [ref=e183]:
+              - img [ref=e186]
+              - generic [ref=e188]:
+                - generic [ref=e189]: 总浏览量
+                - generic [ref=e190]: "1"
+            - generic [ref=e193]:
+              - img [ref=e196]
+              - generic [ref=e198]:
+                - generic [ref=e199]: 今日 PV
+                - generic [ref=e200]: "1"
+            - generic [ref=e203]:
+              - img [ref=e206]
+              - generic [ref=e208]:
+                - generic [ref=e209]: 今日 UV
+                - generic [ref=e210]: "1"
+          - generic [ref=e211]:
+            - generic [ref=e216]:
+              - generic [ref=e217]: 文章发布热力图
+              - generic [ref=e218]: 按最近 6 个月展示每日发布情况，布局与配色参考 GitHub Contribution Graph。
+            - generic [ref=e228]:
+              - generic [ref=e229]: PV 访问量统计
+              - generic [ref=e230]: 访问趋势与内容曝光变化
+          - generic [ref=e235]:
+            - generic [ref=e239]:
+              - generic [ref=e240]:
+                - generic [ref=e241]: PV / UV 趋势
+                - generic [ref=e242]: 页面浏览量（PV）与独立访客数（UV）随时间变化趋势
+              - radiogroup "radio-group" [ref=e243]:
+                - generic [ref=e244]:
+                  - radio "近7天" [checked] [ref=e245]
+                  - generic [ref=e246] [cursor=pointer]: 近7天
+                - generic [ref=e247]:
+                  - radio "近30天" [ref=e248]
+                  - generic [ref=e249] [cursor=pointer]: 近30天
+                - generic [ref=e250]:
+                  - radio "近90天" [ref=e251]
+                  - generic [ref=e252] [cursor=pointer]: 近90天
+            - generic [ref=e258]:
+              - generic [ref=e260]:
+                - generic [ref=e261]: 热门文章排行
+                - generic [ref=e262]: 浏览量最高的 10 篇文章
+              - generic [ref=e265]:
+                - table [ref=e267]:
+                  - rowgroup [ref=e273]:
+                    - row "排名 文章标题 浏览量 占比" [ref=e274]:
+                      - columnheader "排名" [ref=e275]:
+                        - generic [ref=e276]: 排名
+                      - columnheader "文章标题" [ref=e277]:
+                        - generic [ref=e278]: 文章标题
+                      - columnheader "浏览量" [ref=e279]:
+                        - generic [ref=e280]: 浏览量
+                      - columnheader "占比" [ref=e281]:
+                        - generic [ref=e282]: 占比
+                - generic [ref=e286]:
+                  - table:
+                    - rowgroup
+                  - generic [ref=e288]: 暂无数据
+          - generic [ref=e293]:
+            - generic [ref=e294]: 文章发布热力日历
+            - generic [ref=e295]: 按日期展示文章发布频率，布局参考 GitHub Contribution Graph
+          - generic [ref=e300]:
+            - generic [ref=e304]:
+              - generic [ref=e305]: 访客地域分布
+              - generic [ref=e306]: 按地区统计访客数量
+            - generic [ref=e314]:
+              - generic [ref=e315]: 分类占比
+              - generic [ref=e316]: 各分类下的文章数量分布
+          - generic [ref=e323]:
+            - generic [ref=e324]: 标签占比
+            - generic [ref=e325]: 各标签下的文章数量分布
+      - generic [ref=e330]:
+        - generic [ref=e331]: WebLog Admin
+        - generic [ref=e333]: "@2026 by WebLog"
+  - alert [ref=e334]:
+    - img [ref=e336]
+    - paragraph [ref=e338]: 登录成功

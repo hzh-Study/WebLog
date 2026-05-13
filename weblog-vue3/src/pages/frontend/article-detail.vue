@@ -63,6 +63,16 @@
                     </div>
                 </section>
 
+                <ArticleInteraction 
+                  :articleId="article.id" 
+                  :likeNum="article.likeNum || 0" 
+                  :favoriteNum="article.favoriteNum || 0"
+                  :liked="article.liked || false"
+                  :favorited="article.favorited || false"
+                />
+
+                <ArticleAiReader v-if="article.id" :article-id="article.id" />
+
                 <section class="front-card front-card-solid detail-nav-card">
                     <div class="front-card-body detail-nav-grid">
                         <a v-if="article.preArticleId" @click="goArticleDetail(article.preArticleId)" class="detail-nav-item">
@@ -114,8 +124,7 @@
                                 </span>
                             </div>
                         </div>
-                    </section>
-                </div>
+                    </section></div>
             </aside>
         </div>
     </div>
@@ -126,6 +135,8 @@
 <script setup>
 import Header from '@/layouts/components/Header.vue'
 import Footer from '@/layouts/components/Footer.vue'
+import ArticleInteraction from '@/components/ArticleInteraction.vue'
+import ArticleAiReader from '@/components/ArticleAiReader.vue'
 import { useRoute, useRouter } from 'vue-router';
 import { getArticleDetail } from '@/api/frontend/article';
 import { ref, reactive, watch } from 'vue'
@@ -136,6 +147,7 @@ import { showMessage } from '@/composables/util'
 const router = useRouter()
 const route = useRoute()
 const article = reactive({
+    id: null,
     title: '',
     content: '',
     updateTime: '',
@@ -148,6 +160,10 @@ const article = reactive({
     nextArticleTitle: '',
     tags: [],
     author: null,
+    likeNum: 0,
+    favoriteNum: 0,
+    liked: false,
+    favorited: false,
 })
 
 function queryArticleDetail(articleId) {
@@ -168,12 +184,17 @@ function queryArticleDetail(articleId) {
                 return
             }
             const d = e.data
+            article.id = d.id
             article.title = d.title
             article.content = d.content
             article.updateTime = d.updateTime
             article.categoryId = d.categoryId
             article.categoryName = d.categoryName
             article.readNum = d.readNum
+            article.likeNum = d.likeNum || 0
+            article.favoriteNum = d.favoriteNum || 0
+            article.liked = d.liked || false
+            article.favorited = d.favorited || false
             article.tags = d.tags || []
             article.author = d.author
             if (d.preArticle) {

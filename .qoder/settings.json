@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$QODER_FILE\" == *.java ]]; then cd \"$(git rev-parse --show-toplevel)/weblog-springboot\" && mvn spotless:apply -pl \"$(basename $(dirname \"$QODER_FILE\"))\" -Dspotless.include=\"$QODER_FILE\" 2>/dev/null || true; elif [[ \"$QODER_FILE\" == *.vue || \"$QODER_FILE\" == *.js || \"$QODER_FILE\" == *.ts || \"$QODER_FILE\" == *.css ]]; then cd \"$(git rev-parse --show-toplevel)/weblog-vue3\" && npx prettier --write \"$QODER_FILE\" 2>/dev/null || true; fi",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

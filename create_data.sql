@@ -26,9 +26,9 @@ VALUES ('WebLog', 'WebLog', '欢迎来到 WebLog 的个人博客', '', '', '', '
 
 -- 插入3个管理员账号 (密码都是: admin123)
 INSERT INTO `t_user` (`id`, `username`, `password`, `nickname`, `avatar`, `bio`, `website`, `github_home`, `gitee_home`, `csdn_home`, `zhihu_home`, `create_time`, `update_time`, `is_deleted`) VALUES
-(1, 'admin1', '$2b$12$WgN7SV4DUz05XpUebVAkBOc44.ufEmSEsslDg8dXe2CPKorHFfThG', '张三', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e', '热爱技术分享的全栈开发者', 'https://zhangsan.dev', 'https://github.com/zhangsan', '', '', '', NOW(), NOW(), 0),
-(2, 'admin2', '$2b$12$WgN7SV4DUz05XpUebVAkBOc44.ufEmSEsslDg8dXe2CPKorHFfThG', '李四', 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d', '专注于后端架构设计', 'https://lisi.dev', 'https://github.com/lisi', '', '', '', NOW(), NOW(), 0),
-(3, 'admin3', '$2b$12$WgN7SV4DUz05XpUebVAkBOc44.ufEmSEsslDg8dXe2CPKorHFfThG', '王五', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d', '前端工程师，喜欢Vue和React', 'https://wangwu.dev', 'https://github.com/wangwu', '', '', '', NOW(), NOW(), 0);
+(1, 'admin1', '$2b$10$dmcpml4vB7RWxvU6qAOD3.6NF5l80aNWXMRORrBFy7kOpyC1Fzn/a', '张三', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e', '热爱技术分享的全栈开发者', 'https://zhangsan.dev', 'https://github.com/zhangsan', '', '', '', NOW(), NOW(), 0),
+(2, 'admin2', '$2b$10$dmcpml4vB7RWxvU6qAOD3.6NF5l80aNWXMRORrBFy7kOpyC1Fzn/a', '李四', 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d', '专注于后端架构设计', 'https://lisi.dev', 'https://github.com/lisi', '', '', '', NOW(), NOW(), 0),
+(3, 'admin3', '$2b$10$dmcpml4vB7RWxvU6qAOD3.6NF5l80aNWXMRORrBFy7kOpyC1Fzn/a', '王五', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d', '前端工程师，喜欢Vue和React', 'https://wangwu.dev', 'https://github.com/wangwu', '', '', '', NOW(), NOW(), 0);
 
 -- 为3个用户分配管理员角色
 INSERT INTO `t_user_role` (`username`, `role`, `create_time`) VALUES

@@ -131,7 +131,9 @@ public class ArticleServiceImpl implements ArticleService {
 
         // 查询文章标签
         List<ArticleTagRelDO> articleTagRelDOS = articleTagRelDao.selectByArticleId(articleId);
-        List<Long> tagIds = articleTagRelDOS.stream().map(p -> p.getTagId()).collect(Collectors.toList());
+        List<Long> tagIds = CollectionUtils.isEmpty(articleTagRelDOS)
+                ? Collections.emptyList()
+                : articleTagRelDOS.stream().map(p -> p.getTagId()).collect(Collectors.toList());
         List<TagDO> tagDOS;
         if (CollectionUtils.isEmpty(tagIds)) {
             tagDOS = Collections.emptyList();
@@ -198,7 +200,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .eq(UserDO::getUsername, username.trim())
                 .eq(UserDO::getIsDeleted, false)
                 .last("limit 1"));
-        return userDO == null ? -1L : userDO.getId();
+        return userDO == null ? null : userDO.getId();
     }
 
     private List<QueryIndexArticlePageItemRspVO> buildArticleList(List<ArticleDO> records) {

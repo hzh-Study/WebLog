@@ -2,9 +2,6 @@ import { createStore } from 'vuex'
 import { getAdminInfo } from '@/api/admin/user'
 import { getBlogSettingDetail } from '@/api/frontend/blogsetting'
 import { removeToken } from '@/composables/auth'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 
 // 创建一个新的 store 实例
 const store = createStore({

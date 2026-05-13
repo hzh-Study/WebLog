@@ -10,13 +10,7 @@
             </el-header>
 
             <el-main class="admin-shell-content">
-                <router-view v-slot="{ Component }">
-                    <Transition name="fade">
-                        <keep-alive :max="10">
-                            <component :is="Component"></component>
-                        </keep-alive>
-                    </Transition>
-                </router-view>
+                <router-view></router-view>
             </el-main>
 
             <el-footer class="admin-shell-footer">

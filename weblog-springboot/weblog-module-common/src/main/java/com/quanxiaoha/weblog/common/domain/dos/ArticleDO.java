@@ -24,4 +24,6 @@ public class ArticleDO {
     private Date updateTime;
     private Boolean isDeleted;
     private Long readNum;
+    private Long likeNum;
+    private Long favoriteNum;
 }

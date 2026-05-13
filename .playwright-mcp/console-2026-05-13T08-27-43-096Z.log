@@ -1,0 +1,91 @@
+[    5670ms] [LOG] 全局前置守卫 >>>> @ http://127.0.0.1:5173/src/permission.js:9
+[    5682ms] [LOG] 全局前置守卫 >>>> @ http://127.0.0.1:5173/src/permission.js:9
+[    5683ms] [LOG] 统一添加 token: undefined @ http://127.0.0.1:5173/src/axios.js:17
+[    5765ms] [LOG] 添加键盘监听 @ http://127.0.0.1:5173/src/pages/admin/login.vue:88
+[  138012ms] [LOG] 统一添加 token: undefined @ http://127.0.0.1:5173/src/axios.js:17
+[  138182ms] [LOG] 全局前置守卫 >>>> @ http://127.0.0.1:5173/src/permission.js:9
+[  138185ms] [LOG] 获取登录用户信息。。。。 @ http://127.0.0.1:5173/src/permission.js:21
+[  138186ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138348ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at debugWarn (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10500:37)
+    at watch.immediate (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10545:7)
+    at callWithErrorHandling (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2381:19)
+    at callWithAsyncErrorHandling (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2388:17)
+    at baseWatchOptions.call (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3077:47)
+    at job (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2108:18)
+    at watch (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2144:7)
+    at doWatch (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3105:23)
+    at watch2 (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3037:10)
+    at useDeprecated (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10543:3) @ http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10500
+[  138351ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at debugWarn (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10500:37)
+    at watch.immediate (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10545:7)
+    at callWithErrorHandling (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2381:19)
+    at callWithAsyncErrorHandling (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2388:17)
+    at baseWatchOptions.call (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3077:47)
+    at job (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2108:18)
+    at watch (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2144:7)
+    at doWatch (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3105:23)
+    at watch2 (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3037:10)
+    at useDeprecated (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10543:3) @ http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10500
+[  138353ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at debugWarn (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10500:37)
+    at watch.immediate (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10545:7)
+    at callWithErrorHandling (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2381:19)
+    at callWithAsyncErrorHandling (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2388:17)
+    at baseWatchOptions.call (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3077:47)
+    at job (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2108:18)
+    at watch (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2144:7)
+    at doWatch (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3105:23)
+    at watch2 (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:3037:10)
+    at useDeprecated (http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10543:3) @ http://127.0.0.1:5173/node_modules/.vite/deps/chunk-4TCAEQH5.js?v=a8255f00:10500
+[  138473ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138473ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138473ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138473ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138473ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138474ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138474ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138474ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138474ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138474ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  138991ms] [WARNING] [Vue warn]: Unhandled error during execution of mounted hook 
+  at <PublishHeatmap> 
+  at <ElCol xs=24 lg=24 > 
+  at <ElRow gutter=20 class="mt-5" > 
+  at <Index onVnodeUnmounted=fn<onVnodeUnmounted> ref=Ref< Proxy(Object) > > 
+  at <RouterView> 
+  at <ElMain class="admin-shell-content" > 
+  at <ElContainer class="admin-shell-main" > 
+  at <ElContainer class="admin-app admin-shell-root" > 
+  at <Admin onVnodeUnmounted=fn<onVnodeUnmounted> ref=Ref< Proxy(Object) > > 
+  at <RouterView> 
+  at <ElConfigProvider locale= {name: zh-cn, el: Object} > 
+  at <App> @ http://127.0.0.1:5173/node_modules/.vite/deps/chunk-VKXRCOT2.js?v=a8255f00:2232
+[  139005ms] TypeError: (response.data || []).map is not a function
+    at fetchData (http://127.0.0.1:5173/src/components/ArticleRankTable.vue:30:53)
+[  139006ms] TypeError: Cannot read properties of undefined (reading 'slice')
+    at CalendarView2._getEdgesPoints (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:61444:28)
+    at CalendarView2._renderLines (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:61440:41)
+    at CalendarView2.render (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:61386:12)
+    at http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:24079:25
+    at Array.forEach (<anonymous>)
+    at each (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:427:9)
+    at renderComponents (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:24076:9)
+    at render (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:24064:9)
+    at ECharts2.update (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:23741:11)
+    at ECharts2.setOption (http://127.0.0.1:5173/node_modules/.vite/deps/echarts.js?v=f7b1d30f:23093:32)
+[  199826ms] [LOG] RefImpl @ http://127.0.0.1:5173/src/layouts/components/AdminMenu.vue:73
+[  199827ms] [LOG] /admin @ http://127.0.0.1:5173/src/layouts/components/AdminMenu.vue:74
+[  199828ms] [LOG] 全局前置守卫 >>>> @ http://127.0.0.1:5173/src/permission.js:9
+[  199831ms] [LOG] 获取登录用户信息。。。。 @ http://127.0.0.1:5173/src/permission.js:21
+[  199831ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  200327ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  200327ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17
+[  200327ms] [LOG] 统一添加 token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEiLCJpc3MiOiJxdWFueGlhb2hhIiwiaWF0IjoxNzc4NjYxMDAxLCJleHAiOjE3ODM4NDUwMDF9.RGO5n3wVrBe8kYLv1F0qrU_oYwA5vVFVD1zHhWOOauz75nMNah5cEFC2R8CfFC1dU5TL75X_K91JILJ6ZanE8g @ http://127.0.0.1:5173/src/axios.js:17

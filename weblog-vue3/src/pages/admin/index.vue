@@ -45,6 +45,24 @@
                     </div>
                 </div>
             </el-card>
+            <el-card shadow="never" class="admin-stat-card">
+                <div class="flex items-center">
+                    <div class="mr-4"><el-icon class="admin-stat-icon"><DataLine /></el-icon></div>
+                    <div>
+                        <div class="admin-stat-label">今日 PV</div>
+                        <CountTo :value="todayPv"></CountTo>
+                    </div>
+                </div>
+            </el-card>
+            <el-card shadow="never" class="admin-stat-card">
+                <div class="flex items-center">
+                    <div class="mr-4"><el-icon class="admin-stat-icon"><UserFilled /></el-icon></div>
+                    <div>
+                        <div class="admin-stat-label">今日 UV</div>
+                        <CountTo :value="todayUv"></CountTo>
+                    </div>
+                </div>
+            </el-card>
         </div>
 
         <el-row :gutter="20" class="mt-5">
@@ -55,6 +73,36 @@
                 <PVChart></PVChart>
             </el-col>
         </el-row>
+
+        <el-row :gutter="20" class="mt-5">
+            <el-col :xs="24" :lg="12">
+                <PvUvTrendChart></PvUvTrendChart>
+            </el-col>
+            <el-col :xs="24" :lg="12" class="mt-5 lg:mt-0">
+                <ArticleRankTable></ArticleRankTable>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20" class="mt-5">
+            <el-col :xs="24" :lg="24">
+                <PublishHeatmap></PublishHeatmap>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20" class="mt-5">
+            <el-col :xs="24" :lg="12">
+                <VisitorRegionMap></VisitorRegionMap>
+            </el-col>
+            <el-col :xs="24" :lg="12" class="mt-5 lg:mt-0">
+                <CategoryPieChart></CategoryPieChart>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20" class="mt-5">
+            <el-col :xs="24" :lg="12">
+                <TagPieChart></TagPieChart>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -62,14 +110,22 @@
 import CountTo from '@/components/CountTo.vue'
 import ArticlePublishChart from '@/components/ArticlePublishChart.vue'
 import PVChart from '@/components/PVChart.vue'
+import PvUvTrendChart from '@/components/PvUvTrendChart.vue'
+import ArticleRankTable from '@/components/ArticleRankTable.vue'
+import PublishHeatmap from '@/components/PublishHeatmap.vue'
+import VisitorRegionMap from '@/components/VisitorRegionMap.vue'
+import CategoryPieChart from '@/components/CategoryPieChart.vue'
+import TagPieChart from '@/components/TagPieChart.vue'
 import { ref } from 'vue'
-import { getDashboardArticleStatisticsInfo } from '@/api/admin/dashboard'
+import { getDashboardArticleStatisticsInfo, getStatisticsOverview } from '@/api/admin/dashboard'
 
 
 const articleTotalCount = ref(0)
 const categoryTotalCount = ref(0)
 const tagTotalCount = ref(0)
 const pvTotalCount = ref(0)
+const todayPv = ref(0)
+const todayUv = ref(0)
 
 getDashboardArticleStatisticsInfo()
     .then((e) => {
@@ -82,6 +138,17 @@ getDashboardArticleStatisticsInfo()
     })
     .catch((err) => {
         console.error('[Dashboard] 顶栏统计接口失败，数字将保持 0。若文章列表有数据，请检查网络或 /admin/dashboard/article/statistics 是否超时。', err)
+    })
+
+getStatisticsOverview()
+    .then((e) => {
+        if (e && e.success && e.data) {
+            todayPv.value = Number(e.data.todayPv) || 0
+            todayUv.value = Number(e.data.todayUv) || 0
+        }
+    })
+    .catch((err) => {
+        console.error('[Dashboard] 概览统计接口失败。', err)
     })
 
 

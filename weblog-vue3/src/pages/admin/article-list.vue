@@ -36,11 +36,7 @@
                 <div class="admin-table-title">文章列表</div>
                 <div class="admin-table-desc">发文时只能选择本人创建的分类与标签，与他人数据互不影响。</div>
             </div>
-            <el-button type="primary" @click="openPublishDialog">
-                <el-icon class="mr-1">
-                    <EditPen />
-                </el-icon>
-                写文章</el-button>
+            <el-button type="primary" :icon="Edit" @click="openPublishDialog">写文章</el-button>
         </div>
 
         <el-table
@@ -86,7 +82,7 @@
                     </el-tooltip>
                 </template>
                 <template #default="scope">
-                    <el-image class="admin-table-image" :src="scope.row.titleImage" fit="cover" />
+                    <el-image class="admin-table-image" :src="resolveAiCover(scope.row.titleImage)" fit="cover" />
                 </template>
             </el-table-column>
             <el-table-column prop="createTime" width="166" align="center">
@@ -98,7 +94,7 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column width="104" align="center" fixed="right">
+            <el-table-column width="120" align="center" fixed="right">
                 <template #header>
                     <el-tooltip content="操作" placement="top">
                         <span class="admin-th-icon" role="text" aria-label="操作列">
@@ -116,6 +112,9 @@
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
                             <el-button link type="danger" :icon="Delete" @click="deleteArticleSubmit(scope.row)" />
+                        </el-tooltip>
+                        <el-tooltip content="版本" placement="top">
+                            <el-button link :icon="Clock" @click="openVersionPanel(scope.row)" />
                         </el-tooltip>
                     </div>
                 </template>
@@ -137,7 +136,7 @@
                 <div class="my-header flex justify-between admin-dialog-header">
                         <h4 class="font-bold">写文章</h4>
                         <div class="admin-dialog-footer">
-                            <el-button @click="isArticlePublishEditorShow = false">取消</el-button>
+                            <el-button @click="hidePublishEditor">取消</el-button>
                             <el-button type="primary" @click="onSubmit">
                                 <el-icon class="mr-1">
                                     <Promotion />
@@ -153,7 +152,6 @@
                 <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit clearable />
             </el-form-item>
             <el-form-item label="内容" prop="content">
-                <!-- <MDEditor :content="form.content" @event="handleMd"></MDEditor> -->
                 <MdEditor v-model="form.content" @onUploadImg="onUploadImg" editorId="publishArticleEditor" />
             </el-form-item>
             <el-form-item label="封面" prop="titleImage">
@@ -212,7 +210,6 @@
                 <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit clearable />
             </el-form-item>
             <el-form-item label="内容" prop="content">
-                <!-- key：详情异步回填后强制重建，否则 MdEditor 常不显示正文 -->
                 <MdEditor
                     v-model="form.content"
                     :key="articleEditKey"
@@ -253,21 +250,26 @@
             </el-form-item>
         </el-form>
     </el-dialog>
-</div></template>
+</div>
+
+<ArticleVersionPanel v-model="showVersionPanel" :article-id="versionArticleId" />
+</template>
 
 <script setup>
 // import { ElMessage, ElMessageBox } from 'element-plus'
-import { ref, reactive, nextTick } from 'vue'
+import { ref, reactive, nextTick, onMounted, onUnmounted } from 'vue'
 // import MDEditor from '@/components/MDEditor.vue'
 import { publishArticle, getArticlePageList, deleteArticle, getArticleDetail, updateArticle } from '@/api/admin/article'
 import { uploadFile } from '@/api/admin/file'
 import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { showMessage } from '@/composables/util'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { getCategorySelect } from '@/api/admin/category'
 import { selectTags, getTagSelect } from '@/api/admin/tag'
 import moment from 'moment';
+import ArticleVersionPanel from '@/components/ArticleVersionPanel.vue'
+import { resolveAiCover } from '@/constants/ai'
 import {
     Search,
     RefreshRight,
@@ -279,9 +281,34 @@ import {
     Picture,
     Calendar,
     Operation,
+    Clock,
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
+const route = useRoute()
+
+function onArticleCreated() {
+    getTableData()
+}
+
+const showVersionPanel = ref(false)
+const versionArticleId = ref(null)
+
+function openVersionPanel(row) {
+    versionArticleId.value = row.id
+    showVersionPanel.value = true
+}
+
+const form = reactive({
+    id: null,
+    title: '',
+    content: '请输入内容',
+    titleImage: '',
+    categoryId: null,
+    tags: [],
+    description: "",
+    visibility: 'PUBLIC',
+})
 
 const isArticlePublishEditorShow = ref(false)
 const isArticleUpdateEditorShow = ref(false)
@@ -372,6 +399,11 @@ const openPublishDialog = () => {
     isArticlePublishEditorShow.value = true
 }
 
+const hidePublishEditor = () => {
+    isArticlePublishEditorShow.value = false
+    resetArticleForm()
+}
+
 const hideArticleUpdateEditor = () => {
     isArticleUpdateEditorShow.value = false
     resetArticleForm()
@@ -446,10 +478,8 @@ const showArticleUpdateEditorShow = async (row) => {
     try {
         const e = await getArticleDetail(articleId)
         if (e && e.success === true && e.data) {
-            // 先拉全部分类/标签选项，避免 remote/搜索后 options 变短，导致只显示 ID 无汉字
             await refreshSelectOptions()
             applyArticleDetailToForm(e.data)
-            // 先打开弹层再 bump key，保证 MdEditor 挂载时 form 已有正文，且与「写文章」弹层二选一挂载，避免双 MdEditor 争用 v-model
             isArticleUpdateEditorShow.value = true
             await nextTick()
             articleEditKey.value += 1
@@ -464,6 +494,9 @@ const showArticleUpdateEditorShow = async (row) => {
         articleEditLoading.value = false
     }
 }
+
+onMounted(() => {
+})
 
 const onUploadImg = async (files, callback) => {
     const res = await Promise.all(
@@ -491,18 +524,6 @@ const previewArticle = (row) => {
     let routeData = router.resolve({ path: '/article/detail', query: { articleId: row.id } });
     window.open(routeData.href, '_blank');
 }
-
-const form = reactive({
-    id: null,
-    title: '',
-    content: '请输入内容',
-    titleImage: '',
-    categoryId: null,
-    tags: [],
-    description: "",
-    visibility: 'PUBLIC',
-})
-
 
 const publishArticleFormRef = ref(null)
 const updateArticleFormRef = ref(null)

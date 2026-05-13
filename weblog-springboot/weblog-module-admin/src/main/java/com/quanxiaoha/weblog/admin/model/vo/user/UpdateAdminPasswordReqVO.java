@@ -18,8 +18,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 public class UpdateAdminPasswordReqVO {
-    @NotBlank(message = "用户名不能为空")
-    private String username;
-    @NotBlank(message = "密码不能为空")
+    @NotBlank(message = "旧密码不能为空")
+    private String oldPassword;
+    @NotBlank(message = "新密码不能为空")
     private String newPassword;
 }

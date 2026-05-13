@@ -69,6 +69,16 @@ public class AdminUserServiceImpl extends ServiceImpl<UserMapper, UserDO> implem
     @Override
     public Response updateAdminPassword(UpdateAdminPasswordReqVO updateAdminPasswordReqVO) {
         String username = SecurityUtils.getCurrentUsername();
+        UserDO currentUser = userDao.selectByUsername(username);
+        if (currentUser == null) {
+            throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+        }
+        if (!passwordEncoder.matches(updateAdminPasswordReqVO.getOldPassword(), currentUser.getPassword())) {
+            throw new BizException(ResponseCodeEnum.PASSWORD_ERROR);
+        }
+        if (updateAdminPasswordReqVO.getOldPassword().equals(updateAdminPasswordReqVO.getNewPassword())) {
+            throw new BizException(ResponseCodeEnum.PARAM_ERROR);
+        }
         UserDO userDO = UserDO.builder()
                 .password(passwordEncoder.encode(updateAdminPasswordReqVO.getNewPassword()))
                 .updateTime(new Date())

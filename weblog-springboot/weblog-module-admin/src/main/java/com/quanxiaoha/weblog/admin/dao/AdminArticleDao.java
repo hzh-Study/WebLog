@@ -30,5 +30,13 @@ public interface AdminArticleDao {
 
     int readNumIncrease(Long articleId);
 
+    int likeNumIncrease(Long articleId);
+
+    int likeNumDecrease(Long articleId);
+
+    int favoriteNumIncrease(Long articleId);
+
+    int favoriteNumDecrease(Long articleId);
+
     Long selectUserIdByArticleId(Long articleId);
 }

@@ -1,0 +1,29 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.quanxiaoha:weblog-web >----------------------
+[INFO] Building weblog-web 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:2.6.3:run (default-cli) > test-compile @ weblog-web >>>
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.903 s
+[INFO] Finished at: 2026-05-13T03:23:54+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal on project weblog-web: Could not collect dependencies for project com.quanxiaoha:weblog-web:jar:0.0.1-SNAPSHOT
+[ERROR] Failed to read artifact descriptor for com.quanxiaoha:weblog-module-common:jar:0.0.1-SNAPSHOT
+[ERROR] 	Caused by: The following artifacts could not be resolved: com.quanxiaoha:weblog-springboot:pom:${revision} (absent): com.quanxiaoha:weblog-springboot:pom:${revision} was not found in https://maven.aliyun.com/repository/public during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of aliyunmaven has elapsed or updates are forced
+[ERROR] Failed to read artifact descriptor for com.quanxiaoha:weblog-module-admin:jar:0.0.1-SNAPSHOT
+[ERROR] 	Caused by: The following artifacts could not be resolved: com.quanxiaoha:weblog-springboot:pom:${revision} (absent): com.quanxiaoha:weblog-springboot:pom:${revision} was not found in https://maven.aliyun.com/repository/public during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of aliyunmaven has elapsed or updates are forced
+[ERROR] Failed to read artifact descriptor for com.quanxiaoha:weblog-module-jwt:jar:0.0.1-SNAPSHOT
+[ERROR] 	Caused by: The following artifacts could not be resolved: com.quanxiaoha:weblog-springboot:pom:${revision} (absent): com.quanxiaoha:weblog-springboot:pom:${revision} was not found in https://maven.aliyun.com/repository/public during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of aliyunmaven has elapsed or updates are forced
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException

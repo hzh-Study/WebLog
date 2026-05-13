@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd d:/xm/WeBlog/weblog-springboot && mvn -pl weblog-web spring-boot:run)",
+      "Bash(cd d:/xm/WeBlog/weblog-vue3 && pnpm dev)",
+      "Bash(sleep 15 && echo \"--- Backend Output ---\")",
+      "Bash(cd d:/xm/WeBlog/weblog-vue3 && cat /dev/null)",
+      "Bash(sleep 20 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8081 2>&1; echo \"\"; curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173 2>&1)",
+      "Bash(sleep 30 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8081 2>&1; echo \" \\(backend\\)\"; curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173 2>&1; echo \" \\(frontend\\)\")",
+      "Bash(tasklist 2>nul | grep -i \"java\\\\|node\" || echo \"no java/node found\")",
+      "Bash(cd d:/xm/WeBlog/weblog-springboot && ls -la weblog-web/target/*.jar 2>/dev/null || echo \"No jar found, need to build first\")",
+      "Bash(cd d:/xm/WeBlog/weblog-springboot && mvn -pl weblog-web spring-boot:run 2>&1 &\nsleep 60\ncurl -s -o /dev/null -w \"%{http_code}\" http://localhost:8081)",
+      "Bash(cd d:/xm/WeBlog/weblog-vue3 && pnpm dev 2>&1 &\nsleep 30\ncurl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "Bash(cd d:/xm/WeBlog/weblog-springboot && mvn install -DskipTests -q 2>&1)",
+      "Bash(cd d:/xm/WeBlog/weblog-springboot && mvn -pl weblog-web spring-boot:run 2>&1 &\nsleep 45\ncurl -s -o /dev/null -w \"%{http_code}\" http://localhost:8081)",
+      "Bash(cd d:/xm/WeBlog/weblog-springboot && mvn -pl weblog-web spring-boot:run -U 2>&1 &\nsleep 60\ncurl -s -o /dev/null -w \"%{http_code}\" http://localhost:8081)",
+      "Bash(ls:*)"
+    ]
+  }
+}
