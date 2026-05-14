@@ -18,4 +18,5 @@ public class QueryArticlePageListReqVO {
     private Date startDate;
     private Date endDate;
     private String searchTitle;
+    private Long categoryId;
 }

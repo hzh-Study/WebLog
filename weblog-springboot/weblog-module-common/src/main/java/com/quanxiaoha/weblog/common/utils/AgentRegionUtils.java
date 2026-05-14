@@ -95,18 +95,24 @@ public class AgentRegionUtils {
             region = region.replace("|", " ");
             String[] cityList = region.split(" ");
             if (cityList.length > 0) {
-                // 国内的显示到具体的省
                 if (country.equals(cityList[0])) {
-                    if (cityList.length > 1) {
+                    if (cityList.length > 4) {
                         log.info(cityList[0]+"-"+cityList[2]+"-"+cityList[3]+"-"+cityList[4]);
                         return cityList[0]+"-"+cityList[2]+"-"+cityList[3]+"-"+cityList[4];
+                    } else if (cityList.length > 2) {
+                        StringBuilder sb = new StringBuilder(cityList[0]);
+                        for (int i = 2; i < cityList.length; i++) {
+                            sb.append("-").append(cityList[i]);
+                        }
+                        return sb.toString();
                     }
                 } else if (hdu.equals(cityList[0])) {
                     return "中国-浙江省-杭州市-HDU";
                 } else {
-                    // 国外显示到国家城市
-                    if (cityList.length > 1) {
+                    if (cityList.length > 2) {
                         return cityList[0]+"-"+cityList[2];
+                    } else if (cityList.length > 0) {
+                        return cityList[0];
                     }
                 }
 

@@ -4,7 +4,7 @@
         <div>
             <span class="admin-kicker">Tag Manager</span>
             <h1 class="admin-page-title">标签管理</h1>
-            <p class="admin-page-desc">标签按账号隔离：仅当前登录管理员创建、管理并用于发文，其他管理员的标签不可见、不可选。</p>
+            <p class="admin-page-desc">管理您已添加的标签，点击「新增标签」从系统标签库中选择。</p>
         </div>
         <div class="admin-page-actions">
             <span class="admin-summary-chip"><strong>{{ total }}</strong> 个标签</span>
@@ -29,37 +29,25 @@
         </div>
     </el-card>
 
-
     <el-card shadow="never" class="admin-table-card">
         <div class="admin-table-toolbar">
             <div>
-                <div class="admin-table-title">标签列表</div>
-                <div class="admin-table-desc">此处列表仅含「本人」标签；与站点前台展示的「全站公开标签」不是同一数据。</div>
+                <div class="admin-table-title">我的标签</div>
+                <div class="admin-table-desc">您已添加的标签列表。</div>
             </div>
-            <el-button type="primary" @click="isTagPublishDialogShow = true">
-                <el-icon class="mr-1">
-                    <Plus />
-                </el-icon>
-                新增</el-button>
+            <el-button type="primary" :icon="Plus" @click="openAddDialog">新增标签</el-button>
         </div>
 
         <el-table :data="tableData" stripe style="width: 100%" class="mt-4" v-loading="tableLoading">
-            <!-- <el-table-column prop="id" label="ID" width="180" /> -->
             <el-table-column prop="name" label="名称" width="180">
                 <template #default="scope">
                     <el-tag class="ml-2" type="info">{{scope.row.name}}</el-tag>
                 </template>
-                
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间" width="180" />
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="100" align="center">
                 <template #default="scope">
-                    <el-button type="danger" size="small" @click="deleteTagSubmit(scope.row)">
-                        <el-icon class="mr-1">
-                            <Delete />
-                        </el-icon>
-                        删除
-                    </el-button>
+                    <el-button type="danger" size="small" link @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -71,28 +59,28 @@
         </div>
     </el-card>
 
-    <!-- 新增标签 -->
-    <el-dialog v-model="isTagPublishDialogShow" title="新增标签" width="30%" :show-close="false" draggable class="admin-tag-dialog">
-        <el-form :model="form" ref="formRef" label-position="top" :size="large" :rules="rules">
-            <el-form-item label="" prop="title">
-                <el-tag v-for="tag in dynamicTags" :key="tag" class="mx-1 mb-2" closable :disable-transitions="false"
-                    @close="handleClose(tag)" type="info" round>
-                    {{ tag }}
-                </el-tag>
-                <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="ml-1 w-20 mb-2" size="small"
-                    @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
-                <el-button v-else class="button-new-tag ml-1 mb-2" size="small" @click="showInput" round>
-                    + 新增标签
-                </el-button>
-            </el-form-item>
-        </el-form>
+    <el-dialog v-model="showAddDialog" title="从标签库中选择" width="640px" top="5vh" destroy-on-close @open="initAddDialog">
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+            <el-input v-model="addSearchKeyword" placeholder="搜索标签名称" clearable @keyup.enter="searchAddList" @clear="searchAddList" />
+            <el-button type="primary" :icon="Search" @click="searchAddList">搜索</el-button>
+        </div>
+        <el-table :data="addTableData" v-loading="addLoading" max-height="300" ref="addTableRef"
+            @selection-change="handleAddSelectionChange">
+            <el-table-column type="selection" width="50" />
+            <el-table-column prop="name" label="标签名称">
+                <template #default="scope">
+                    <el-tag type="info">{{ scope.row.name }}</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="createTime" label="创建时间" width="180" show-overflow-tooltip />
+        </el-table>
+        <div style="margin-top: 12px; display: flex; justify-content: center;">
+            <el-pagination v-model:current-page="addCurrent" v-model:page-size="addSize" :page-sizes="[10, 20, 50, 100]"
+                :total="addTotal" layout="total, sizes, prev, pager, next" @current-change="getAddList" @size-change="handleAddSizeChange" small />
+        </div>
         <template #footer>
-            <span class="admin-dialog-footer">
-                <el-button @click="isTagPublishDialogShow = false">取消</el-button>
-                <el-button type="primary" @click="addTagsSubmit">
-                    提交
-                </el-button>
-            </span>
+            <el-button @click="showAddDialog = false">取消</el-button>
+            <el-button type="primary" :disabled="addSelectedItems.length === 0" :loading="addSubmitting" @click="confirmAdd">确认添加（已选 {{ addSelectedItems.length }} 个）</el-button>
         </template>
     </el-dialog>
 </div>
@@ -100,19 +88,19 @@
 </template>
 
 <script setup>
-// import { ElMessage, ElMessageBox, ElInput } from 'element-plus'
 import { ref, reactive } from 'vue'
-import { addTags, getTagPageList, deleteTag } from '@/api/admin/tag'
+import { getTagPageList, addTags, deleteTag } from '@/api/admin/tag'
 import { showMessage } from '@/composables/util'
+import { ElMessageBox } from 'element-plus'
 import moment from 'moment';
-import { Search, RefreshRight } from '@element-plus/icons-vue'
-
-const isTagPublishDialogShow = ref(false)
+import { Search, RefreshRight, Plus } from '@element-plus/icons-vue'
 
 const searchTagName = ref('')
 const pickDate = ref('')
-const startDate = reactive({})
-const endDate = reactive({})
+const startDate = ref(null)
+const endDate = ref(null)
+const small = ref(false)
+const disabled = ref(false)
 
 const reset = () => {
     pickDate.value = ''
@@ -124,6 +112,11 @@ const reset = () => {
 }
 
 const datepickerChange = (e) => {
+    if (!e) {
+        startDate.value = null
+        endDate.value = null
+        return
+    }
     startDate.value = moment(e[0]).format('YYYY-MM-DD HH:mm:ss')
     endDate.value = moment(e[1]).format('YYYY-MM-DD HH:mm:ss')
 }
@@ -158,61 +151,13 @@ const shortcuts = [
     },
 ]
 
-const form = reactive({
-    tags: []
-})
-
-const inputValue = ref('')
-const dynamicTags = ref([])
-const inputVisible = ref(false)
-// const InputRef = ref<InstanceType<ElInput>>()
-
-const handleClose = (tag) => {
-  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
-}
-
-const showInput = () => {
-  inputVisible.value = true
-  nextTick(() => {
-    // InputRef.value!.input!.focus()
-  })
-}
-
-const handleInputConfirm = () => {
-  if (inputValue.value) {
-    dynamicTags.value.push(inputValue.value)
-  }
-  inputVisible.value = false
-  inputValue.value = ''
-}
-
-const addTagsSubmit = () => {
-    form.tags = dynamicTags.value
-    addTags(form).then((e) => {
-        console.log(e)
-        if (e.success == false) {
-            var message = e.message
-            showMessage(message, 'warning', 'message')
-            return
-        }
-
-        showMessage('添加成功', 'success', 'message')
-        isTagPublishDialogShow.value = false
-        dynamicTags.value = []
-        getTableData()
-    })
-}
-
 const tableLoading = ref(false)
 const tableData = ref([])
-// 当前页码
 const current = ref(1)
 const total = ref(0)
 const size = ref(10)
 
-// 获取分页数据
 function getTableData() {
-    console.log('获取分页数据')
     tableLoading.value = true
     getTagPageList({ current: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, tagName: searchTagName.value })
         .then((res) => {
@@ -229,39 +174,100 @@ function getTableData() {
 getTableData()
 
 const handleSizeChange = (e) => {
-    console.log('选择的页码' + e)
     size.value = e
     getTableData()
 }
 
-const deleteTagSubmit = (row) => {
-    ElMessageBox.confirm(
-        '是否确认要删除该标签?',
-        '提示',
-        {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-        }
-    )
-        .then(() => {
-            deleteTag(row.id).then((e) => {
-                if (e.success == true) {
-                    showMessage('删除成功', 'success')
-                    getTableData()
-                } else {
-                    let message = e.message
-                    showMessage(message, 'warning')
-                }
-            })
+const handleDelete = (row) => {
+    ElMessageBox.confirm(`确定要删除标签「${row.name}」吗？`, '删除确认', {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+    }).then(() => {
+        deleteTag(row.id).then((res) => {
+            if (res.success) {
+                showMessage('删除成功', 'success')
+                getTableData()
+            } else {
+                showMessage(res.message || '删除失败', 'warning')
+            }
+        })
+    }).catch(() => {})
+}
 
-        })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '删除失败',
-            })
-        })
+const showAddDialog = ref(false)
+const addLoading = ref(false)
+const addSubmitting = ref(false)
+const addTableRef = ref(null)
+const addSearchKeyword = ref('')
+const addTableData = ref([])
+const addCurrent = ref(1)
+const addTotal = ref(0)
+const addSize = ref(10)
+const addSelectedItems = ref([])
+
+const initAddDialog = () => {
+    addSearchKeyword.value = ''
+    addCurrent.value = 1
+    addSelectedItems.value = []
+    getAddList()
+}
+
+const searchAddList = () => {
+    addCurrent.value = 1
+    getAddList()
+}
+
+const getAddList = () => {
+    addLoading.value = true
+    getTagPageList({
+        current: addCurrent.value,
+        size: addSize.value,
+        tagName: addSearchKeyword.value || undefined,
+        library: true,
+    }).then((res) => {
+        if (res.success) {
+            addTableData.value = res.data.records
+            addCurrent.value = res.data.current
+            addTotal.value = res.data.total
+            addSize.value = res.data.size
+        }
+    }).finally(() => {
+        addLoading.value = false
+    })
+}
+
+const handleAddSelectionChange = (selection) => {
+    addSelectedItems.value = selection
+}
+
+const handleAddSizeChange = (e) => {
+    addSize.value = e
+    addCurrent.value = 1
+    getAddList()
+}
+
+const openAddDialog = () => {
+    showAddDialog.value = true
+}
+
+const confirmAdd = () => {
+    if (addSelectedItems.value.length === 0) return
+    addSubmitting.value = true
+    const tagNames = addSelectedItems.value.map(item => item.name)
+    addTags({ tags: tagNames }).then((res) => {
+        if (res.success) {
+            showMessage('添加标签成功', 'success')
+            showAddDialog.value = false
+            getTableData()
+        } else {
+            showMessage(res.message || '添加标签失败', 'warning')
+        }
+    }).catch(() => {
+        showMessage('添加标签失败', 'error')
+    }).finally(() => {
+        addSubmitting.value = false
+    })
 }
 
 </script>

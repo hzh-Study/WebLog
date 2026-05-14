@@ -49,7 +49,7 @@
                             </span>
                         </div>
 
-                        <div class="detail-tag-row" v-if="article.tags.length">
+                        <div class="detail-tag-row" v-if="article.tags && article.tags.length">
                             <span v-for="item in article.tags" :key="item.id" @click="goTagArticleListPage(item.id, item.name)" class="front-chip front-chip-success cursor-pointer">
                                 # {{ item.name }}
                             </span>
@@ -72,6 +72,8 @@
                 />
 
                 <ArticleAiReader v-if="article.id" :article-id="article.id" />
+
+                <RelatedArticles v-if="article.id" :article-id="article.id" />
 
                 <section class="front-card front-card-solid detail-nav-card">
                     <div class="front-card-body detail-nav-grid">
@@ -124,7 +126,9 @@
                                 </span>
                             </div>
                         </div>
-                    </section></div>
+                    </section>
+
+                    <HotSidebar /></div>
             </aside>
         </div>
     </div>
@@ -137,15 +141,19 @@ import Header from '@/layouts/components/Header.vue'
 import Footer from '@/layouts/components/Footer.vue'
 import ArticleInteraction from '@/components/ArticleInteraction.vue'
 import ArticleAiReader from '@/components/ArticleAiReader.vue'
+import RelatedArticles from '@/components/RelatedArticles.vue'
+import HotSidebar from '@/components/HotSidebar.vue'
 import { useRoute, useRouter } from 'vue-router';
 import { getArticleDetail } from '@/api/frontend/article';
 import { ref, reactive, watch } from 'vue'
 import { getCategories } from '@/api/frontend/category'
 import { getTags } from '@/api/frontend/tag'
 import { showMessage } from '@/composables/util'
+import { useTracker } from '@/composables/useTracker'
 
 const router = useRouter()
 const route = useRoute()
+const { trackArticleView } = useTracker()
 const article = reactive({
     id: null,
     title: '',
@@ -210,6 +218,8 @@ function queryArticleDetail(articleId) {
             } else {
                 article.nextArticleId = null
             }
+
+            trackArticleView(d.id, 0)
         })
         .catch((err) => {
             console.error(err)

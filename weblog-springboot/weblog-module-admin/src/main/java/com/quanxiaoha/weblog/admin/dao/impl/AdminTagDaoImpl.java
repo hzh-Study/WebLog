@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +34,20 @@ public class AdminTagDaoImpl implements AdminTagDao {
         QueryWrapper<TagDO> wrapper = new QueryWrapper<>();
         wrapper.lambda()
                 .eq(TagDO::getUserId, userId)
+                .eq(TagDO::getIsDeleted, 0)
+                .like(Objects.nonNull(tagName), TagDO::getName, tagName)
+                .ge(Objects.nonNull(startDate), TagDO::getCreateTime, startDate)
+                .le(Objects.nonNull(endDate), TagDO::getCreateTime, endDate)
+                .orderByDesc(TagDO::getCreateTime);
+        return tagMapper.selectPage(page, wrapper);
+    }
+
+    @Override
+    public Page<TagDO> queryTagLibraryPageList(Long current, Long size, Date startDate, Date endDate, String tagName) {
+        Page<TagDO> page = new Page<>(current, size);
+        QueryWrapper<TagDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(TagDO::getIsSystem, true)
                 .eq(TagDO::getIsDeleted, 0)
                 .like(Objects.nonNull(tagName), TagDO::getName, tagName)
                 .ge(Objects.nonNull(startDate), TagDO::getCreateTime, startDate)
@@ -72,5 +88,13 @@ public class AdminTagDaoImpl implements AdminTagDao {
                 .eq(TagDO::getUserId, userId)
                 .eq(TagDO::getIsDeleted, 0);
         return tagMapper.selectCount(wrapper);
+    }
+
+    @Override
+    public List<TagDO> selectBatchIds(Collection<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return tagMapper.selectBatchIds(ids);
     }
 }

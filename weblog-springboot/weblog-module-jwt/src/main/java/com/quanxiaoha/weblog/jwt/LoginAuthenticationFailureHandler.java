@@ -29,11 +29,9 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.warn("AuthenticationException: ", exception);
         if (exception instanceof BadCredentialsException || exception instanceof InternalAuthenticationServiceException) {
-            // 用户名或密码错误
             ResultUtil.ok(response, Response.fail(ResponseCodeEnum.USERNAME_OR_PWD_ERROR));
+            return;
         }
-
-        // 登录失败
         ResultUtil.ok(response, Response.fail(ResponseCodeEnum.LOGIN_FAIL));
     }
 }

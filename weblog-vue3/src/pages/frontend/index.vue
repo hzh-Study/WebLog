@@ -21,8 +21,18 @@
 
         <div class="front-grid front-grid--full-width-main">
             <main class="front-main-column">
+                <section class="front-card front-card-solid recommend-section">
+                    <div class="front-card-body">
+                        <div class="recommend-section-header">
+                            <div class="front-section-title">Recommended</div>
+                            <h2 class="sidebar-title">为你推荐</h2>
+                        </div>
+                        <RecommendFeed :articles="recommendArticles" @refresh="loadRecommendFeed" />
+                    </div>
+                </section>
+
                 <div v-if="articles.length" class="article-grid">
-                    <article v-for="(article, index) in articles" :key="index" class="front-card front-card-solid front-card-hover article-card">
+                    <article v-for="article in articles" :key="article.id" class="front-card front-card-solid front-card-hover article-card">
                         <a @click="goArticleDetail(article.id)" class="article-cover-link">
                             <img v-if="article.titleImage" class="article-cover" :src="article.titleImage" :alt="article.title">
                             <div v-else class="article-cover article-cover-fallback">
@@ -62,9 +72,10 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M1 5v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H1Zm0 0V2a1 1 0 0 1 1-1h5.443a1 1 0 0 1 .8.4l2.7 3.6H1Z" />
                                     </svg>
-                                    <a @click="goCatagoryArticleListPage(article.category.id, article.category.name)" class="front-link">
+                                    <a v-if="article.category" @click="goCatagoryArticleListPage(article.category.id, article.category.name)" class="front-link">
                                         {{ article.category.name }}
                                     </a>
+                                    <span v-else>未分类</span>
                                 </span>
                             </div>
                         </div>
@@ -104,14 +115,37 @@
 <script setup>
 import Header from '@/layouts/components/Header.vue'
 import Footer from '@/layouts/components/Footer.vue'
+import RecommendFeed from '@/components/RecommendFeed.vue'
 import { useRouter } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { getIndexArticles } from '@/api/frontend/index'
 import { getCategories } from '@/api/frontend/category'
 import { getTags } from '@/api/frontend/tag'
+import { getRecommendFeed } from '@/api/frontend/recommend'
+import { useTracker } from '@/composables/useTracker'
 import store from '@/store'
 
 const router = useRouter()
+const { trackPageView } = useTracker()
+
+const recommendArticles = ref([])
+const recommendPage = ref(1)
+
+function loadRecommendFeed() {
+    getRecommendFeed({ current: recommendPage.value, size: 6 }).then(res => {
+        if (res.success) {
+            recommendArticles.value = res.data || []
+            recommendPage.value = res.current || 1
+        }
+    }).catch(() => {
+        recommendArticles.value = []
+    })
+}
+
+onMounted(() => {
+    loadRecommendFeed()
+    trackPageView('/', document.referrer)
+})
 
 /** 与旧数据兼容：曾用名 hzh / hzh博客 的站点名在页面上显示为 WebLog */
 const displaySiteName = computed(() => {
@@ -153,7 +187,7 @@ function getArticles(currentNo) {
         .then((res) => {
             console.log(res)
             if (res.success == true) {
-                articles.value = res.data
+                articles.value = res.data || []
                 current.value = res.current
                 total.value = res.total
                 size.value = res.size
@@ -277,5 +311,13 @@ a.front-hero-stat-link:hover {
 .article-author-line {
     color: #64748b;
     font-size: 0.95rem;
+}
+
+.recommend-section {
+    margin-bottom: 1.5rem;
+}
+
+.recommend-section-header {
+    margin-bottom: 1rem;
 }
 </style>

@@ -14,6 +14,8 @@ public interface AdminArticleDao {
 
     Page<ArticleDO> queryArticlePageList(Long current, Long size, Date startDate, Date endDate, String searchTitle, Long userId);
 
+    Page<ArticleDO> queryArticlePageList(Long current, Long size, Date startDate, Date endDate, String searchTitle, Long userId, List<Long> articleIds);
+
     int deleteById(Long articleId);
 
     int updateById(ArticleDO articleDO);

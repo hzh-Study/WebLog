@@ -70,6 +70,9 @@ public class ApiOperationLogAspect {
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         // 开始打印请求日志
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
 
         // 获取日志注解的描述信息

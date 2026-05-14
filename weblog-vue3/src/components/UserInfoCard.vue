@@ -71,6 +71,12 @@ const publicArticleCountText = computed(() => {
     return count == null ? '--' : `${count} 篇`
 })
 
+const safeHref = (url) => {
+    if (!url) return '#'
+    if (/^(https?:\/\/)/i.test(url)) return url
+    return '#'
+}
+
 const socialLinks = computed(() => {
     const setting = currentProfile.value || {}
     return [
@@ -79,7 +85,7 @@ const socialLinks = computed(() => {
         { label: 'CSDN', short: 'CS', href: setting.csdnHome },
         { label: 'Gitee', short: 'GT', href: setting.giteeHome },
         { label: '知乎', short: 'ZH', href: setting.zhihuHome },
-    ].filter(item => item.href)
+    ].filter(item => item.href).map(item => ({ ...item, href: safeHref(item.href) }))
 })
 </script>
 

@@ -15,7 +15,13 @@ public class CategoryDO {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
+    private Long parentId;
     private String name;
+    private String code;
+    private Integer level;
+    private Integer sort;
+    private Boolean isSystem;
+    private Integer status;
     private Date createTime;
     private Date updateTime;
     private Boolean isDeleted;

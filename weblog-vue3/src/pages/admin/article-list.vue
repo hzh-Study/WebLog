@@ -22,6 +22,12 @@
                 <el-date-picker v-model="pickDate" type="daterange" range-separator="至" start-placeholder="开始时间"
                     end-placeholder="结束时间" :shortcuts="shortcuts" size="default" @change="datepickerChange" />
             </div>
+            <div class="admin-field">
+                <span class="admin-field-label">文章分类</span>
+                <el-select v-model="filterCategoryId" clearable placeholder="全部分类" size="default" @change="getTableData">
+                    <el-option v-for="cat in flatCategories" :key="cat.value" :label="cat.label" :value="cat.value" />
+                </el-select>
+            </div>
             <div class="admin-filter-actions">
                 <el-button type="primary" :icon="Search" @click="getTableData">查询</el-button>
                 <el-button :icon="RefreshRight" @click="reset">重置</el-button>
@@ -34,7 +40,7 @@
         <div class="admin-table-toolbar">
             <div>
                 <div class="admin-table-title">文章列表</div>
-                <div class="admin-table-desc">发文时只能选择本人创建的分类与标签，与他人数据互不影响。</div>
+                <div class="admin-table-desc">分类与标签由系统统一管理，发文时请从预定义选项中选择。</div>
             </div>
             <el-button type="primary" :icon="Edit" @click="openPublishDialog">写文章</el-button>
         </div>
@@ -71,6 +77,34 @@
                 <template #default="scope">
                     <el-tag v-if="scope.row.visibility === 'PUBLIC'" type="success" size="small" effect="light" class="vis-tag">公开</el-tag>
                     <el-tag v-else type="info" size="small" effect="light" class="vis-tag">私有</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column width="100" align="center">
+                <template #header>
+                    <el-tooltip content="分类" placement="top">
+                        <span class="admin-th-icon" role="text" aria-label="分类列">
+                            <el-icon><FolderOpened /></el-icon>
+                        </span>
+                    </el-tooltip>
+                </template>
+                <template #default="scope">
+                    <span v-if="scope.row.categoryName" class="admin-cell-text">{{ scope.row.categoryName }}</span>
+                    <span v-else class="admin-cell-muted">—</span>
+                </template>
+            </el-table-column>
+            <el-table-column min-width="140" align="center">
+                <template #header>
+                    <el-tooltip content="标签" placement="top">
+                        <span class="admin-th-icon" role="text" aria-label="标签列">
+                            <el-icon><PriceTag /></el-icon>
+                        </span>
+                    </el-tooltip>
+                </template>
+                <template #default="scope">
+                    <div v-if="scope.row.tagNames && scope.row.tagNames.length" class="admin-tag-row">
+                        <el-tag v-for="name in scope.row.tagNames" :key="name" size="small" effect="plain" class="admin-table-tag">{{ name }}</el-tag>
+                    </div>
+                    <span v-else class="admin-cell-muted">—</span>
                 </template>
             </el-table-column>
             <el-table-column width="96" align="center">
@@ -149,7 +183,13 @@
         </template>
         <el-form v-if="isArticlePublishEditorShow" :model="form" ref="publishArticleFormRef" label-position="top" :size="large" :rules="rules" class="admin-form-layout">
             <el-form-item label="标题" prop="title">
-                <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit clearable />
+                <div class="admin-title-row">
+                    <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit clearable class="admin-title-input" />
+                    <el-button type="warning" size="large" @click="openSeoDialog" :loading="seoLoading" :disabled="!form.title.trim() || !form.content.trim()">
+                        <el-icon><TrendCharts /></el-icon>
+                        AI SEO
+                    </el-button>
+                </div>
             </el-form-item>
             <el-form-item label="内容" prop="content">
                 <MdEditor v-model="form.content" @onUploadImg="onUploadImg" editorId="publishArticleEditor" />
@@ -167,16 +207,20 @@
                 <el-input v-model="form.description" :rows="3" type="textarea" placeholder="请输入文章摘要" />
             </el-form-item>
             <el-form-item label="分类" prop="categoryId">
-                <el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large" class="admin-wide-select">
-                    <el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value" />
+                <el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large" class="admin-wide-select" @change="handleCategoryChange" filterable remote reserve-keyword :remote-method="searchCategories" :loading="categorySearchLoading">
+                    <template v-if="!categorySearchActive">
+                        <el-option v-for="cat in flatCategories" :key="cat.value" :label="cat.label" :value="cat.value" />
+                    </template>
+                    <template v-else>
+                        <el-option v-for="cat in categorySearchResults" :key="cat.id" :label="cat.name" :value="cat.id" />
+                    </template>
                 </el-select>
             </el-form-item>
-            <el-form-item label="标签" prop="tags">
-                <!-- 标签选择 -->
-                <el-select v-model="form.tags" multiple filterable remote reserve-keyword placeholder="---请输入---" class="admin-wide-select"
-                    remote-show-suffix :remote-method="remoteMethod" allow-create default-first-option
+            <el-form-item label="标签" prop="tagIds">
+                <el-select v-model="form.tagIds" multiple :multiple-limit="3" filterable remote reserve-keyword placeholder="输入关键字搜索标签（最多3个）" class="admin-wide-select"
+                    :remote-method="searchTags" @visible-change="handleTagDropdownVisible"
                     :loading="tagSelectLoading" size="large">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                    <el-option v-for="item in tagOptions" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
             </el-form-item>
             <el-form-item label="可见性" prop="visibility">
@@ -207,7 +251,13 @@
         </template>
         <el-form v-if="isArticleUpdateEditorShow" :model="form" ref="updateArticleFormRef" label-position="top" :size="large" :rules="rules" class="admin-form-layout">
             <el-form-item label="标题" prop="title">
-                <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit clearable />
+                <div class="admin-title-row">
+                    <el-input v-model="form.title" autocomplete="off" size="large" maxlength="40" show-word-limit clearable class="admin-title-input" />
+                    <el-button type="warning" size="large" @click="openSeoDialog" :loading="seoLoading" :disabled="!form.title.trim() || !form.content.trim()">
+                        <el-icon><TrendCharts /></el-icon>
+                        AI SEO
+                    </el-button>
+                </div>
             </el-form-item>
             <el-form-item label="内容" prop="content">
                 <MdEditor
@@ -230,16 +280,20 @@
                 <el-input v-model="form.description" :rows="3" type="textarea" placeholder="请输入文章摘要" />
             </el-form-item>
             <el-form-item label="分类" prop="categoryId">
-                <el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large" class="admin-wide-select">
-                    <el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value" />
+                <el-select v-model="form.categoryId" clearable placeholder="---请选择---" size="large" class="admin-wide-select" @change="handleCategoryChange" filterable remote reserve-keyword :remote-method="searchCategories" :loading="categorySearchLoading">
+                    <template v-if="!categorySearchActive">
+                        <el-option v-for="cat in flatCategories" :key="cat.value" :label="cat.label" :value="cat.value" />
+                    </template>
+                    <template v-else>
+                        <el-option v-for="cat in categorySearchResults" :key="cat.id" :label="cat.name" :value="cat.id" />
+                    </template>
                 </el-select>
             </el-form-item>
-            <el-form-item label="标签" prop="tags">
-                <!-- 标签选择 -->
-                <el-select v-model="form.tags" multiple filterable remote reserve-keyword placeholder="---请输入---" class="admin-wide-select"
-                    remote-show-suffix :remote-method="remoteMethod" allow-create default-first-option
+            <el-form-item label="标签" prop="tagIds">
+                <el-select v-model="form.tagIds" multiple :multiple-limit="3" filterable remote reserve-keyword placeholder="输入关键字搜索标签（最多3个）" class="admin-wide-select"
+                    :remote-method="searchTags" @visible-change="handleTagDropdownVisible"
                     :loading="tagSelectLoading" size="large">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+                    <el-option v-for="item in tagOptions" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
             </el-form-item>
             <el-form-item label="可见性" prop="visibility">
@@ -253,6 +307,55 @@
 </div>
 
 <ArticleVersionPanel v-model="showVersionPanel" :article-id="versionArticleId" />
+
+<!-- AI SEO 优化弹窗 -->
+<el-dialog v-model="seoDialogVisible" title="AI SEO 优化" width="600px" destroy-on-close>
+    <div v-if="seoLoading" class="seo-loading">
+        <el-icon class="is-loading"><Loading /></el-icon>
+        <span>AI 正在分析文章，请稍候...</span>
+    </div>
+    <div v-else-if="seoResult" class="seo-result">
+        <div class="seo-section">
+            <div class="seo-section-header">
+                <span>优化标题</span>
+                <el-button size="small" type="primary" @click="applySeoTitle">应用到表单</el-button>
+            </div>
+            <div class="seo-section-content">{{ seoResult.optimizedTitle }}</div>
+        </div>
+        <div class="seo-section">
+            <div class="seo-section-header">
+                <span>优化摘要</span>
+                <el-button size="small" type="primary" @click="applySeoDescription">应用到表单</el-button>
+            </div>
+            <div class="seo-section-content">{{ seoResult.optimizedDescription }}</div>
+        </div>
+        <div class="seo-section">
+            <div class="seo-section-header"><span>关键词</span></div>
+            <div class="seo-keywords">
+                <el-tag v-for="kw in seoResult.keywords" :key="kw" class="seo-keyword-tag">{{ kw }}</el-tag>
+            </div>
+        </div>
+        <div class="seo-score-row">
+            <span>标题评分</span>
+            <el-progress :percentage="seoResult.titleScore" :color="seoScoreColor(seoResult.titleScore)" :stroke-width="8" style="flex:1;max-width:200px" />
+            <strong>{{ seoResult.titleScore }} 分</strong>
+        </div>
+        <div v-if="seoResult.titleSuggestion" class="seo-section">
+            <div class="seo-section-header"><span>标题建议</span></div>
+            <div class="seo-section-content seo-suggestion">{{ seoResult.titleSuggestion }}</div>
+        </div>
+    </div>
+    <div v-else class="seo-empty">
+        <span>点击"AI SEO"按钮开始优化</span>
+    </div>
+    <template #footer>
+        <el-button @click="seoDialogVisible = false">关闭</el-button>
+        <el-button type="warning" @click="handleSeoOptimize" :loading="seoLoading" :disabled="!form.title.trim() || !form.content.trim()">
+            <el-icon><TrendCharts /></el-icon>
+            重新优化
+        </el-button>
+    </template>
+</el-dialog>
 </template>
 
 <script setup>
@@ -261,12 +364,12 @@ import { ref, reactive, nextTick, onMounted, onUnmounted } from 'vue'
 // import MDEditor from '@/components/MDEditor.vue'
 import { publishArticle, getArticlePageList, deleteArticle, getArticleDetail, updateArticle } from '@/api/admin/article'
 import { uploadFile } from '@/api/admin/file'
+import { aiSeoOptimize } from '@/api/admin/ai'
 import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { showMessage } from '@/composables/util'
 import { useRouter, useRoute } from 'vue-router'
-import { getCategorySelect } from '@/api/admin/category'
-import { selectTags, getTagSelect } from '@/api/admin/tag'
+import { getCategoryTree, searchTaxonomyTags, getTagsByCategory, searchTaxonomyCategories } from '@/api/admin/taxonomy'
 import moment from 'moment';
 import ArticleVersionPanel from '@/components/ArticleVersionPanel.vue'
 import { resolveAiCover } from '@/constants/ai'
@@ -282,6 +385,10 @@ import {
     Calendar,
     Operation,
     Clock,
+    TrendCharts,
+    Loading,
+    FolderOpened,
+    PriceTag,
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -302,10 +409,10 @@ function openVersionPanel(row) {
 const form = reactive({
     id: null,
     title: '',
-    content: '请输入内容',
+    content: '',
     titleImage: '',
     categoryId: null,
-    tags: [],
+    tagIds: [],
     description: "",
     visibility: 'PUBLIC',
 })
@@ -319,19 +426,26 @@ const articleEditLoading = ref(false)
 
 const searchTitle = ref('')
 const pickDate = ref('')
-const startDate = reactive({})
-const endDate = reactive({})
+const filterCategoryId = ref(null)
+const startDate = ref(null)
+const endDate = ref(null)
 
 const reset = () => {
     pickDate.value = ''
     startDate.value = null
     endDate.value = null
     searchTitle.value = ''
+    filterCategoryId.value = null
     current.value = 1
     getTableData()
 }
 
 const datepickerChange = (e) => {
+    if (!e) {
+        startDate.value = null
+        endDate.value = null
+        return
+    }
     startDate.value = moment(e[0]).format('YYYY-MM-DD HH:mm:ss')
     endDate.value = moment(e[1]).format('YYYY-MM-DD HH:mm:ss')
 }
@@ -388,7 +502,7 @@ const resetArticleForm = () => {
     form.content = ''
     form.titleImage = ''
     form.categoryId = null
-    form.tags = []
+    form.tagIds = []
     form.description = ''
     form.visibility = 'PUBLIC'
 }
@@ -409,62 +523,59 @@ const hideArticleUpdateEditor = () => {
     resetArticleForm()
 }
 
-/**
- * 与 el-option 的 :value 类型一致，否则不显示 label 只显示数字
- */
-const coerceToOptionValue = (val, list) => {
-    if (val == null || val === '') return null
-    if (!list || !list.length) {
-        return typeof val === 'string' && /^\d+$/.test(val) ? Number(val) : val
-    }
-    const t = typeof list[0].value
-    if (t === 'number') return Number(val)
-    if (t === 'string') return String(val)
-    return val
-}
-
-const mergeMissingTagOptions = (ids) => {
-    if (!Array.isArray(ids) || !ids.length) return
-    const list = options.value
-    if (!list || !list.length) return
-    const valueType = typeof list[0].value
-    for (const raw of ids) {
-        if (raw == null || raw === '') continue
-        if (list.some((o) => o.value == raw)) continue
-        const n = Number(raw)
-        const value = valueType === 'string' ? String(raw) : Number.isNaN(n) ? raw : n
-        list.push({ value, label: `未在下拉中(ID:${raw})` })
-    }
+const handleCategoryChange = (categoryId) => {
+    form.tagIds = []
+    loadTagsByCategory(categoryId)
 }
 
 const applyArticleDetailToForm = (d) => {
     if (!d) return
-    const cats = categories.value
-    const tags = options.value
     form.id = d.id
     form.title = d.title ?? ''
     form.content = d.content != null ? String(d.content) : ''
     form.titleImage = d.titleImage ?? ''
     const cid = d.categoryId
-    form.categoryId = cid == null || cid === '' ? null : coerceToOptionValue(cid, cats)
+    form.categoryId = cid == null || cid === '' ? null : Number(cid)
     const raw = d.tagIds
     if (Array.isArray(raw) && raw.length) {
-        form.tags = raw.map((t) => coerceToOptionValue(t, tags))
+        form.tagIds = raw.map((t) => Number(t))
     } else {
-        form.tags = []
+        form.tagIds = []
     }
-    mergeMissingTagOptions(form.tags)
+    if (form.categoryId) {
+        loadTagsByCategory(form.categoryId)
+    }
     form.description = d.description ?? ''
     form.visibility = d.visibility != null && d.visibility !== '' ? d.visibility : 'PUBLIC'
 }
 
 const refreshSelectOptions = async () => {
-    const [c, t] = await Promise.all([getCategorySelect(), getTagSelect()])
-    if (c && c.success && Array.isArray(c.data)) {
-        categories.value = c.data
+    await loadCategoryTree()
+    if (form.categoryId) {
+        await loadTagsByCategory(form.categoryId)
     }
-    if (t && t.success && Array.isArray(t.data)) {
-        options.value = t.data
+}
+
+async function searchCategories(query) {
+    if (!query) {
+        categorySearchActive.value = false
+        categorySearchResults.value = []
+        return
+    }
+    categorySearchLoading.value = true
+    categorySearchActive.value = true
+    try {
+        const res = await searchTaxonomyCategories({ key: query })
+        if (res.success && res.data) {
+            categorySearchResults.value = (res.data || []).map(c => ({
+                id: c.id,
+                name: c.name
+            }))
+        }
+    } catch (e) {
+        console.error('搜索分类失败', e)
+    } finally {
+        categorySearchLoading.value = false
     }
 }
 
@@ -499,20 +610,17 @@ onMounted(() => {
 })
 
 const onUploadImg = async (files, callback) => {
-    const res = await Promise.all(
+    await Promise.all(
         files.map((file) => {
-            return new Promise((rev, rej) => {
-                console.log('==> 开始上传文件...')
-                let formData = new FormData()
-                formData.append("file", file);
-                uploadFile(formData).then((res) => {
-                    console.log(res)
-                    console.log('访问路径：' + res.data.url)
-                    callback([res.data.url]);
-                })
-            });
+            let formData = new FormData()
+            formData.append("file", file)
+            return uploadFile(formData).then((res) => {
+                callback([res.data.url])
+            }).catch((err) => {
+                console.error('文件上传失败:', err)
+            })
         })
-    );
+    )
 }
 
 const previewArticle = (row) => {
@@ -535,7 +643,7 @@ const rules = {
     content: [{ required: true }],
     titleImage: [{ required: true }],
     categoryId: [{ required: true, message: '请选择文章分类', trigger: 'blur' }],
-    tags: [{ required: true, message: '请选择文章标签', trigger: 'blur' }],
+    tagIds: [{ required: true, message: '请选择文章标签', trigger: 'blur' }],
     description: [{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
     visibility: [{ required: true, message: '请选择可见性', trigger: 'change' }],
 }
@@ -556,7 +664,7 @@ const size = ref(10)
 function getTableData() {
     console.log('获取分页数据')
     tableLoading.value = true
-    getArticlePageList({ current: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, searchTitle: searchTitle.value })
+    getArticlePageList({ current: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, searchTitle: searchTitle.value, categoryId: filterCategoryId.value })
         .then((res) => {
             if (res.success == true) {
                 tableData.value = res.data.records
@@ -577,14 +685,15 @@ const handleSizeChange = (e) => {
 }
 
 
+const publishLoading = ref(false)
+
 const onSubmit = () => {
-    console.log('提交内容' + form.content)
     publishArticleFormRef.value.validate((valid) => {
         if (!valid) {
             return false
         }
+        publishLoading.value = true
         publishArticle(form).then((e) => {
-        console.log(e)
         if (e.success == false) {
             var message = e.message
             showMessage(message, 'warning', 'message')
@@ -593,12 +702,15 @@ const onSubmit = () => {
 
         showMessage('发布成功', 'success', 'message')
         isArticlePublishEditorShow.value = false
-        location.reload()
+        getTableData()
+    }).catch(() => {
+        showMessage('发布失败，请重试', 'error', 'message')
+    }).finally(() => {
+        publishLoading.value = false
     })
     })
 }
 
-/** 后端 UpdateArticleReqVO.tags 为 List<String>，且业务里用标签 ID 的字符串与名称区分 */
 const buildUpdatePayload = () => ({
     id: form.id != null ? Number(form.id) : null,
     title: form.title,
@@ -606,7 +718,7 @@ const buildUpdatePayload = () => ({
     titleImage: form.titleImage,
     description: form.description,
     categoryId: form.categoryId != null ? Number(form.categoryId) : null,
-    tags: Array.isArray(form.tags) ? form.tags.map((t) => String(t)) : [],
+    tagIds: Array.isArray(form.tagIds) ? form.tagIds.map((t) => Number(t)) : [],
     visibility: form.visibility,
 })
 
@@ -672,40 +784,168 @@ const deleteArticleSubmit = (row) => {
         })
 }
 
-// 文章分类
-const categories = ref([])
-getCategorySelect().then((e) => {
-    console.log('获取分类数据')
-    console.log(e)
-    categories.value = e.data
-})
-
-// 文章标签
+const categoryTree = ref([])
+const flatCategories = ref([])
+const tagOptions = ref([])
 const tagSelectLoading = ref(false)
-const options = ref([])
-getTagSelect().then((e) => {
-    console.log('获取标签数据')
-    console.log(e)
-    options.value = e.data
-})
+const categorySearchLoading = ref(false)
+const categorySearchActive = ref(false)
+const categorySearchResults = ref([])
 
-const remoteMethod = (query) => {
-    console.log('远程搜索')
-    console.log(options.value)
-    if (query) {
-        tagSelectLoading.value = true
-        setTimeout(() => {
-            tagSelectLoading.value = false
-            selectTags(query).then((e) => {
-                if (e.success) {
-                    options.value = e.data
-                }
-            })
-            //   options.value = list.value.filter((item) => {
-            //     return item.label.toLowerCase().includes(query.toLowerCase())
-            //   })
-        }, 200)
+async function loadCategoryTree() {
+    try {
+        const res = await getCategoryTree()
+        if (res.success && res.data) {
+            categoryTree.value = res.data
+            flatCategories.value = flattenCategoryTree(res.data)
+        }
+    } catch (e) {
+        console.error('加载分类树失败', e)
     }
+}
+
+function flattenCategoryTree(tree) {
+    let result = []
+    for (const node of tree) {
+        if (node.children && node.children.length > 0) {
+            for (const child of node.children) {
+                result.push({
+                    value: child.id,
+                    label: child.name,
+                    parentLabel: node.name,
+                    group: node.name
+                })
+            }
+        } else {
+            result.push({
+                value: node.id,
+                label: node.name,
+                parentLabel: null,
+                group: null
+            })
+        }
+    }
+    return result
+}
+
+async function loadTagsByCategory(categoryId) {
+    tagSelectLoading.value = true
+    try {
+        if (categoryId) {
+            const res = await getTagsByCategory({ categoryId, current: 1, size: 200 })
+            if (res.success && res.data) {
+                tagOptions.value = (res.data.records || res.data || []).map(t => ({
+                    value: t.id,
+                    label: t.name,
+                    categoryId: t.categoryId,
+                    categoryName: t.categoryName
+                }))
+            }
+        } else {
+            const res = await searchTaxonomyTags({ key: '' })
+            if (res.success && res.data) {
+                tagOptions.value = (res.data || []).map(t => ({
+                    value: t.id,
+                    label: t.name,
+                    categoryId: t.categoryId,
+                    categoryName: t.categoryName
+                }))
+            }
+        }
+    } catch (e) {
+        console.error('加载标签失败', e)
+    } finally {
+        tagSelectLoading.value = false
+    }
+}
+
+async function searchTags(query) {
+    tagSelectLoading.value = true
+    try {
+        const res = await searchTaxonomyTags({ key: query || '' })
+        if (res.success && res.data) {
+            tagOptions.value = (res.data || []).map(t => ({
+                value: t.id,
+                label: t.name,
+                categoryId: t.categoryId,
+                categoryName: t.categoryName
+            }))
+        }
+    } catch (e) {
+        console.error('搜索标签失败', e)
+    } finally {
+        tagSelectLoading.value = false
+    }
+}
+
+const handleTagDropdownVisible = (visible) => {
+    if (visible && tagOptions.value.length === 0) {
+        loadTagsByCategory(form.categoryId || null)
+    }
+}
+
+loadCategoryTree()
+
+// ===== AI SEO 优化 =====
+const seoDialogVisible = ref(false)
+const seoLoading = ref(false)
+const seoResult = ref(null)
+
+function openSeoDialog() {
+    if (!form.title.trim() || !form.content.trim()) {
+        showMessage('请先输入标题和内容', 'warning')
+        return
+    }
+    seoResult.value = null
+    seoDialogVisible.value = true
+    handleSeoOptimize()
+}
+
+async function handleSeoOptimize() {
+    if (!form.title.trim() || !form.content.trim()) {
+        showMessage('标题和内容不能为空', 'warning')
+        return
+    }
+    seoLoading.value = true
+    seoResult.value = null
+    try {
+        const res = await aiSeoOptimize({
+            title: form.title.trim(),
+            content: form.content.trim(),
+            currentDescription: form.description.trim() || null
+        }, { timeout: 120000 })
+        if (res.success) {
+            seoResult.value = res.data
+            showMessage('SEO 优化完成', 'success')
+        } else {
+            showMessage(res.message || 'SEO 优化失败', 'error')
+        }
+    } catch (e) {
+        console.error('SEO 优化失败', e)
+        showMessage('SEO 优化失败，请稍后重试', 'error')
+    } finally {
+        seoLoading.value = false
+    }
+}
+
+function applySeoTitle() {
+    if (seoResult.value && seoResult.value.optimizedTitle) {
+        form.title = seoResult.value.optimizedTitle
+        showMessage('标题已应用', 'success')
+    }
+}
+
+function applySeoDescription() {
+    if (seoResult.value && seoResult.value.optimizedDescription) {
+        form.description = seoResult.value.optimizedDescription
+        showMessage('摘要已应用', 'success')
+    }
+}
+
+function seoScoreColor(score) {
+    if (score >= 80) return '#22c55e'
+    if (score >= 60) return '#f59e0b'
+    return '#ef4444'
 }
 </script>
 
@@ -794,6 +1034,114 @@ const remoteMethod = (query) => {
 .admin-wide-select {
     width: 100%;
     max-width: 640px;
+}
+
+.admin-title-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 640px;
+}
+
+.admin-title-input {
+    flex: 1;
+}
+
+.seo-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 40px 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.seo-result {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.seo-section {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.seo-section:last-child {
+    border-bottom: none;
+}
+
+.seo-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.seo-section-content {
+    padding: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #334155;
+}
+
+.seo-suggestion {
+    color: #64748b;
+    font-style: italic;
+}
+
+.seo-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 12px;
+}
+
+.seo-keyword-tag {
+    font-size: 13px;
+}
+
+.seo-score-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    font-size: 13px;
+    color: #475569;
+}
+
+.seo-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.admin-cell-text {
+    font-size: 13px;
+    color: #334155;
+}
+
+.admin-cell-muted {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.admin-tag-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.admin-table-tag {
+    font-size: 12px;
 }
 </style>
 

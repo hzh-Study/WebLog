@@ -1,5 +1,6 @@
 package com.quanxiaoha.weblog.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quanxiaoha.weblog.admin.dao.AdminTagDao;
@@ -25,6 +26,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -53,20 +55,35 @@ public class AdminTagServiceImpl extends ServiceImpl<TagMapper, TagDO> implement
 
     @Override
     public Response addTags(AddTagReqVO addTagReqVO) {
-        Long uid = getCurrentUser().getId();
-        List<TagDO> tags = addTagReqVO.getTags().stream()
-                .map(tagName -> TagDO.builder()
-                        .userId(uid)
-                        .name(tagName.trim())
-                        .createTime(new Date())
-                        .updateTime(new Date())
-                        .isDeleted(false)
-                        .build()).collect(Collectors.toList());
-        try {
-            saveBatch(tags);
-        } catch (DuplicateKeyException e) {
-            log.error("==> 含有重复标签名", e);
-            return Response.fail(String.format("%s: %s", ResponseCodeEnum.DUPLICATE_TAG_ERROR.getErrorMessage(), e.getMessage()));
+        List<String> tagNames = addTagReqVO.getTags();
+        if (CollectionUtils.isEmpty(tagNames)) {
+            return Response.fail("标签名称不能为空");
+        }
+        UserDO currentUser = getCurrentUser();
+        int addedCount = 0;
+
+        for (String tagName : tagNames) {
+            QueryWrapper<TagDO> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(TagDO::getUserId, currentUser.getId()).eq(TagDO::getName, tagName).eq(TagDO::getIsDeleted, 0);
+            long count = count(wrapper);
+            if (count > 0) {
+                continue;
+            }
+
+            TagDO tagDO = TagDO.builder()
+                    .userId(currentUser.getId())
+                    .name(tagName)
+                    .code(tagName.toLowerCase().replaceAll("[^a-z0-9]+", "-"))
+                    .sort(0)
+                    .isSystem(false)
+                    .status(1)
+                    .isDeleted(false)
+                    .build();
+            save(tagDO);
+            addedCount++;
+        }
+        if (addedCount == 0) {
+            return Response.fail("所选标签已全部存在");
         }
         return Response.success();
     }
@@ -78,8 +95,15 @@ public class AdminTagServiceImpl extends ServiceImpl<TagMapper, TagDO> implement
         Date startDate = queryTagPageListReqVO.getStartDate();
         Date endDate = queryTagPageListReqVO.getEndDate();
         String tagName = queryTagPageListReqVO.getTagName();
-        Long uid = getCurrentUser().getId();
-        Page<TagDO> tagDOPage = tagDao.queryTagPageList(current, size, startDate, endDate, tagName, uid);
+        boolean isLibrary = Boolean.TRUE.equals(queryTagPageListReqVO.getLibrary());
+
+        Page<TagDO> tagDOPage;
+        if (isLibrary) {
+            tagDOPage = tagDao.queryTagLibraryPageList(current, size, startDate, endDate, tagName);
+        } else {
+            Long uid = getCurrentUser().getId();
+            tagDOPage = tagDao.queryTagPageList(current, size, startDate, endDate, tagName, uid);
+        }
 
         return Response.success(tagDOPage);
     }

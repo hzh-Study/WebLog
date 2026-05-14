@@ -57,22 +57,29 @@ public class AdminCategoryServiceImpl extends ServiceImpl<CategoryMapper, Catego
 
     @Override
     public Response addCategory(AddCategoryReqVO addCategoryReqVO) {
-        String categoryName = addCategoryReqVO.getName();
-        try {
-            CategoryDO categoryDO = CategoryDO.builder()
-                    .userId(getCurrentUser().getId())
-                    .name(categoryName.trim())
-                    .createTime(new Date())
-                    .updateTime(new Date())
-                    .isDeleted(false)
-                    .build();
-            save(categoryDO);
-            return Response.success();
-        } catch (DuplicateKeyException e) {
-            log.error("==> 该分类已经存在：{}", categoryName, e);
-            return Response.fail(ResponseCodeEnum.DUPLICATE_CATEGORY_ERROR);
+        String name = addCategoryReqVO.getName();
+        UserDO currentUser = getCurrentUser();
+
+        QueryWrapper<CategoryDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(CategoryDO::getUserId, currentUser.getId()).eq(CategoryDO::getName, name).eq(CategoryDO::getIsDeleted, 0);
+        long count = count(wrapper);
+        if (count > 0) {
+            return Response.fail("该分类已存在");
         }
 
+        CategoryDO categoryDO = CategoryDO.builder()
+                .userId(currentUser.getId())
+                .parentId(0L)
+                .name(name)
+                .code(name.toLowerCase().replaceAll("[^a-z0-9]+", "-"))
+                .level(1)
+                .sort(0)
+                .isSystem(false)
+                .status(1)
+                .isDeleted(false)
+                .build();
+        save(categoryDO);
+        return Response.success();
     }
 
     @Override
@@ -85,9 +92,10 @@ public class AdminCategoryServiceImpl extends ServiceImpl<CategoryMapper, Catego
         String categoryName = queryCategoryPageListReqVO.getCategoryName();
         Date startDate = queryCategoryPageListReqVO.getStartDate();
         Date endDate = queryCategoryPageListReqVO.getEndDate();
-        Long userId = getCurrentUser().getId();
+        boolean isLibrary = Boolean.TRUE.equals(queryCategoryPageListReqVO.getLibrary());
         wrapper.lambda()
-                .eq(CategoryDO::getUserId, userId)
+                .eq(isLibrary, CategoryDO::getIsSystem, true)
+                .eq(!isLibrary, CategoryDO::getUserId, getCurrentUser().getId())
                 .eq(CategoryDO::getIsDeleted, 0)
                 .like(Objects.nonNull(categoryName), CategoryDO::getName, categoryName)
                 .ge(Objects.nonNull(startDate), CategoryDO::getCreateTime, startDate)

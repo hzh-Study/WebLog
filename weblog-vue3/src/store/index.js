@@ -48,8 +48,7 @@ const store = createStore({
         getBlogSetting({ commit }) {
             return new Promise((resolve, reject) => {
                 getBlogSettingDetail().then(res => {
-                    commit('SET_BLOG_SETTING', res.data)
-                    // 固定使用格式
+                    commit('SET_BLOG_SETTING', res.data || {})
                     resolve(res.data)
                 }).catch(err => {
                     console.log('获取博客设置信息失败')
@@ -59,8 +58,8 @@ const store = createStore({
         },
         logout({ commit }) {
             removeToken()
-            // 删除当前全局的 user 状态
             commit('SET_USERINFO', {})
+            commit('SET_BLOG_SETTING', {})
         }
     }
 })

@@ -61,6 +61,12 @@ const routes = [
             meta: {
                 title: 'AI 工作台'
             }
+        }, {
+            path: '/admin/recommend/setting',
+            component: () => import('@/pages/admin/recommend-setting.vue'),
+            meta: {
+                title: '推荐管理'
+            }
         }]
 
     },

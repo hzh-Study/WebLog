@@ -18,4 +18,5 @@ public class QueryTagPageListReqVO {
     private Date startDate;
     private Date endDate;
     private String tagName;
+    private Boolean library = false;
 }

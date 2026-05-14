@@ -122,7 +122,7 @@ public class AdminArticleVersionServiceImpl implements AdminArticleVersionServic
 
         boolean isExecuteSuccess = transactionTemplate.execute(status -> {
             Integer currentMaxVersionNum = adminArticleVersionDao.selectMaxVersionNum(articleId);
-            Integer snapshotVersionNum = currentMaxVersionNum + 1;
+            Integer snapshotVersionNum = (currentMaxVersionNum != null ? currentMaxVersionNum : 0) + 1;
 
             ArticleVersionDO snapshot = ArticleVersionDO.builder()
                     .articleId(articleId)

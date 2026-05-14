@@ -67,6 +67,7 @@ public class ArchiveServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
                         }
                         return item;
                     })
+                    .filter(item -> item.getCreateMonth() != null)
                     .collect(Collectors.toList());
 
             Map<String, List<QueryArchiveItemRspVO>> map = itemRspVOList.stream().collect(Collectors.groupingBy(QueryArchiveItemRspVO::getCreateMonth));

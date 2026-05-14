@@ -13,6 +13,8 @@ import java.util.List;
 @Builder
 public class AiRecommendCategoryRspVO {
     private List<String> categories;
+    private List<AiRecommendTaxonomyCategoryItemRspVO> suggestions;
+    private List<String> unmatchedTerms;
     private Long estimatedTokens;
     private Long actualTokens;
 }

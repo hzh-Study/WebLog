@@ -10,7 +10,7 @@ export function getToken() {
 
 // 设置 Token
 export function setToken(token) {
-    return cookie.set(TOKEN_KEY, token)
+    return cookie.set(TOKEN_KEY, token, { sameSite: 'Lax', secure: window.location.protocol === 'https:' })
 }
 
 // 删除 Token

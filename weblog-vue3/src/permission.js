@@ -9,23 +9,20 @@ import { showPageLoading, hidePageLoading } from '@/composables/util'
 router.beforeEach(async (to, from, next) => {
     console.log('全局前置守卫 >>>>')
     showPageLoading()
-    // if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
-    // else next()
-
-    
 
     const token = getToken()
 
     try {
-        // 如果用户已登录，则自动获取用户信息，并使用全局状态管理
         if (token) {
-            console.log('获取登录用户信息。。。。')
-            await store.dispatch('getAdminInfo')
+            if (!store.state.user || !store.state.user.username) {
+                await store.dispatch('getAdminInfo')
+            }
         }
 
-        // 前台请求逻辑处理
         if (!to.path.startsWith('/admin')) {
-            await store.dispatch('getBlogSetting')
+            if (!store.state.setting || !store.state.setting.author) {
+                await store.dispatch('getBlogSetting')
+            }
             next()
             return
         }

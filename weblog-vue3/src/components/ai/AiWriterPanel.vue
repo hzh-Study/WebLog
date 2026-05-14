@@ -28,7 +28,7 @@
                     clearable
                     style="width:100%"
                 >
-                    <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.name" />
+                    <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
                 </el-select>
             </el-form-item>
             <el-form-item label="文章标签（可选）">
@@ -41,7 +41,7 @@
                     collapse-tags-tooltip
                     style="width:100%"
                 >
-                    <el-option v-for="tag in presetTags" :key="tag" :label="tag" :value="tag" />
+                    <el-option v-for="tag in presetTags" :key="tag.id" :label="tag.name" :value="tag.id" />
                 </el-select>
             </el-form-item>
         </el-form>
@@ -83,10 +83,6 @@
                         <el-icon><Promotion /></el-icon>
                         保存为文章
                     </el-button>
-                    <el-button size="small" type="warning" @click="$emit('save', 'PRIVATE')">
-                        <el-icon><Edit /></el-icon>
-                        保存为草稿
-                    </el-button>
                 </slot>
             </div>
         </div>
@@ -99,7 +95,7 @@ import { computed } from 'vue'
 const props = defineProps({
     prompt: { type: String, default: '' },
     title: { type: String, default: '' },
-    category: { type: String, default: '' },
+    category: { type: Number, default: null },
     tags: { type: Array, default: () => [] },
     categories: { type: Array, default: () => [] },
     presetTags: { type: Array, default: () => [] },

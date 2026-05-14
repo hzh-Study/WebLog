@@ -25,6 +25,7 @@ import java.util.Objects;
  * @version: v1.0.0
  * @description: JWT 工具类
  **/
+@Slf4j
 @Component
 public class JwtTokenHelper implements InitializingBean {
 
@@ -89,10 +90,9 @@ public class JwtTokenHelper implements InitializingBean {
     public String getUsernameByToken(String token) {
         try {
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
-            String username = claims.getSubject();
-            return username;
+            return claims.getSubject();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Failed to get username from token: {}", e.getMessage());
         }
         return null;
     }
@@ -102,9 +102,11 @@ public class JwtTokenHelper implements InitializingBean {
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
             Date expiration = claims.getExpiration();
             return expiration.before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            log.warn("Token parse error, treating as expired: {}", e.getMessage());
+            return true;
         }
     }
 

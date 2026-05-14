@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { likeArticle, favoriteArticle } from '@/api/frontend/article'
 import { ElMessage } from 'element-plus'
 
@@ -66,6 +66,11 @@ const localLikeNum = ref(props.likeNum)
 const localFavorited = ref(props.favorited)
 const localFavoriteNum = ref(props.favoriteNum)
 
+watch(() => props.liked, (v) => { localLiked.value = v })
+watch(() => props.likeNum, (v) => { localLikeNum.value = v })
+watch(() => props.favorited, (v) => { localFavorited.value = v })
+watch(() => props.favoriteNum, (v) => { localFavoriteNum.value = v })
+
 const handleLike = async () => {
   try {
     const res = await likeArticle(props.articleId)
@@ -93,9 +98,21 @@ const handleFavorite = async () => {
   }
 }
 
-const copyLink = () => {
-  navigator.clipboard.writeText(window.location.href)
-  ElMessage.success('链接已复制')
+const copyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    ElMessage.success('链接已复制')
+  } catch {
+    const textarea = document.createElement('textarea')
+    textarea.value = window.location.href
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textarea)
+    ElMessage.success('链接已复制')
+  }
 }
 
 const shareWeibo = () => {

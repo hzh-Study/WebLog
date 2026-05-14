@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,5 +41,13 @@ public class AdminCategoryDaoImpl implements AdminCategoryDao {
                 .eq(CategoryDO::getUserId, userId)
                 .eq(CategoryDO::getIsDeleted, 0);
         return categoryMapper.selectCount(wrapper);
+    }
+
+    @Override
+    public List<CategoryDO> selectBatchIds(Collection<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return categoryMapper.selectBatchIds(ids);
     }
 }

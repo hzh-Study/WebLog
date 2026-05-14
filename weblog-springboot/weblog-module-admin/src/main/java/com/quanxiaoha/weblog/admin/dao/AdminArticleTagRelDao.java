@@ -9,5 +9,7 @@ public interface AdminArticleTagRelDao {
 
     List<ArticleTagRelDO> selectByArticleId(Long articleId);
 
+    List<ArticleTagRelDO> selectByArticleIds(List<Long> articleIds);
+
     int deleteByArticleId(Long articleId);
 }

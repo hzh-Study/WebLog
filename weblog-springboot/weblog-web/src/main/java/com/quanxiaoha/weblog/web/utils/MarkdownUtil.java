@@ -181,8 +181,7 @@ public class MarkdownUtil {
 
                 mutableAttributes.replaceValue("target", "_blank");
                 String href = mutableAttributes.getValue("href");
-                // 对于 md 文档中不包含本站域名的，设置 nofollow
-                if (!href.contains(SITE_NAME)) {
+                if (href == null || !href.contains(SITE_NAME)) {
                     // Put info in custom attribute instead
                     mutableAttributes.replaceValue("rel", "nofollow");
                 }
@@ -202,7 +201,7 @@ public class MarkdownUtil {
             return renderer.render(document);
         } catch (Exception e) {
             log.error("markdown parse to html exception: ", e);
-            return null;
+            return "";
         }
     }
 

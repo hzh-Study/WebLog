@@ -9,49 +9,63 @@
                     </div>
                 </div>
             </template>
-            <!-- card body -->
-            <div id="pvChart" class="dashboard-chart">
-
-            </div>
+            <div ref="chartRef" class="dashboard-chart"></div>
         </el-card>
-
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
 import { getDashboardPVStatisticsInfo } from '@/api/admin/dashboard'
 
-getDashboardPVStatisticsInfo().then((e) => {
-    var chartDom = document.getElementById('pvChart');
-    var myChart = echarts.init(chartDom);
-    var option;
+const chartRef = ref(null)
+let chartInstance = null
 
-    
-    if (e.success) {
-        var date = e.data.pvDates || []
-        var data = (e.data.pvCounts && e.data.pvCounts.length) ? e.data.pvCounts : new Array(date.length).fill(0)
+const handleResize = () => {
+    if (chartInstance) {
+        chartInstance.resize()
+    }
+}
 
-        option = {
-            xAxis: {
-                type: 'category',
-                data: date
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    data: data,
-                    type: 'line'
-                }
-            ]
-        };
+onMounted(async () => {
+    try {
+        const e = await getDashboardPVStatisticsInfo()
+        if (e.success && chartRef.value) {
+            chartInstance = echarts.init(chartRef.value)
 
-        option && myChart.setOption(option);
+            const date = e.data.pvDates || []
+            const data = (e.data.pvCounts && e.data.pvCounts.length) ? e.data.pvCounts : new Array(date.length).fill(0)
+
+            const option = {
+                xAxis: {
+                    type: 'category',
+                    data: date
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: data,
+                        type: 'line'
+                    }
+                ]
+            }
+
+            chartInstance.setOption(option)
+            window.addEventListener('resize', handleResize)
+        }
+    } catch (err) {
+        console.error('PV统计数据加载失败:', err)
     }
 })
 
-
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize)
+    if (chartInstance) {
+        chartInstance.dispose()
+        chartInstance = null
+    }
+})
 </script>

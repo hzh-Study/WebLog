@@ -5,7 +5,7 @@ import com.quanxiaoha.weblog.jwt.RestAccessDeniedHandler;
 import com.quanxiaoha.weblog.jwt.RestAuthenticationEntryPoint;
 import com.quanxiaoha.weblog.jwt.TokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @version: v1.0.0
  * @description: TODO
  **/
-@Configurable
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -43,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // .addFilterAt(jwtAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                 .csrf().disable()
             .authorizeRequests()
-                .mvcMatchers("/login", "/register").permitAll()
+                .mvcMatchers("/login", "/user/register").permitAll()
+                .mvcMatchers("/recommend/**").permitAll()
                 .mvcMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
             .and()

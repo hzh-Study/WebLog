@@ -136,29 +136,6 @@
                                                         {{ cat.name }}
                                                     </button>
                                                 </div>
-                                                <div class="ai-category-custom">
-                                                    <div class="ai-custom-input-wrap">
-                                                        <input
-                                                            v-model="customCategory"
-                                                            type="text"
-                                                            class="ai-form-input ai-custom-input"
-                                                            :class="{ 'ai-input-error': validation.category }"
-                                                            placeholder="或输入自定义分类..."
-                                                            maxlength="10"
-                                                            @keyup.enter="addCustomCategory"
-                                                            @input="clearFieldError('category')"
-                                                        />
-                                                        <button
-                                                            class="ai-custom-add-btn"
-                                                            :disabled="!customCategory.trim()"
-                                                            @click="addCustomCategory"
-                                                        >
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <Transition name="field-error">
                                                 <p v-if="validation.category" class="ai-field-error">{{ validation.category }}</p>
@@ -175,11 +152,11 @@
                                                     <TransitionGroup name="tag-item">
                                                         <span
                                                             v-for="tag in selectedTags"
-                                                            :key="tag"
+                                                            :key="tag.id"
                                                             class="ai-tag-selected-chip"
                                                         >
-                                                            {{ tag }}
-                                                            <button class="ai-tag-remove" @click="removeTag(tag)">
+                                                            {{ tag.name }}
+                                                            <button class="ai-tag-remove" @click="removeTag(tag.id)">
                                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                                                                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                                                                 </svg>
@@ -193,35 +170,24 @@
                                                             v-model="tagInput"
                                                             type="text"
                                                             class="ai-form-input ai-tag-input"
-                                                            :placeholder="selectedTags.length >= 5 ? '已达到标签上限（5个）' : '输入标签名称，回车添加...'"
+                                                            :placeholder="selectedTags.length >= 5 ? '已达到标签上限（5个）' : '输入关键词搜索标签...'"
                                                             :disabled="selectedTags.length >= 5"
-                                                            maxlength="20"
-                                                            @keyup.enter="addTagFromInput"
-                                                            @input="filterPresetTags"
+                                                            @input="handleTagSearch"
                                                         />
-                                                        <button
-                                                            v-if="tagInput.trim() && selectedTags.length < 5"
-                                                            class="ai-tag-add-btn"
-                                                            @click="addTagFromInput"
-                                                        >
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                                                            </svg>
-                                                        </button>
                                                     </div>
                                                     <Transition name="tag-suggest">
-                                                        <div v-if="tagInput.trim() && filteredPresetTags.length > 0 && selectedTags.length < 5" class="ai-tag-suggestions">
+                                                        <div v-if="tagSearchResults.length > 0 && selectedTags.length < 5" class="ai-tag-suggestions">
                                                             <button
-                                                                v-for="tag in filteredPresetTags"
-                                                                :key="tag"
+                                                                v-for="tag in tagSearchResults"
+                                                                :key="tag.id"
                                                                 class="ai-tag-suggest-item"
-                                                                @click="selectPresetTag(tag)"
+                                                                @click="selectTag(tag)"
                                                             >
                                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ai-tag-suggest-icon">
                                                                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
                                                                     <line x1="7" y1="7" x2="7.01" y2="7"/>
                                                                 </svg>
-                                                                {{ tag }}
+                                                                {{ tag.name }}
                                                             </button>
                                                         </div>
                                                     </Transition>
@@ -230,13 +196,13 @@
                                                     <span class="ai-tag-presets-label">常用标签：</span>
                                                     <button
                                                         v-for="tag in presetTags"
-                                                        :key="tag"
+                                                        :key="tag.id"
                                                         class="ai-tag-preset-chip"
-                                                        :class="{ 'ai-tag-preset-disabled': selectedTags.includes(tag) || selectedTags.length >= 5 }"
-                                                        :disabled="selectedTags.includes(tag) || selectedTags.length >= 5"
-                                                        @click="selectPresetTag(tag)"
+                                                        :class="{ 'ai-tag-preset-disabled': selectedTagIds.includes(tag.id) || selectedTags.length >= 5 }"
+                                                        :disabled="selectedTagIds.includes(tag.id) || selectedTags.length >= 5"
+                                                        @click="selectTag(tag)"
                                                     >
-                                                        {{ tag }}
+                                                        {{ tag.name }}
                                                     </button>
                                                 </div>
                                             </div>
@@ -362,8 +328,7 @@
 import { ref, reactive, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { showMessage } from '@/composables/util'
 import { generateArticle, estimateTokens, getAiQuota } from '@/api/admin/ai'
-import { getTagSelect } from '@/api/admin/tag'
-import { getCategorySelect } from '@/api/admin/category'
+import { getCategoryTree, searchTaxonomyTags } from '@/api/admin/taxonomy'
 import { publishArticle } from '@/api/admin/article'
 import { uploadFile } from '@/api/admin/file'
 import { resolveAiCover } from '@/constants/ai'
@@ -381,19 +346,16 @@ const titleInputRef = ref(null)
 const form = reactive({
     title: '',
     categoryId: null,
-    categoryName: '',
     aiPrompt: '',
     titleImage: ''
 })
 
 const selectedTags = ref([])
 const tagInput = ref('')
-const customCategory = ref('')
 
 const presetCategories = ref([])
 const presetTags = ref([])
-const filteredPresetTags = ref([])
-const customCategories = ref([])
+const tagSearchResults = ref([])
 
 const generatedContent = ref('')
 const generatedTitle = ref('')
@@ -424,17 +386,17 @@ const validation = reactive({
 })
 
 let estimateTimer = null
-
-const TAG_REGEX = /^[\u4e00-\u9fa5a-zA-Z0-9\s\+\-\.#&]{1,20}$/
-const CATEGORY_REGEX = /^[\u4e00-\u9fa5a-zA-Z0-9\s\+\-\.#&]{1,10}$/
+let tagSearchTimer = null
 
 const canGenerate = computed(() => {
     return form.aiPrompt.trim().length > 0 && !aiGenerating.value
 })
 
+const selectedTagIds = computed(() => selectedTags.value.map(t => t.id))
+
 const isFormValid = computed(() => {
     return form.title.trim().length > 0
-        && (form.categoryId || form.categoryName)
+        && form.categoryId
         && selectedTags.value.length >= 3
         && selectedTags.value.length <= 5
         && generatedContent.value.length > 0
@@ -448,8 +410,8 @@ const footerErrors = computed(() => {
     if (!form.title.trim()) {
         errors.push('请输入文章标题')
     }
-    if (!form.categoryId && !form.categoryName) {
-        errors.push('请选择或输入文章分类')
+    if (!form.categoryId) {
+        errors.push('请选择文章分类')
     }
     if (selectedTags.value.length < 3) {
         errors.push(`请至少选择3个标签（当前${selectedTags.value.length}个）`)
@@ -559,17 +521,27 @@ function removeImage() {
 
 async function loadPresetData() {
     try {
-        const [tagRes, catRes] = await Promise.all([
-            getTagSelect(),
-            getCategorySelect()
+        const [catRes, tagRes] = await Promise.all([
+            getCategoryTree(),
+            searchTaxonomyTags({ key: '' })
         ])
-        if (tagRes.success && tagRes.data) {
-            presetTags.value = (tagRes.data || []).map(t => t.label || t.name || t).slice(0, 20)
-        }
         if (catRes.success && catRes.data) {
-            presetCategories.value = (catRes.data || []).map(c => ({
-                id: c.value || c.id,
-                name: c.label || c.name
+            const tree = catRes.data
+            let allCategories = []
+            for (const parent of tree) {
+                allCategories.push({ id: parent.id, name: parent.name })
+                if (parent.children) {
+                    for (const child of parent.children) {
+                        allCategories.push({ id: child.id, name: child.name })
+                    }
+                }
+            }
+            presetCategories.value = allCategories.slice(0, 50)
+        }
+        if (tagRes.success && tagRes.data) {
+            presetTags.value = (tagRes.data || []).map(t => ({
+                id: t.id,
+                name: t.name
             })).slice(0, 20)
         }
     } catch (e) {
@@ -605,16 +577,15 @@ function handleOverlayClick() {
 function resetForm() {
     form.title = ''
     form.categoryId = null
-    form.categoryName = ''
     form.aiPrompt = ''
     form.titleImage = ''
     selectedTags.value = []
     tagInput.value = ''
-    customCategory.value = ''
     generatedContent.value = ''
     generatedTitle.value = ''
     generatedTokens.value = 0
     tokenEstimate.value = 0
+    tagSearchResults.value = []
     clearAllErrors()
 }
 
@@ -631,77 +602,49 @@ function clearFieldError(field) {
 
 function selectCategory(cat) {
     form.categoryId = cat.id
-    form.categoryName = cat.name
-    customCategory.value = ''
     clearFieldError('category')
 }
 
-function addCustomCategory() {
-    const name = customCategory.value.trim()
-    if (!name) return
-    if (!CATEGORY_REGEX.test(name)) {
-        showMessage('分类名称包含无效字符', 'warning')
+function handleTagSearch() {
+    const keyword = tagInput.value.trim()
+    if (tagSearchTimer) clearTimeout(tagSearchTimer)
+    if (!keyword) {
+        tagSearchResults.value = []
         return
     }
-    form.categoryId = null
-    form.categoryName = name
-    customCategory.value = ''
-    clearFieldError('category')
-    if (!customCategories.value.find(c => c.name === name)) {
-        customCategories.value.push({ id: null, name })
-    }
+    tagSearchTimer = setTimeout(async () => {
+        try {
+            const res = await searchTaxonomyTags({ key: keyword })
+            if (res.success && res.data) {
+                tagSearchResults.value = (res.data || [])
+                    .filter(t => !selectedTagIds.value.includes(t.id))
+                    .map(t => ({ id: t.id, name: t.name }))
+                    .slice(0, 8)
+            }
+        } catch (e) {
+            console.error('搜索标签失败', e)
+        }
+    }, 300)
 }
 
-function addTagFromInput() {
-    const name = tagInput.value.trim()
-    if (!name) return
+function selectTag(tag) {
     if (selectedTags.value.length >= 5) {
         showMessage('标签数量已达上限（5个）', 'warning')
         return
     }
-    if (!TAG_REGEX.test(name)) {
-        showMessage('标签名称包含无效字符', 'warning')
-        return
-    }
-    if (selectedTags.value.includes(name)) {
-        showMessage('该标签已选择', 'warning')
-        return
-    }
-    selectedTags.value.push(name)
+    if (selectedTagIds.value.includes(tag.id)) return
+    selectedTags.value.push({ id: tag.id, name: tag.name })
     tagInput.value = ''
-    filteredPresetTags.value = []
+    tagSearchResults.value = []
     clearFieldError('tags')
 }
 
-function selectPresetTag(tag) {
-    if (selectedTags.value.length >= 5) {
-        showMessage('标签数量已达上限（5个）', 'warning')
-        return
-    }
-    if (selectedTags.value.includes(tag)) return
-    selectedTags.value.push(tag)
-    tagInput.value = ''
-    filteredPresetTags.value = []
-    clearFieldError('tags')
-}
-
-function removeTag(tag) {
-    const idx = selectedTags.value.indexOf(tag)
+function removeTag(tagId) {
+    const idx = selectedTags.value.findIndex(t => t.id === tagId)
     if (idx > -1) {
         selectedTags.value.splice(idx, 1)
     }
     clearFieldError('tags')
-}
-
-function filterPresetTags() {
-    const keyword = tagInput.value.trim().toLowerCase()
-    if (!keyword) {
-        filteredPresetTags.value = []
-        return
-    }
-    filteredPresetTags.value = presetTags.value
-        .filter(t => t.toLowerCase().includes(keyword) && !selectedTags.value.includes(t))
-        .slice(0, 8)
 }
 
 function onPromptInput() {
@@ -744,8 +687,8 @@ function validateForSubmit() {
         valid = false
     }
 
-    if (!form.categoryId && !form.categoryName) {
-        validation.category = '请选择或输入文章分类'
+    if (!form.categoryId) {
+        validation.category = '请选择文章分类'
         valid = false
     }
     if (selectedTags.value.length < 3) {
@@ -784,8 +727,8 @@ async function handleAiGenerate() {
         const res = await generateArticle({
             prompt: form.aiPrompt.trim(),
             title: form.title.trim() || null,
-            categoryName: form.categoryName || null,
-            tags: selectedTags.value.length > 0 ? selectedTags.value : null
+            categoryId: form.categoryId || null,
+            tagIds: selectedTags.value.map(t => t.id)
         }, { timeout: 120000 })
         if (res.success) {
             generatedContent.value = res.data.content
@@ -815,8 +758,7 @@ async function handleSubmit() {
             content: generatedContent.value,
             titleImage: resolveAiCover(form.titleImage),
             categoryId: form.categoryId || null,
-            categoryName: form.categoryName || null,
-            tags: selectedTags.value,
+            tagIds: selectedTags.value.map(t => t.id),
             visibility: 'PUBLIC'
         })
         if (res.success) {
@@ -841,6 +783,7 @@ onMounted(() => {
 onUnmounted(() => {
     if (cooldownTimer) clearInterval(cooldownTimer)
     if (estimateTimer) clearTimeout(estimateTimer)
+    if (tagSearchTimer) clearTimeout(tagSearchTimer)
 })
 </script>
 
@@ -1361,51 +1304,6 @@ onUnmounted(() => {
     box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
 }
 
-.ai-category-custom {
-    display: flex;
-    gap: 8px;
-}
-
-.ai-custom-input-wrap {
-    display: flex;
-    flex: 1;
-    gap: 8px;
-}
-
-.ai-custom-input {
-    flex: 1;
-}
-
-.ai-custom-add-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    background: #fff;
-    cursor: pointer;
-    color: #6366f1;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.ai-custom-add-btn:hover:not(:disabled) {
-    border-color: #6366f1;
-    background: #eef2ff;
-}
-
-.ai-custom-add-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.ai-custom-add-btn svg {
-    width: 18px;
-    height: 18px;
-}
-
 /* ===== 标签选择 ===== */
 .ai-tag-section {
     display: flex;
@@ -1475,31 +1373,6 @@ onUnmounted(() => {
 .ai-tag-limit .ai-tag-input {
     border-color: #fbbf24;
     background: #fffbeb;
-}
-
-.ai-tag-add-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    background: #fff;
-    cursor: pointer;
-    color: #6366f1;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.ai-tag-add-btn:hover {
-    border-color: #6366f1;
-    background: #eef2ff;
-}
-
-.ai-tag-add-btn svg {
-    width: 18px;
-    height: 18px;
 }
 
 .ai-tag-suggestions {

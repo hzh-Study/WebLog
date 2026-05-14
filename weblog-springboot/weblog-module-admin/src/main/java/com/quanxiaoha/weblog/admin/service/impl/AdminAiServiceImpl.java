@@ -52,6 +52,9 @@ public class AdminAiServiceImpl implements AdminAiService {
     @Autowired
     private AdminUserDao userDao;
 
+    @Autowired
+    private AdminTaxonomyDao taxonomyDao;
+
     private final RestTemplate restTemplate = createRestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -88,21 +91,41 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkInteractionInterval(currentUser.getId());
-
             String userRequirement = sanitizeInput(reqVO != null ? reqVO.getRequirement() : null);
 
-            List<TagDO> existingTags = tagDao.selectAllByUserId(currentUser.getId());
-            List<String> existingTagNames = existingTags.stream()
+            List<TagDO> allTags = taxonomyDao.searchTaxonomyTags("", null, currentUser.getId());
+            List<CategoryDO> allCategories = taxonomyDao.queryAllCategories(currentUser.getId());
+            Map<Long, String> categoryNameMap = allCategories.stream()
+                    .collect(Collectors.toMap(CategoryDO::getId, CategoryDO::getName, (a, b) -> a));
+
+            Map<String, TagDO> tagNameMap = new HashMap<>();
+            for (TagDO tag : allTags) {
+                tagNameMap.put(tag.getName().toLowerCase().trim(), tag);
+                if (tag.getCode() != null) {
+                    tagNameMap.put(tag.getCode().toLowerCase().trim(), tag);
+                }
+                if (tag.getAliasJson() != null && !tag.getAliasJson().isEmpty()) {
+                    try {
+                        JsonNode aliases = objectMapper.readTree(tag.getAliasJson());
+                        if (aliases.isArray()) {
+                            for (JsonNode alias : aliases) {
+                                tagNameMap.put(alias.asText().toLowerCase().trim(), tag);
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+
+            List<String> taxonomyTagNames = allTags.stream()
                     .map(TagDO::getName)
                     .collect(Collectors.toList());
 
             List<ArticleDO> articles = queryUserArticles(currentUser.getId());
             String articleContext = buildArticleContext(articles);
 
-            String systemPrompt = "你是一个博客标签推荐助手。根据用户已有的文章内容、现有标签以及用户的具体要求，推荐3-5个新的、合适的标签。只返回标签名称列表，每行一个，不要有其他内容。不要推荐已存在的标签。";
+            String systemPrompt = "你是一个博客标签推荐助手。根据用户文章内容和要求，从给定的标签列表中选择3-5个最合适的标签。只返回标签名称列表，每行一个，不要有其他内容。必须且只能从给定列表中选择，不要自己创造新标签。";
             StringBuilder userPromptBuilder = new StringBuilder();
-            userPromptBuilder.append("现有标签：").append(String.join("、", existingTagNames)).append("\n\n");
+            userPromptBuilder.append("可选标签列表：").append(String.join("、", taxonomyTagNames)).append("\n\n");
             if (userRequirement != null && !userRequirement.isEmpty()) {
                 userPromptBuilder.append("用户要求：").append(userRequirement).append("\n\n");
             }
@@ -110,17 +133,43 @@ public class AdminAiServiceImpl implements AdminAiService {
             String userPrompt = userPromptBuilder.toString();
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + aiConfig.getMaxTokensPerRequest());
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, aiConfig.getMaxTokensPerRequest());
 
-            List<String> recommendedTags = parseTagList(aiResponse, existingTagNames);
+            List<String> rawRecommendations = parseTagList(aiResponse, Collections.emptyList());
             long actualTokens = estimateTokens(systemPrompt + userPrompt + aiResponse);
+
+            List<AiRecommendTaxonomyTagItemRspVO> suggestions = new ArrayList<>();
+            List<String> matchedTagNames = new ArrayList<>();
+            List<String> unmatchedTerms = new ArrayList<>();
+
+            for (String rawTag : rawRecommendations) {
+                String normalizedKey = rawTag.toLowerCase().trim();
+                TagDO matched = tagNameMap.get(normalizedKey);
+                if (matched != null && Boolean.TRUE.equals(matched.getIsSystem())) {
+                    if (matchedTagNames.stream().noneMatch(n -> n.equals(matched.getName()))) {
+                        suggestions.add(AiRecommendTaxonomyTagItemRspVO.builder()
+                                .tagId(matched.getId())
+                                .tagName(matched.getName())
+                                .tagCode(matched.getCode())
+                                .categoryId(matched.getCategoryId())
+                                .categoryName(matched.getCategoryId() != null ? categoryNameMap.get(matched.getCategoryId()) : null)
+                                .confidence(0.85)
+                                .reason("AI推荐")
+                                .build());
+                        matchedTagNames.add(matched.getName());
+                    }
+                } else {
+                    unmatchedTerms.add(rawTag);
+                }
+            }
 
             recordUsage(currentUser.getId(), false, actualTokens);
 
             return Response.success(AiRecommendTagRspVO.builder()
-                    .tags(recommendedTags)
+                    .tags(matchedTagNames)
+                    .suggestions(suggestions)
+                    .unmatchedTerms(unmatchedTerms)
                     .estimatedTokens(estimatedTokens)
                     .actualTokens(actualTokens)
                     .build());
@@ -139,21 +188,30 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkInteractionInterval(currentUser.getId());
-
             String userRequirement = sanitizeInput(reqVO != null ? reqVO.getRequirement() : null);
 
-            List<CategoryDO> existingCategories = categoryDao.selectAllCategory(currentUser.getId());
-            List<String> existingCategoryNames = existingCategories.stream()
+            List<CategoryDO> allCategories = taxonomyDao.queryAllCategories(currentUser.getId());
+            Map<Long, CategoryDO> categoryByIdMap = allCategories.stream()
+                    .collect(Collectors.toMap(CategoryDO::getId, c -> c, (a, b) -> a));
+
+            Map<String, CategoryDO> categoryNameMap = new HashMap<>();
+            for (CategoryDO cat : allCategories) {
+                categoryNameMap.put(cat.getName().toLowerCase().trim(), cat);
+                if (cat.getCode() != null) {
+                    categoryNameMap.put(cat.getCode().toLowerCase().trim(), cat);
+                }
+            }
+
+            List<String> taxonomyCategoryNames = allCategories.stream()
                     .map(CategoryDO::getName)
                     .collect(Collectors.toList());
 
             List<ArticleDO> articles = queryUserArticles(currentUser.getId());
             String articleContext = buildArticleContext(articles);
 
-            String systemPrompt = "你是一个博客分类推荐助手。根据用户已有的文章内容、现有分类以及用户的具体要求，推荐2-3个新的、合适的分类名称。只返回分类名称列表，每行一个，不要有其他内容。不要推荐已存在的分类。";
+            String systemPrompt = "你是一个博客分类推荐助手。根据用户文章内容和要求，从给定的分类列表中选择2-3个最合适的分类。只返回分类名称列表，每行一个，不要有其他内容。必须且只能从给定列表中选择，不要自己创造新分类。";
             StringBuilder userPromptBuilder = new StringBuilder();
-            userPromptBuilder.append("现有分类：").append(String.join("、", existingCategoryNames)).append("\n\n");
+            userPromptBuilder.append("可选分类列表：").append(String.join("、", taxonomyCategoryNames)).append("\n\n");
             if (userRequirement != null && !userRequirement.isEmpty()) {
                 userPromptBuilder.append("用户要求：").append(userRequirement).append("\n\n");
             }
@@ -161,17 +219,51 @@ public class AdminAiServiceImpl implements AdminAiService {
             String userPrompt = userPromptBuilder.toString();
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + aiConfig.getMaxTokensPerRequest());
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, aiConfig.getMaxTokensPerRequest());
 
-            List<String> recommendedCategories = parseCategoryList(aiResponse, existingCategoryNames);
+            List<String> rawRecommendations = parseCategoryList(aiResponse, Collections.emptyList());
             long actualTokens = estimateTokens(systemPrompt + userPrompt + aiResponse);
+
+            List<AiRecommendTaxonomyCategoryItemRspVO> suggestions = new ArrayList<>();
+            List<String> matchedCategoryNames = new ArrayList<>();
+            List<String> unmatchedTerms = new ArrayList<>();
+
+            for (String rawCat : rawRecommendations) {
+                String normalizedKey = rawCat.toLowerCase().trim();
+                CategoryDO matched = categoryNameMap.get(normalizedKey);
+                if (matched != null && Boolean.TRUE.equals(matched.getIsSystem())) {
+                    if (matchedCategoryNames.stream().noneMatch(n -> n.equals(matched.getName()))) {
+                        String parentName = null;
+                        Long parentId = matched.getParentId();
+                        if (parentId != null) {
+                            CategoryDO parent = categoryByIdMap.get(parentId);
+                            if (parent != null) {
+                                parentName = parent.getName();
+                            }
+                        }
+                        suggestions.add(AiRecommendTaxonomyCategoryItemRspVO.builder()
+                                .categoryId(matched.getId())
+                                .categoryName(matched.getName())
+                                .categoryCode(matched.getCode())
+                                .parentCategoryId(parentId)
+                                .parentCategoryName(parentName)
+                                .confidence(0.85)
+                                .reason("AI推荐")
+                                .build());
+                        matchedCategoryNames.add(matched.getName());
+                    }
+                } else {
+                    unmatchedTerms.add(rawCat);
+                }
+            }
 
             recordUsage(currentUser.getId(), false, actualTokens);
 
             return Response.success(AiRecommendCategoryRspVO.builder()
-                    .categories(recommendedCategories)
+                    .categories(matchedCategoryNames)
+                    .suggestions(suggestions)
+                    .unmatchedTerms(unmatchedTerms)
                     .estimatedTokens(estimatedTokens)
                     .actualTokens(actualTokens)
                     .build());
@@ -190,8 +282,6 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkArticleGenLimit(currentUser.getId());
-            checkInteractionInterval(currentUser.getId());
 
             String sanitizedPrompt = sanitizeInput(reqVO.getPrompt());
             String sanitizedTitle = sanitizeInput(reqVO.getTitle());
@@ -206,7 +296,6 @@ public class AdminAiServiceImpl implements AdminAiService {
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
             int dynamicMaxTokens = calculateDynamicMaxTokens(sanitizedPrompt, sanitizedTitle);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + dynamicMaxTokens);
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, dynamicMaxTokens);
             String title = extractTitle(aiResponse, reqVO.getTitle());
@@ -218,7 +307,6 @@ public class AdminAiServiceImpl implements AdminAiService {
                 StringBuilder fullContent = new StringBuilder(content);
                 int maxContinuations = Math.min(5, (int) Math.ceil(requestedChars / 2000.0));
                 for (int i = 0; i < maxContinuations && fullContent.length() < requestedChars * 0.8; i++) {
-                    checkInteractionInterval(currentUser.getId());
                     String continuePrompt = "请继续续写以下内容，保持Markdown格式和文风一致，继续深入展开：\n\n" +
                             fullContent.substring(Math.max(0, fullContent.length() - 500));
                     String continueSystem = "你是一个专业的博客写作助手。请继续续写用户提供的文章片段，保持Markdown格式和文风一致，内容要详实深入。";
@@ -325,7 +413,6 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkInteractionInterval(currentUser.getId());
 
             String context = sanitizeInput(reqVO != null ? reqVO.getContext() : null);
             String selectedText = sanitizeInput(reqVO != null ? reqVO.getSelectedText() : null);
@@ -347,7 +434,6 @@ public class AdminAiServiceImpl implements AdminAiService {
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
             int dynamicMaxTokens = calculateDynamicMaxTokens(context + selectedText, instruction);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + dynamicMaxTokens);
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, dynamicMaxTokens);
 
@@ -375,7 +461,6 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkInteractionInterval(currentUser.getId());
 
             String text = sanitizeInput(reqVO != null ? reqVO.getText() : null);
             String style = sanitizeInput(reqVO != null ? reqVO.getStyle() : null);
@@ -391,7 +476,6 @@ public class AdminAiServiceImpl implements AdminAiService {
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
             int dynamicMaxTokens = calculateDynamicMaxTokens(text, style);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + dynamicMaxTokens);
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, dynamicMaxTokens);
 
@@ -419,7 +503,6 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkInteractionInterval(currentUser.getId());
 
             String text = sanitizeInput(reqVO != null ? reqVO.getText() : null);
             requireNonBlank(text, "待润色文本不能为空");
@@ -428,7 +511,6 @@ public class AdminAiServiceImpl implements AdminAiService {
             String userPrompt = "请润色以下文本：\n" + text;
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + aiConfig.getMaxTokensPerRequest());
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, aiConfig.getMaxTokensPerRequest());
 
@@ -456,7 +538,6 @@ public class AdminAiServiceImpl implements AdminAiService {
         try {
             lockToken = acquireRequestLock(currentUser.getId());
             locked = true;
-            checkInteractionInterval(currentUser.getId());
 
             String title = sanitizeInput(reqVO != null ? reqVO.getTitle() : null);
             String content = sanitizeInput(reqVO != null ? reqVO.getContent() : null);
@@ -475,7 +556,6 @@ public class AdminAiServiceImpl implements AdminAiService {
 
             long estimatedTokens = estimateTokens(systemPrompt + userPrompt);
             int dynamicMaxTokens = calculateDynamicMaxTokens(title, content);
-            checkTokenLimit(currentUser.getId(), estimatedTokens + dynamicMaxTokens);
 
             String aiResponse = callAiApi(systemPrompt, userPrompt, dynamicMaxTokens);
 
@@ -571,37 +651,6 @@ public class AdminAiServiceImpl implements AdminAiService {
             throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
         }
         return userDO;
-    }
-
-    private void checkArticleGenLimit(Long userId) {
-        Date today = getToday();
-        AiUsageRecordDO record = aiUsageRecordDao.selectByUserIdAndDate(userId, today);
-        int used = record != null ? record.getArticleGenCount() : 0;
-        if (used >= aiConfig.getDailyArticleGenLimit()) {
-            throw new BizException("AI_QUOTA_EXCEEDED", "今日AI文章生成次数已用完（" + aiConfig.getDailyArticleGenLimit() + "次/天）");
-        }
-    }
-
-    private void checkInteractionInterval(Long userId) {
-        Date today = getToday();
-        AiUsageRecordDO record = aiUsageRecordDao.selectByUserIdAndDate(userId, today);
-        if (record != null && record.getLastInteractionTime() != null) {
-            long elapsed = System.currentTimeMillis() - record.getLastInteractionTime().getTime();
-            long required = aiConfig.getInteractionIntervalSeconds() * 1000L;
-            if (elapsed < required) {
-                long waitSeconds = (long) Math.ceil((required - elapsed) / 1000.0);
-                throw new BizException("AI_INTERVAL", "请等待" + waitSeconds + "秒后再使用AI功能");
-            }
-        }
-    }
-
-    private void checkTokenLimit(Long userId, long newTokens) {
-        Date today = getToday();
-        AiUsageRecordDO record = aiUsageRecordDao.selectByUserIdAndDate(userId, today);
-        long used = record != null ? record.getTokenUsed() : 0L;
-        if (used + newTokens > aiConfig.getDailyTokenLimit()) {
-            throw new BizException("AI_TOKEN_EXCEEDED", "今日AI Token额度不足，已使用" + used + "/" + aiConfig.getDailyTokenLimit());
-        }
     }
 
     private void recordUsage(Long userId, boolean isArticleGen, long tokens) {

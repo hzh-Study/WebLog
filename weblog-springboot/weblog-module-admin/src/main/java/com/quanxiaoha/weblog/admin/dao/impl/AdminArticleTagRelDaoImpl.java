@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,6 +32,16 @@ public class AdminArticleTagRelDaoImpl implements AdminArticleTagRelDao {
     public List<ArticleTagRelDO> selectByArticleId(Long articleId) {
         QueryWrapper<ArticleTagRelDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(ArticleTagRelDO::getArticleId, articleId);
+        return articleTagRelMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<ArticleTagRelDO> selectByArticleIds(List<Long> articleIds) {
+        if (articleIds == null || articleIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        QueryWrapper<ArticleTagRelDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(ArticleTagRelDO::getArticleId, articleIds);
         return articleTagRelMapper.selectList(wrapper);
     }
 

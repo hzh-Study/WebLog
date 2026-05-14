@@ -40,7 +40,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
                 .token(token)
                 .build();
 
-        log.info("==> 用户认证成功, username: {}, token: {}", username, token);
+        log.info("==> 用户认证成功, username: {}", username);
 
         ResultUtil.ok(response, Response.success(tokenRspDTO));
     }

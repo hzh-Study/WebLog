@@ -2,7 +2,6 @@ import axios from "axios";
 import { notification, showMessage } from '@/composables/util'
 import { getToken } from '@/composables/auth'
 import store from "@/store";
-import { Console } from "windicss/utils";
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -15,9 +14,7 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     const token = getToken()
-    console.log('统一添加 token: ' + token)
 
-    // 统一添加请求头 Token
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
     }
@@ -41,16 +38,12 @@ instance.interceptors.response.use(function (response) {
     }
 
     let status = response.status
-    console.log('错误响应==========》' + status)
     if (status == 401 || status == 402) {
-        console.log('401-------------')
         store.dispatch('logout').finally(() => location.reload())
     }
 
     let isSuccess = response.data.success
-    console.log('错误响应==========》' + isSuccess)
     if (!isSuccess) {
-        console.log('error: ' + response.data.message)
         let message = response.data.message || '请求失败'
 
         // todo 失效的情况

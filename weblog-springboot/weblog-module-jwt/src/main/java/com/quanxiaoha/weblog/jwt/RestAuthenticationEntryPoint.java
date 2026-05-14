@@ -30,9 +30,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         log.warn("", authException);
         if (authException instanceof InsufficientAuthenticationException) {
             ResultUtil.fail(response, HttpStatus.UNAUTHORIZED.value(), Response.fail(ResponseCodeEnum.NO_TOKEN_OR_TOKEN_INVALID));
-            // ResultUtil.ok(response, Response.fail(ResponseCodeEnum.NO_TOKEN_OR_TOKEN_INVALID));
+            return;
         }
         ResultUtil.fail(response, HttpStatus.UNAUTHORIZED.value(), Response.fail(ResponseCodeEnum.UNAUTHORIZED));
-        // ResultUtil.ok(response, Response.fail(ResponseCodeEnum.UNAUTHORIZED));
     }
 }

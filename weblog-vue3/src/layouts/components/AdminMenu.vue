@@ -35,7 +35,7 @@ const router = useRouter()
 const route = useRoute()
 const store = useStore()
 
-const defaultActive = ref(route.path)
+const defaultActive = computed(() => route.path)
 
 // 是否折叠
 const isCollapse = computed(() =>  !(store.state.menuWidth == '152px'))

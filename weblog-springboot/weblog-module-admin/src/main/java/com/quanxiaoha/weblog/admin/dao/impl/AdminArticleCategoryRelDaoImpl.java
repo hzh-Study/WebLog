@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author: 犬小哈
  * @url: www.quanxiaoha.com
@@ -30,6 +33,26 @@ public class AdminArticleCategoryRelDaoImpl implements AdminArticleCategoryRelDa
         QueryWrapper<ArticleCategoryRelDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(ArticleCategoryRelDO::getArticleId, articleId);
         return articleCategoryRelMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public List<ArticleCategoryRelDO> selectByArticleIds(List<Long> articleIds) {
+        if (articleIds == null || articleIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        QueryWrapper<ArticleCategoryRelDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(ArticleCategoryRelDO::getArticleId, articleIds);
+        return articleCategoryRelMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<ArticleCategoryRelDO> selectByCategoryId(Long categoryId) {
+        if (categoryId == null) {
+            return Collections.emptyList();
+        }
+        QueryWrapper<ArticleCategoryRelDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ArticleCategoryRelDO::getCategoryId, categoryId);
+        return articleCategoryRelMapper.selectList(wrapper);
     }
 
     @Override

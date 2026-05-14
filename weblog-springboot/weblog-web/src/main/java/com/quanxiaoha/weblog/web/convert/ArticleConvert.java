@@ -8,15 +8,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- * @author: 犬小哈
- * @url: www.quanxiaoha.com
- * @date: 2023-07-30 8:55
- * @description: TODO
- **/
 @Mapper(componentModel = "spring")
 public interface ArticleConvert {
     ArticleConvert INSTANCE = Mappers.getMapper(ArticleConvert.class);
@@ -31,13 +26,13 @@ public interface ArticleConvert {
     default String formatDate(Date date) {
         if (Objects.isNull(date))
             return null;
-        return Constants.DATE_FORMAT.format(date);
+        return Constants.DATE_FORMAT_THREAD_SAFE.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
     default String formatMonth(Date date) {
         if (Objects.isNull(date))
             return null;
-        return Constants.MONTH_FORMAT.format(date);
+        return Constants.MONTH_FORMAT_THREAD_SAFE.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().withDayOfMonth(1));
     }
 
 }

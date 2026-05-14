@@ -54,6 +54,15 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     LIKE_DUPLICATE("50001", "已点赞，不可重复"),
     FAVORITE_DUPLICATE("50002", "已收藏，不可重复"),
     ARTICLE_NOT_PUBLIC("50003", "该文章未公开，无法互动"),
+
+    // ----------- Taxonomy 异常状态码 -----------
+    TAXONOMY_CATEGORY_NOT_FOUND("60001", "分类不存在或已停用"),
+    TAXONOMY_CATEGORY_DISABLED("60002", "分类已停用"),
+    TAXONOMY_TAG_NOT_FOUND("60003", "标签不存在或已停用"),
+    TAXONOMY_TAG_DISABLED("60004", "标签已停用"),
+    TAXONOMY_TAG_NOT_IN_CATEGORY("60005", "标签不属于指定分类"),
+    SYSTEM_CATEGORY_NOT_ALLOWED("60006", "系统预定义分类不可修改，请从已有列表中选择"),
+    SYSTEM_TAG_NOT_ALLOWED("60007", "系统预定义标签不可修改，请从已有列表中选择"),
     ;
 
     private String errorCode;

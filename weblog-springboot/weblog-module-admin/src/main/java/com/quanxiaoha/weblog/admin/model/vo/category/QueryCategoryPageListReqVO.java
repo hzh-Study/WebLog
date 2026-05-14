@@ -18,4 +18,5 @@ public class QueryCategoryPageListReqVO {
     private Date startDate;
     private Date endDate;
     private String categoryName;
+    private Boolean library = false;
 }

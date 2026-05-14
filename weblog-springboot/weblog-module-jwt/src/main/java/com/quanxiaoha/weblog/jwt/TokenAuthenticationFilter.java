@@ -52,25 +52,24 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String header = request.getHeader(tokenHeaderKey);
         if (StringUtils.startsWith(header, String.format("%s ", tokenPrefix))) {
             String token = StringUtils.substring(header, 7);
-            log.info("token: {}", token);
+            log.debug("token: {}", token);
             if (StringUtils.isNotBlank(token) && jwtTokenHelper.validateToken(token)) {
                 String username = jwtTokenHelper.getUsernameByToken(token);
 
                 if (StringUtils.isNotBlank(username)) {
-                    // && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())
+                    try {
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                    // 将用户信息存入 authentication，方便后续校验
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                            userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    // 将 authentication 存入 ThreadLocal，方便后续获取用户信息
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                                userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    } catch (Exception e) {
+                        log.warn("Token 对应的用户不存在或已失效: {}", username);
+                    }
                 }
             }
         }
-        // 继续执行下一个过滤器
         filterChain.doFilter(request, response);
     }
 

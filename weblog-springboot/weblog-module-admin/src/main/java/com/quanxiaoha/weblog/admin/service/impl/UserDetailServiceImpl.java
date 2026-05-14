@@ -47,11 +47,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
         // 用户角色
         List<UserRoleDO> roleDOS = userRoleDao.selectByUsername(username);
 
-        String[] roleArr = null;
+        String[] roleArr = new String[0];
 
         if (!CollectionUtils.isEmpty(roleDOS)) {
             List<String> roles = roleDOS.stream().map(p -> p.getRole()).collect(Collectors.toList());
-            roleArr = roles.toArray(new String[roles.size()]);
+            roleArr = roles.toArray(new String[0]);
         }
 
         return User.withUsername(userDO.getUsername())

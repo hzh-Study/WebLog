@@ -34,10 +34,10 @@ public class JwtAuthenticationLoginFilter extends AbstractAuthenticationProcessi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(request.getInputStream());
-        String username = jsonNode.get("username").textValue();
-        String password = jsonNode.get("password").textValue();
+        String username = jsonNode.path("username").asText("");
+        String password = jsonNode.path("password").asText("");
 
-        log.info("==> 用户尝试登录认证，username: {}, password: {}", username, password);
+        log.info("==> 用户尝试登录认证，username: {}", username);
 
         // 将用户名、密码封装到 Token 中
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken

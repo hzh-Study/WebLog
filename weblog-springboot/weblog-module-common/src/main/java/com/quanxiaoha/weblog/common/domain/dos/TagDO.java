@@ -15,7 +15,13 @@ public class TagDO {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
+    private Long categoryId;
     private String name;
+    private String code;
+    private String aliasJson;
+    private Integer sort;
+    private Boolean isSystem;
+    private Integer status;
     private Date createTime;
     private Date updateTime;
     private Boolean isDeleted;

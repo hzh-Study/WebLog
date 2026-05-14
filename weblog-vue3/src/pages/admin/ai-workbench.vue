@@ -10,49 +10,6 @@
 
         <div class="ai-workbench-grid">
             <div class="ai-workbench-main">
-                <el-card shadow="never" class="ai-section-card" v-loading="quotaLoading">
-                    <template #header>
-                        <div class="ai-section-header">
-                            <span class="ai-section-title">
-                                <el-icon><DataAnalysis /></el-icon>
-                                今日额度
-                            </span>
-                            <el-button link type="primary" size="small" @click="refreshQuota" :loading="quotaLoading">
-                                <el-icon><Refresh /></el-icon>
-                                刷新
-                            </el-button>
-                        </div>
-                    </template>
-                    <div class="ai-quota-grid">
-                        <div class="ai-quota-item">
-                            <span class="ai-quota-label">文章生成</span>
-                            <span class="ai-quota-value">
-                                <strong :class="{ 'text-red-500': quota.dailyArticleGenRemaining === 0 }">{{ quota.dailyArticleGenRemaining }}</strong>
-                                / {{ quota.dailyArticleGenLimit }}
-                            </span>
-                        </div>
-                        <div class="ai-quota-item">
-                            <span class="ai-quota-label">Token 余量</span>
-                            <span class="ai-quota-value">
-                                <strong :class="{ 'text-red-500': quota.dailyTokenRemaining < 10000 }">{{ formatNumber(quota.dailyTokenRemaining) }}</strong>
-                                / {{ formatNumber(quota.dailyTokenLimit) }}
-                            </span>
-                        </div>
-                        <div class="ai-quota-item">
-                            <span class="ai-quota-label">冷却状态</span>
-                            <span class="ai-quota-value">
-                                <strong :class="{ 'text-red-500': !quota.canInteractNow }">
-                                    {{ quota.canInteractNow ? '就绪' : remainingSeconds + 's' }}
-                                </strong>
-                            </span>
-                        </div>
-                    </div>
-                    <div v-if="!quota.canInteractNow && remainingSeconds > 0" class="ai-cooldown-warning">
-                        <el-icon><WarningFilled /></el-icon>
-                        <span>冷却中，请等待 {{ remainingSeconds }} 秒后再使用 AI 功能</span>
-                    </div>
-                </el-card>
-
                 <el-card shadow="never" class="ai-section-card">
                     <template #header>
                         <div class="ai-section-header">
@@ -69,21 +26,19 @@
                                 type="textarea"
                                 :rows="4"
                                 placeholder="请描述您想要写的文章主题、风格、要点等..."
-                                maxlength="2000"
-                                show-word-limit
                             />
                         </el-form-item>
                         <el-form-item label="建议标题（可选）">
-                            <el-input v-model="writeTitle" placeholder="留空则由 AI 自动生成" maxlength="100" />
+                            <el-input v-model="writeTitle" placeholder="留空则由 AI 自动生成" />
                         </el-form-item>
                         <el-form-item label="文章分类（可选）">
-                            <el-select v-model="writeCategory" placeholder="请选择文章分类" clearable style="width:100%">
-                                <el-option v-for="cat in presetCategories" :key="cat.id" :label="cat.name" :value="cat.name" />
+                            <el-select v-model="writeCategory" placeholder="请选择文章分类" clearable filterable remote reserve-keyword :remote-method="searchCategories" :loading="categorySearchLoading" style="width:100%">
+                                <el-option v-for="cat in displayedCategories" :key="cat.id" :label="cat.name" :value="cat.id" />
                             </el-select>
                         </el-form-item>
                         <el-form-item label="文章标签（可选）">
                             <el-select v-model="writeTags" placeholder="请选择文章标签" multiple collapse-tags collapse-tags-tooltip style="width:100%">
-                                <el-option v-for="tag in presetTags" :key="tag" :label="tag" :value="tag" />
+                                <el-option v-for="tag in presetTags" :key="tag.value" :label="tag.label" :value="tag.value" />
                             </el-select>
                         </el-form-item>
                     </el-form>
@@ -126,9 +81,6 @@
                             <el-button size="small" type="success" @click="saveAsArticle('PUBLIC')">
                                 <el-icon><Promotion /></el-icon>
                                 保存为文章                            </el-button>
-                            <el-button size="small" type="warning" @click="saveAsArticle('PRIVATE')">
-                                <el-icon><Edit /></el-icon>
-                                保存为草稿                            </el-button>
                         </div>
                     </div>
                 </el-card>
@@ -149,8 +101,6 @@
                                 type="textarea"
                                 :rows="5"
                                 placeholder="请输入或粘贴需要处理的文本..."
-                                maxlength="5000"
-                                show-word-limit
                             />
                         </el-form-item>
                         <el-form-item label="操作类型">
@@ -166,8 +116,6 @@
                                 type="textarea"
                                 :rows="2"
                                 placeholder="描述额外要求，如：更正式、更口语化..."
-                                maxlength="500"
-                                show-word-limit
                             />
                         </el-form-item>
                     </el-form>
@@ -220,83 +168,6 @@
                     <template #header>
                         <div class="ai-section-header">
                             <span class="ai-section-title">
-                                <el-icon><TrendCharts /></el-icon>
-                                AI SEO 优化
-                            </span>
-                        </div>
-                    </template>
-                    <el-form label-position="top">
-                        <el-form-item label="文章标题">
-                            <el-input v-model="seoTitle" placeholder="请输入文章标题" maxlength="100" />
-                        </el-form-item>
-                        <el-form-item label="鏂囩珷姝ｆ枃">
-                            <el-input
-                                v-model="seoContent"
-                                type="textarea"
-                                :rows="5"
-                                placeholder="请输入文章正文..."
-                                maxlength="10000"
-                                show-word-limit
-                            />
-                        </el-form-item>
-                        <el-form-item label="当前摘要（可选）">
-                            <el-input v-model="seoDescription" placeholder="当前文章摘要" maxlength="200" />
-                        </el-form-item>
-                    </el-form>
-
-                    <el-button
-                        type="primary"
-                        :loading="seoLoading"
-                        :disabled="!canSeo"
-                        @click="handleSeo"
-                        class="ai-action-btn"
-                    >
-                        <el-icon><MagicStick /></el-icon>
-                        开始优化                    </el-button>
-
-                    <div v-if="seoResult" class="ai-result-area">
-                        <div class="ai-seo-section">
-                            <div class="ai-seo-section-header">
-                                <span>优化标题</span>
-                                <el-button size="small" type="primary" @click="applySeoTitle">应用</el-button>
-                            </div>
-                            <div class="ai-seo-section-content">{{ seoResult.optimizedTitle }}</div>
-                        </div>
-                        <div class="ai-seo-section">
-                            <div class="ai-seo-section-header">
-                                <span>优化摘要</span>
-                                <el-button size="small" type="primary" @click="applySeoDescription">应用</el-button>
-                            </div>
-                            <div class="ai-seo-section-content">{{ seoResult.optimizedDescription }}</div>
-                        </div>
-                        <div class="ai-seo-section">
-                            <div class="ai-seo-section-header">
-                                <span>关键词</span>
-                                <el-button size="small" @click="copyText(seoResult.keywords.join(', '), '关键词')">
-                                    <el-icon><CopyDocument /></el-icon>
-                                    复制
-                                </el-button>
-                            </div>
-                            <div class="ai-seo-keywords">
-                                <el-tag v-for="kw in seoResult.keywords" :key="kw" class="ai-seo-keyword-tag">{{ kw }}</el-tag>
-                            </div>
-                        </div>
-                        <div class="ai-seo-meta">
-                            <span>标题评分</span>
-                            <el-progress :percentage="seoResult.titleScore" :color="scoreColor(seoResult.titleScore)" :stroke-width="8" style="width:200px" />
-                            <strong>{{ seoResult.titleScore }} 分</strong>
-                        </div>
-                        <div v-if="seoResult.titleSuggestion" class="ai-seo-section">
-                            <div class="ai-seo-section-header"><span>标题建议</span></div>
-                            <div class="ai-seo-section-content ai-seo-suggestion">{{ seoResult.titleSuggestion }}</div>
-                        </div>
-                    </div>
-                </el-card>
-
-                <el-card shadow="never" class="ai-section-card">
-                    <template #header>
-                        <div class="ai-section-header">
-                            <span class="ai-section-title">
                                 <el-icon><CollectionTag /></el-icon>
                                 AI 分类 / 标签推荐
                             </span>
@@ -309,8 +180,6 @@
                                 type="textarea"
                                 :rows="5"
                                 placeholder="请输入文章正文，AI 将基于此推荐分类和标签..."
-                                maxlength="10000"
-                                show-word-limit
                             />
                         </el-form-item>
                         <el-form-item label="推荐要求（可选）">
@@ -319,8 +188,6 @@
                                 type="textarea"
                                 :rows="2"
                                 placeholder="描述您想要的风格或方向..."
-                                maxlength="500"
-                                show-word-limit
                             />
                         </el-form-item>
                     </el-form>
@@ -346,40 +213,55 @@
                         </el-button>
                     </div>
 
-                    <div v-if="recommendedCategories.length > 0" class="ai-result-area">
+                    <div v-if="categorySuggestions.length > 0 || unmatchedCategoryTerms.length > 0" class="ai-result-area">
                         <div class="ai-result-header">
                             <span>推荐分类</span>
                             <el-tag size="small" type="info">消耗 {{ categoryRecTokens }} tokens</el-tag>
                         </div>
-                        <div class="ai-recommend-list">
-                            <div v-for="cat in recommendedCategories" :key="cat" class="ai-recommend-item">
-                                <span>{{ cat }}</span>
+                        <div v-if="categorySuggestions.length > 0" class="ai-recommend-list">
+                            <div v-for="cat in categorySuggestions" :key="cat.categoryId" class="ai-recommend-item">
+                                <div>
+                                    <span>{{ cat.categoryName }}</span>
+                                    <span v-if="cat.parentCategoryName" style="font-size:12px;color:#64748b;margin-left:8px">{{ cat.parentCategoryName }} / {{ cat.categoryName }}</span>
+                                </div>
                                 <el-button
-                                    v-if="!addedCategories.includes(cat)"
+                                    v-if="!acceptedCategoryId || acceptedCategoryId !== cat.categoryId"
                                     link type="primary" size="small"
-                                    @click="addCategoryItem(cat)"
-                                >添加</el-button>
+                                    @click="acceptCategory(cat)"
+                                >接受</el-button>
                                 <span v-else class="added-check">
-                                    <el-icon><Check /></el-icon> 已添加                                </span>
+                                    <el-icon><Check /></el-icon> 已接受
+                                </span>
+                            </div>
+                        </div>
+                        <div v-if="unmatchedCategoryTerms.length > 0" style="padding:12px 14px;border-top:1px solid #e2e8f0">
+                            <div style="font-size:12px;color:#94a3b8;margin-bottom:8px">未匹配项（不在系统分类中）</div>
+                            <div style="display:flex;flex-wrap:wrap;gap:6px">
+                                <el-tag v-for="term in unmatchedCategoryTerms" :key="term" type="info" size="small" effect="plain">{{ term }}</el-tag>
                             </div>
                         </div>
                     </div>
 
-                    <div v-if="recommendedTags.length > 0" class="ai-result-area">
+                    <div v-if="tagSuggestions.length > 0 || unmatchedTagTerms.length > 0" class="ai-result-area">
                         <div class="ai-result-header">
                             <span>推荐标签</span>
                             <el-tag size="small" type="info">消耗 {{ tagRecTokens }} tokens</el-tag>
                         </div>
-                        <div class="ai-recommend-list ai-tag-list">
-                            <el-tag
-                                v-for="tag in recommendedTags" :key="tag"
-                                class="ai-tag-item"
-                                :type="addedTags.includes(tag) ? 'success' : ''"
-                            >
-                                {{ tag }}
-                                <el-button v-if="!addedTags.includes(tag)" link type="primary" size="small" @click="addTagItem(tag)" class="ml-1">添加</el-button>
-                                <span v-else class="ml-1 added-check"><el-icon><Check /></el-icon></span>
-                            </el-tag>
+                        <div v-if="tagSuggestions.length > 0" class="ai-recommend-list">
+                            <div v-for="tag in tagSuggestions" :key="tag.tagId" class="ai-recommend-item">
+                                <div style="display:flex;align-items:center;gap:8px">
+                                    <el-tag :type="acceptedTagIds.includes(tag.tagId) ? 'success' : ''">{{ tag.tagName }}</el-tag>
+                                    <span v-if="tag.categoryName" style="font-size:12px;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:4px">{{ tag.categoryName }}</span>
+                                </div>
+                                <el-button v-if="!acceptedTagIds.includes(tag.tagId)" link type="primary" size="small" @click="acceptTag(tag)">接受</el-button>
+                                <span v-else class="added-check"><el-icon><Check /></el-icon> 已接受</span>
+                            </div>
+                        </div>
+                        <div v-if="unmatchedTagTerms.length > 0" style="padding:12px 14px;border-top:1px solid #e2e8f0">
+                            <div style="font-size:12px;color:#94a3b8;margin-bottom:8px">未匹配项（不在系统标签库中）</div>
+                            <div style="display:flex;flex-wrap:wrap;gap:6px">
+                                <el-tag v-for="term in unmatchedTagTerms" :key="term" type="info" size="small" effect="plain">{{ term }}</el-tag>
+                            </div>
                         </div>
                     </div>
                 </el-card>
@@ -389,112 +271,89 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import { showMessage } from '@/composables/util'
 import {
-    getAiQuota,
     generateArticle,
     estimateTokens,
     continueArticle,
     rewriteText,
     polishText,
-    aiSeoOptimize,
     recommendTags,
     recommendCategories
 } from '@/api/admin/ai'
 import { publishArticle } from '@/api/admin/article'
-import { addTags } from '@/api/admin/tag'
-import { addCategory } from '@/api/admin/category'
-import { getTagSelect } from '@/api/admin/tag'
-import { getCategorySelect } from '@/api/admin/category'
+import { getCategoryTree, searchTaxonomyTags, searchTaxonomyCategories } from '@/api/admin/taxonomy'
 import { DEFAULT_AI_SCENERY_COVER, buildAiRecommendRequirement } from '@/constants/ai'
-
-const quotaLoading = ref(false)
-const quota = reactive({
-    dailyArticleGenLimit: 2,
-    dailyArticleGenUsed: 0,
-    dailyArticleGenRemaining: 2,
-    dailyTokenLimit: 100000,
-    dailyTokenUsed: 0,
-    dailyTokenRemaining: 100000,
-    lastInteractionTime: null,
-    interactionIntervalSeconds: 60,
-    canInteractNow: true,
-    remainingCooldownSeconds: 0
-})
-
-let intervalTimer = null
-const remainingSeconds = ref(0)
-
-function updateRemainingSeconds() {
-    if (intervalTimer) clearInterval(intervalTimer)
-    if (!quota.canInteractNow && quota.remainingCooldownSeconds > 0) {
-        remainingSeconds.value = quota.remainingCooldownSeconds
-        intervalTimer = setInterval(() => {
-            remainingSeconds.value = Math.max(0, remainingSeconds.value - 1)
-            if (remainingSeconds.value <= 0) {
-                clearInterval(intervalTimer)
-                quota.canInteractNow = true
-                refreshQuota()
-            }
-        }, 1000)
-    } else {
-        remainingSeconds.value = 0
-    }
-}
-
-async function refreshQuota() {
-    quotaLoading.value = true
-    try {
-        const res = await getAiQuota()
-        if (res.success) {
-            Object.assign(quota, res.data)
-            updateRemainingSeconds()
-        }
-    } catch (e) {
-        console.error('获取额度失败', e)
-    } finally {
-        quotaLoading.value = false
-    }
-}
-
-function formatNumber(num) {
-    if (num == null) return '0'
-    if (num >= 10000) return (num / 10000).toFixed(1) + '万'
-    return num.toLocaleString()
-}
 
 const presetCategories = ref([])
 const presetTags = ref([])
+const categorySearchLoading = ref(false)
+const categorySearchResults = ref(null)
+
+const displayedCategories = computed(() => {
+    return categorySearchResults.value !== null ? categorySearchResults.value : presetCategories.value
+})
 
 async function loadPresets() {
     try {
-        const [tagRes, catRes] = await Promise.all([getTagSelect(), getCategorySelect()])
-        if (tagRes.success && tagRes.data) {
-            presetTags.value = (tagRes.data || []).map(t => t.label || t.name || t).slice(0, 30)
-        }
+        const catRes = await getCategoryTree()
         if (catRes.success && catRes.data) {
-            presetCategories.value = (catRes.data || []).map(c => ({ id: c.value || c.id, name: c.label || c.name })).slice(0, 20)
+            const tree = catRes.data
+            let allCategories = []
+            for (const parent of tree) {
+                allCategories.push({ id: parent.id, name: parent.name })
+                if (parent.children) {
+                    for (const child of parent.children) {
+                        allCategories.push({ id: child.id, name: child.name })
+                    }
+                }
+            }
+            presetCategories.value = allCategories.slice(0, 50)
+        }
+        const tagRes = await searchTaxonomyTags({ key: '' })
+        if (tagRes.success && tagRes.data) {
+            presetTags.value = (tagRes.data || []).map(t => ({
+                value: t.id,
+                label: t.name
+            })).slice(0, 50)
         }
     } catch (e) {
         console.error('加载预设选项失败', e)
     }
 }
 
-onMounted(() => {
-    refreshQuota()
-    loadPresets()
-})
+loadPresets()
+
+async function searchCategories(query) {
+    if (!query) {
+        categorySearchResults.value = null
+        return
+    }
+    categorySearchLoading.value = true
+    try {
+        const res = await searchTaxonomyCategories({ key: query })
+        if (res.success && res.data) {
+            categorySearchResults.value = (res.data || []).map(c => ({
+                id: c.id,
+                name: c.name
+            })).slice(0, 50)
+        }
+    } catch (e) {
+        console.error('搜索分类失败', e)
+    } finally {
+        categorySearchLoading.value = false
+    }
+}
 
 onUnmounted(() => {
-    if (intervalTimer) clearInterval(intervalTimer)
     if (writeEstimateTimer) clearTimeout(writeEstimateTimer)
 })
 
 // ===== AI 写作 =====
 const writePrompt = ref('')
 const writeTitle = ref('')
-const writeCategory = ref('')
+const writeCategory = ref(null)
 const writeTags = ref([])
 const writeEstimatedTokens = ref(0)
 const writeLoading = ref(false)
@@ -505,9 +364,6 @@ let writeEstimateTimer = null
 
 const canWrite = computed(() => {
     return writePrompt.value.trim().length > 0
-        && quota.dailyArticleGenRemaining > 0
-        && quota.canInteractNow
-        && quota.dailyTokenRemaining > 0
 })
 
 const writeResultPreview = computed(() => {
@@ -543,14 +399,13 @@ async function handleWrite() {
         const res = await generateArticle({
             prompt: writePrompt.value.trim(),
             title: writeTitle.value.trim() || null,
-            categoryName: writeCategory.value || null,
-            tags: writeTags.value.length > 0 ? writeTags.value : null
+            categoryId: writeCategory.value || null,
+            tagIds: writeTags.value.length > 0 ? writeTags.value : null
         }, { timeout: 120000 })
         if (res.success) {
             writeResult.value = res.data
             writeResultTokens.value = res.data.actualTokens
             showMessage('文章生成成功', 'success')
-            await refreshQuota()
         } else {
             showMessage(res.message || '文章生成失败', 'error')
         }
@@ -574,12 +429,6 @@ function generateDescription(content, maxLen = 200) {
     return text.length > maxLen ? text.slice(0, maxLen) + '...' : text
 }
 
-function resolveCategoryId(name) {
-    if (!name) return null
-    const found = presetCategories.value.find(c => c.name === name)
-    return found ? Number(found.id) : null
-}
-
 async function saveAsArticle(visibility) {
     if (!writeResult.value) {
         showMessage('没有可保存的文章内容', 'warning')
@@ -588,7 +437,6 @@ async function saveAsArticle(visibility) {
     const title = writeResult.value.title || '无标题文章'
     const content = writeResult.value.content
     const description = generateDescription(content)
-    const tags = writeTags.value.length > 0 ? writeTags.value : []
 
     try {
         const res = await publishArticle({
@@ -596,8 +444,8 @@ async function saveAsArticle(visibility) {
             content,
             titleImage: DEFAULT_AI_SCENERY_COVER,
             description,
-            categoryName: writeCategory.value || null,
-            tags,
+            categoryId: writeCategory.value || null,
+            tagIds: writeTags.value.length > 0 ? writeTags.value : [],
             visibility
         })
         if (res.success) {
@@ -625,8 +473,6 @@ const editTypeLabel = computed(() => {
 
 const canEdit = computed(() => {
     return editText.value.trim().length > 0
-        && quota.canInteractNow
-        && quota.dailyTokenRemaining > 0
 })
 
 async function handleEdit() {
@@ -650,7 +496,6 @@ async function handleEdit() {
         if (res.success) {
             editResult.value = res.data.result
             showMessage('处理完成', 'success')
-            await refreshQuota()
         } else {
             showMessage(res.message || '处理失败', 'error')
         }
@@ -677,95 +522,38 @@ function sendToWriter() {
     showMessage('已发送到写作区', 'success')
 }
 
-// ===== AI SEO =====
-const seoTitle = ref('')
-const seoContent = ref('')
-const seoDescription = ref('')
-const seoLoading = ref(false)
-const seoResult = ref(null)
-
-const canSeo = computed(() => {
-    return seoTitle.value.trim().length > 0
-        && seoContent.value.trim().length > 0
-        && quota.canInteractNow
-        && quota.dailyTokenRemaining > 0
-})
-
-async function handleSeo() {
-    seoLoading.value = true
-    seoResult.value = null
-    try {
-        const res = await aiSeoOptimize({
-            title: seoTitle.value.trim(),
-            content: seoContent.value.trim(),
-            currentDescription: seoDescription.value.trim() || null
-        }, { timeout: 120000 })
-        if (res.success) {
-            seoResult.value = res.data
-            showMessage('SEO 优化完成', 'success')
-            await refreshQuota()
-        } else {
-            showMessage(res.message || 'SEO 优化失败', 'error')
-        }
-    } catch (e) {
-        console.error('SEO 优化失败', e)
-        showMessage('SEO 优化失败，请稍后重试', 'error')
-    } finally {
-        seoLoading.value = false
-    }
-}
-
-function applySeoTitle() {
-    if (seoResult.value && seoResult.value.optimizedTitle) {
-        seoTitle.value = seoResult.value.optimizedTitle
-        showMessage('标题已应用', 'success')
-    }
-}
-
-function applySeoDescription() {
-    if (seoResult.value && seoResult.value.optimizedDescription) {
-        seoDescription.value = seoResult.value.optimizedDescription
-        showMessage('摘要已应用', 'success')
-    }
-}
-
-function scoreColor(score) {
-    if (score >= 80) return '#22c55e'
-    if (score >= 60) return '#f59e0b'
-    return '#ef4444'
-}
-
 // ===== AI 推荐 =====
 const recommendContent = ref('')
 const recommendRequirement = ref('')
 const categoryRecLoading = ref(false)
 const tagRecLoading = ref(false)
-const recommendedCategories = ref([])
-const recommendedTags = ref([])
-const addedCategories = ref([])
-const addedTags = ref([])
+const categorySuggestions = ref([])
+const unmatchedCategoryTerms = ref([])
+const acceptedCategoryId = ref(null)
+const tagSuggestions = ref([])
+const unmatchedTagTerms = ref([])
+const acceptedTagIds = ref([])
 const categoryRecTokens = ref(0)
 const tagRecTokens = ref(0)
 
 const canRecommend = computed(() => {
     return recommendContent.value.trim().length > 0
-        && quota.canInteractNow
-        && quota.dailyTokenRemaining > 0
 })
 
 async function handleRecommendCategories() {
     categoryRecLoading.value = true
-    recommendedCategories.value = []
+    categorySuggestions.value = []
+    unmatchedCategoryTerms.value = []
     try {
         const res = await recommendCategories({
             content: recommendContent.value.trim(),
             requirement: buildAiRecommendRequirement(recommendRequirement.value, recommendContent.value)
         }, { timeout: 120000 })
         if (res.success) {
-            recommendedCategories.value = res.data.categories
+            categorySuggestions.value = res.data.suggestions || []
+            unmatchedCategoryTerms.value = res.data.unmatchedTerms || []
             categoryRecTokens.value = res.data.actualTokens
-            addedCategories.value = []
-            await refreshQuota()
+            acceptedCategoryId.value = null
         } else {
             showMessage(res.message || '分类推荐失败', 'error')
         }
@@ -779,17 +567,18 @@ async function handleRecommendCategories() {
 
 async function handleRecommendTags() {
     tagRecLoading.value = true
-    recommendedTags.value = []
+    tagSuggestions.value = []
+    unmatchedTagTerms.value = []
     try {
         const res = await recommendTags({
             content: recommendContent.value.trim(),
             requirement: buildAiRecommendRequirement(recommendRequirement.value, recommendContent.value)
         }, { timeout: 120000 })
         if (res.success) {
-            recommendedTags.value = res.data.tags
+            tagSuggestions.value = res.data.suggestions || []
+            unmatchedTagTerms.value = res.data.unmatchedTerms || []
             tagRecTokens.value = res.data.actualTokens
-            addedTags.value = []
-            await refreshQuota()
+            acceptedTagIds.value = []
         } else {
             showMessage(res.message || '标签推荐失败', 'error')
         }
@@ -801,25 +590,25 @@ async function handleRecommendTags() {
     }
 }
 
-async function addCategoryItem(name) {
-    try {
-        await addCategory({ name })
-        addedCategories.value.push(name)
-        showMessage(`分类“${name}”已添加`, 'success')
-    } catch (e) {
-        console.error('添加分类失败', e)
-        showMessage('添加分类失败，请稍后重试', 'error')
+function acceptCategory(cat) {
+    const exists = presetCategories.value.some(c => c.id === cat.categoryId)
+    if (!exists) {
+        showMessage(`分类「${cat.categoryName}」不在系统分类中，无法接受`, 'warning')
+        return
     }
+    acceptedCategoryId.value = cat.categoryId
+    showMessage(`分类「${cat.categoryName}」已接受`, 'success')
 }
 
-async function addTagItem(name) {
-    try {
-        await addTags({ tags: [name] })
-        addedTags.value.push(name)
-        showMessage(`标签“${name}”已添加`, 'success')
-    } catch (e) {
-        console.error('添加标签失败', e)
-        showMessage('添加标签失败，请稍后重试', 'error')
+function acceptTag(tag) {
+    const exists = presetTags.value.some(t => t.value === tag.tagId)
+    if (!exists) {
+        showMessage(`标签「${tag.tagName}」不在系统标签库中，无法接受`, 'warning')
+        return
+    }
+    if (!acceptedTagIds.value.includes(tag.tagId)) {
+        acceptedTagIds.value.push(tag.tagId)
+        showMessage(`标签「${tag.tagName}」已接受`, 'success')
     }
 }
 
@@ -870,52 +659,6 @@ async function copyText(text, label) {
     font-weight: 700;
     font-size: 15px;
     color: #1e293b;
-}
-
-.ai-quota-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-.ai-quota-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px;
-    background: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-}
-
-.ai-quota-label {
-    font-size: 12px;
-    color: #64748b;
-    font-weight: 600;
-}
-
-.ai-quota-value {
-    font-size: 14px;
-    color: #334155;
-}
-
-.ai-quota-value strong {
-    font-size: 18px;
-    font-weight: 800;
-    color: #1e293b;
-}
-
-.ai-cooldown-warning {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: #fef3c7;
-    border-radius: 8px;
-    color: #92400e;
-    font-size: 13px;
-    font-weight: 600;
 }
 
 .ai-write-limit-tip {
@@ -1044,60 +787,6 @@ async function copyText(text, label) {
     color: #94a3b8;
 }
 
-.ai-seo-section {
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.ai-seo-section:last-child {
-    border-bottom: none;
-}
-
-.ai-seo-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
-    font-size: 13px;
-    font-weight: 600;
-    color: #475569;
-}
-
-.ai-seo-section-content {
-    padding: 14px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: #334155;
-}
-
-.ai-seo-suggestion {
-    color: #64748b;
-    font-style: italic;
-}
-
-.ai-seo-keywords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 14px;
-}
-
-.ai-seo-keyword-tag {
-    font-size: 13px;
-}
-
-.ai-seo-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
-    font-size: 13px;
-    color: #475569;
-}
-
 .ai-recommend-btns {
     display: flex;
     gap: 12px;
@@ -1137,10 +826,6 @@ async function copyText(text, label) {
     color: #16a34a;
     font-size: 12px;
     font-weight: 600;
-}
-
-.text-red-500 {
-    color: #ef4444 !important;
 }
 </style>
 

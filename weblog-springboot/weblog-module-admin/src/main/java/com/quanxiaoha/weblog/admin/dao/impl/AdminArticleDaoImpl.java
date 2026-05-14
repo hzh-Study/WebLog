@@ -44,6 +44,11 @@ public class AdminArticleDaoImpl implements AdminArticleDao {
 
     @Override
     public Page<ArticleDO> queryArticlePageList(Long current, Long size, Date startDate, Date endDate, String searchTitle, Long userId) {
+        return queryArticlePageList(current, size, startDate, endDate, searchTitle, userId, null);
+    }
+
+    @Override
+    public Page<ArticleDO> queryArticlePageList(Long current, Long size, Date startDate, Date endDate, String searchTitle, Long userId, List<Long> articleIds) {
         Page<ArticleDO> page = new Page<>(current, size);
         QueryWrapper<ArticleDO> wrapper = new QueryWrapper<>();
         wrapper.lambda()
@@ -52,6 +57,7 @@ public class AdminArticleDaoImpl implements AdminArticleDao {
                 .like(Objects.nonNull(searchTitle), ArticleDO::getTitle, searchTitle)
                 .ge(Objects.nonNull(startDate), ArticleDO::getCreateTime, startDate)
                 .le(Objects.nonNull(endDate), ArticleDO::getCreateTime, endDate)
+                .in(articleIds != null && !articleIds.isEmpty(), ArticleDO::getId, articleIds)
                 .orderByDesc(ArticleDO::getCreateTime);
         return articleMapper.selectPage(page, wrapper);
     }
