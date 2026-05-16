@@ -5,6 +5,7 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `t_ai_usage_record`;
+DROP TABLE IF EXISTS `t_article_comment`;
 DROP TABLE IF EXISTS `t_article_version`;
 DROP TABLE IF EXISTS `t_article_draft`;
 DROP TABLE IF EXISTS `t_article_tag_rel`;
@@ -119,6 +120,31 @@ CREATE TABLE `t_article_tag_rel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `t_article_like` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `article_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `visitor_id` varchar(64) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_article_like_user` (`article_id`, `user_id`),
+  UNIQUE KEY `uk_article_like_visitor` (`article_id`, `visitor_id`),
+  KEY `idx_article_like_article_id` (`article_id`),
+  KEY `idx_article_like_user_id` (`user_id`),
+  KEY `idx_article_like_visitor_id` (`visitor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `t_article_favorite` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `article_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_article_favorite_user` (`article_id`, `user_id`),
+  KEY `idx_article_favorite_article_id` (`article_id`),
+  KEY `idx_article_favorite_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `t_visitor_record` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `visitor` varchar(64) DEFAULT NULL,
@@ -187,4 +213,30 @@ CREATE TABLE `t_article_version` (
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_article_ver` (`article_id`, `version_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `t_article_comment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `article_id` bigint(20) NOT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
+  `root_id` bigint(20) DEFAULT NULL,
+  `reply_to_comment_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `visitor_id` varchar(64) DEFAULT NULL,
+  `nickname` varchar(64) NOT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `content` varchar(1000) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `ip_address` varchar(64) DEFAULT NULL,
+  `ip_region` varchar(128) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_article_comment_article_status` (`article_id`, `status`, `create_time`),
+  KEY `idx_article_comment_parent_id` (`parent_id`),
+  KEY `idx_article_comment_root_id` (`root_id`),
+  KEY `idx_article_comment_user_id` (`user_id`),
+  KEY `idx_article_comment_visitor_id` (`visitor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

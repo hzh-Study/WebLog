@@ -76,6 +76,8 @@
 
                 <ArticleAiReader v-if="article.id" :article-id="article.id" />
 
+                <ArticleCommentSection v-if="article.id" :article-id="article.id" />
+
                 <RelatedArticles v-if="article.id" :article-id="article.id" />
 
                 <section class="front-card front-card-solid detail-nav-card">
@@ -144,10 +146,11 @@ import Header from '@/layouts/components/Header.vue'
 import Footer from '@/layouts/components/Footer.vue'
 import ArticleInteraction from '@/components/ArticleInteraction.vue'
 import ArticleAiReader from '@/components/ArticleAiReader.vue'
+import ArticleCommentSection from '@/components/ArticleCommentSection.vue'
 import RelatedArticles from '@/components/RelatedArticles.vue'
 import HotSidebar from '@/components/HotSidebar.vue'
 import { useRoute, useRouter } from 'vue-router';
-import { getArticleDetail } from '@/api/frontend/article';
+import { getArticleDetail, getLikeStatus } from '@/api/frontend/article';
 import { ref, reactive, watch } from 'vue'
 import { getCategories } from '@/api/frontend/category'
 import { getTags } from '@/api/frontend/tag'
@@ -224,6 +227,15 @@ function queryArticleDetail(articleId) {
             }
 
             trackArticleView(d.id, 0)
+
+            if (article.id) {
+                getLikeStatus(article.id).then((res) => {
+                    if (res && res.success && res.data) {
+                        article.liked = res.data.liked ?? article.liked
+                        article.likeNum = res.data.likeCount ?? article.likeNum
+                    }
+                }).catch(() => {})
+            }
         })
         .catch((err) => {
             console.error(err)

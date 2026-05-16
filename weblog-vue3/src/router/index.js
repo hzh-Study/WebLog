@@ -8,6 +8,7 @@ import Admin from '@/layouts/admin.vue'
 import AdminArticleList from '@/pages/admin/article-list.vue'
 import AdminCategoryList from '@/pages/admin/category-list.vue'
 import AdminTagList from '@/pages/admin/tag-list.vue'
+import AdminCommentList from '@/pages/admin/comment-list.vue'
 import AdminBlogSetting from '@/pages/admin/blog-setting.vue'
 import Index from '@/pages/frontend/index.vue'
 import ArticleDetail from '@/pages/frontend/article-detail.vue'
@@ -50,10 +51,19 @@ const routes = [
                 title: '标签管理'
             }
         }, {
+            path: '/admin/comment/list',
+            component: AdminCommentList,
+            meta: {
+                title: '评论管理'
+            }
+        }, {
             path: '/admin/blog/setting',
+            redirect: '/admin/profile'
+        }, {
+            path: '/admin/profile',
             component: AdminBlogSetting,
             meta: {
-                title: '博客设置'
+                title: '我的资料'
             }
         }, {
             path: '/admin/ai/workbench',

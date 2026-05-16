@@ -64,22 +64,28 @@ const menus = [{
     'path': '/admin/tag/list',
     'child': []
 },
-// {
-//     'name': '轮播图管理',
-//     'icon': 'Picture',
-//     'path': '/admin/carousel/list',
-//     'child': []
-// },
 {
-    'name': '我的资料',
-    'icon': 'Setting',
-    'path': '/admin/blog/setting',
+    'name': '评论管理',
+    'icon': 'ChatDotRound',
+    'path': '/admin/comment/list',
     'child': []
 },
 {
     'name': 'AI 工作台',
     'icon': 'MagicStick',
     'path': '/admin/ai/workbench',
+    'child': []
+},
+{
+    'name': '推荐管理',
+    'icon': 'TrendCharts',
+    'path': '/admin/recommend/setting',
+    'child': []
+},
+{
+    'name': '我的资料',
+    'icon': 'Setting',
+    'path': '/admin/profile',
     'child': []
 }
 ]

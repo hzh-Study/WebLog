@@ -41,10 +41,10 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 1 1 14 0H3Z" />
                             </svg>
-                            <span>登录</span>
+                            <span>后台登录</span>
                         </button>
 
-                        <button v-else type="button" class="front-user-trigger" @click="goTo('/admin')" aria-label="进入管理页面">
+                        <button v-else type="button" class="front-user-trigger" @click="goTo('/admin')" aria-label="进入后台" title="进入后台">
                             <img v-if="avatar" class="front-user-avatar" :src="avatar" alt="用户头像">
                             <span v-else class="front-user-avatar front-user-avatar-fallback">{{ userInitial }}</span>
                         </button>
@@ -65,6 +65,8 @@ import { getToken } from '@/composables/auth'
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+
+const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=U&background=0D8F81'
 
 const searchQuery = ref('')
 let searchTimer = null
@@ -113,7 +115,7 @@ const navItems = [
     { path: '/archive', label: '归档' },
 ]
 
-const avatar = computed(() => store.state.user.avatar || '')
+const avatar = computed(() => store.state.user.avatar || DEFAULT_AVATAR)
 const userInitial = computed(() => {
     const displayName = store.state.user.nickname || store.state.user.username || 'W'
     return displayName.slice(0, 1).toUpperCase()

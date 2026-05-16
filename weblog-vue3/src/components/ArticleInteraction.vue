@@ -86,10 +86,6 @@ watch(() => props.favoriteNum, (v) => { localFavoriteNum.value = v })
 
 const handleLike = async () => {
   if (!props.articleId || likeLoading.value) return
-  if (!getToken()) {
-    ElMessage.warning('请先登录后再点赞')
-    return
-  }
   likeLoading.value = true
   try {
     const res = await likeArticle(props.articleId)
