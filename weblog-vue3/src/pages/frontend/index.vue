@@ -27,7 +27,7 @@
                             <div class="front-section-title">Recommended</div>
                             <h2 class="sidebar-title">为你推荐</h2>
                         </div>
-                        <RecommendFeed :articles="recommendArticles" @refresh="loadRecommendFeed" />
+                        <RecommendFeed :articles="recommendArticles" :loading="recommendLoading" @refresh="loadRecommendFeed" />
                     </div>
                 </section>
 
@@ -121,25 +121,69 @@ import { computed, ref, onMounted } from 'vue'
 import { getIndexArticles } from '@/api/frontend/index'
 import { getCategories } from '@/api/frontend/category'
 import { getTags } from '@/api/frontend/tag'
-import { getRecommendFeed } from '@/api/frontend/recommend'
+import { getRecommendFeed, getHotArticles } from '@/api/frontend/recommend'
 import { useTracker } from '@/composables/useTracker'
 import store from '@/store'
+import { normalizeArticleSummary, normalizeArticleSummaryList } from '@/utils/article'
 
 const router = useRouter()
 const { trackPageView } = useTracker()
 
 const recommendArticles = ref([])
 const recommendPage = ref(1)
+const recommendLoading = ref(false)
 
 function loadRecommendFeed() {
-    getRecommendFeed({ current: recommendPage.value, size: 6 }).then(res => {
-        if (res.success) {
-            recommendArticles.value = res.data || []
-            recommendPage.value = res.current || 1
+    recommendLoading.value = true
+    getRecommendFeed({ current: recommendPage.value, size: 6 })
+        .then(res => {
+            console.log('[Recommend] feed响应:', JSON.stringify(res)?.substring(0, 500))
+            const list = extractRecommendList(res)
+            if (list.length > 0) {
+                recommendArticles.value = [...list]
+                recommendPage.value += 1
+                return
+            }
+            if (recommendPage.value > 1) {
+                recommendPage.value = 1
+                return loadRecommendFeed()
+            }
+            return tryHotArticlesFallback()
+        })
+        .catch(err => {
+            console.warn('[Recommend] feed接口失败，尝试热门回退:', err)
+            return tryHotArticlesFallback()
+        })
+        .finally(() => {
+            recommendLoading.value = false
+        })
+}
+
+function tryHotArticlesFallback() {
+    return getHotArticles({ limit: 6 })
+        .then(res => {
+            const list = extractRecommendList(res)
+            recommendArticles.value = list.length > 0 ? [...list] : []
+        })
+        .catch(() => {
+            recommendArticles.value = []
+        })
+}
+
+function extractRecommendList(res) {
+    if (!res) return []
+    let raw = null
+    if (res.success !== undefined) {
+        if (res.success && res.data != null) {
+            raw = Array.isArray(res.data) ? res.data : (res.data.data || res.data.records || null)
         }
-    }).catch(() => {
-        recommendArticles.value = []
-    })
+    } else if (Array.isArray(res)) {
+        raw = res
+    } else if (res.data != null) {
+        raw = Array.isArray(res.data) ? res.data : (res.data.data || res.data.records || null)
+    }
+    if (!raw || !Array.isArray(raw)) return []
+    return normalizeArticleSummaryList(raw)
 }
 
 onMounted(() => {
@@ -187,7 +231,7 @@ function getArticles(currentNo) {
         .then((res) => {
             console.log(res)
             if (res.success == true) {
-                articles.value = res.data || []
+                articles.value = normalizeArticleSummaryList(res.data || [])
                 current.value = res.current
                 total.value = res.total
                 size.value = res.size

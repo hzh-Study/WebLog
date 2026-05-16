@@ -29,9 +29,10 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M1 5v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H1Zm0 0V2a1 1 0 0 1 1-1h5.443a1 1 0 0 1 .8.4l2.7 3.6H1Z" />
                                 </svg>
-                                <a @click="goCatagoryArticleListPage(article.categoryId, article.categoryName)" class="front-link">
+                                <a v-if="article.categoryName" @click="goCatagoryArticleListPage(article.categoryId, article.categoryName)" class="front-link">
                                     {{ article.categoryName }}
                                 </a>
+                                <span v-else>未分类</span>
                             </span>
                             <span v-if="article.author" class="front-meta-item">
                                 <a @click="goUserHome(article.author.username)" class="front-link">
@@ -63,12 +64,14 @@
                     </div>
                 </section>
 
-                <ArticleInteraction 
-                  :articleId="article.id" 
-                  :likeNum="article.likeNum || 0" 
+                <ArticleInteraction
+                  :article-id="article.id"
+                  :likeNum="article.likeNum || 0"
                   :favoriteNum="article.favoriteNum || 0"
                   :liked="article.liked || false"
                   :favorited="article.favorited || false"
+                  @like-toggled="({ liked, likeNum }) => { article.liked = liked; article.likeNum = likeNum }"
+                  @favorite-toggled="({ favorited, favoriteNum }) => { article.favorited = favorited; article.favoriteNum = favoriteNum }"
                 />
 
                 <ArticleAiReader v-if="article.id" :article-id="article.id" />
@@ -150,6 +153,7 @@ import { getCategories } from '@/api/frontend/category'
 import { getTags } from '@/api/frontend/tag'
 import { showMessage } from '@/composables/util'
 import { useTracker } from '@/composables/useTracker'
+import { normalizeArticleSummary } from '@/utils/article'
 
 const router = useRouter()
 const route = useRoute()
@@ -191,13 +195,13 @@ function queryArticleDetail(articleId) {
                 showMessage(e?.message || '文章加载失败', 'error')
                 return
             }
-            const d = e.data
-            article.id = d.id
+            const d = normalizeArticleSummary(e.data)
+            article.id = Number(id)
             article.title = d.title
             article.content = d.content
             article.updateTime = d.updateTime
-            article.categoryId = d.categoryId
-            article.categoryName = d.categoryName
+            article.categoryId = d.category?.id ?? d.categoryId ?? null
+            article.categoryName = d.category?.name || ''
             article.readNum = d.readNum
             article.likeNum = d.likeNum || 0
             article.favoriteNum = d.favoriteNum || 0

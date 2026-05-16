@@ -39,6 +39,9 @@
                                 <a v-if="article.category" @click="goCatagoryArticleListPage(article.category.id, article.category.name)" class="front-link">
                                     {{ article.category.name }}
                                 </a>
+                                <span v-else class="front-meta-item">未分类</span>
+                                <span class="front-meta-item">点赞 {{ article.likeNum || 0 }}</span>
+                                <span class="front-meta-item">收藏 {{ article.favoriteNum || 0 }}</span>
                             </div>
                         </div>
                     </article>
@@ -77,6 +80,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import { getIndexArticles } from '@/api/frontend/index'
 import { getPublicUserDetail } from '@/api/frontend/user'
 import store from '@/store'
+import { normalizeArticleSummaryList } from '@/utils/article'
 
 const route = useRoute()
 const router = useRouter()
@@ -135,7 +139,7 @@ const getArticles = async (pageNo) => {
         username: route.params.username,
     })
     if (res.success) {
-        articles.value = res.data || []
+        articles.value = normalizeArticleSummaryList(res.data || [])
         current.value = res.current
         total.value = res.total
         size.value = res.size

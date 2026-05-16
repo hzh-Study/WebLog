@@ -33,6 +33,11 @@
                                     {{ article.author.nickname || article.author.username }}
                                 </a>
                             </div>
+                            <div class="front-meta">
+                                <span class="front-meta-item">{{ article.createTime }}</span>
+                                <span class="front-meta-item">点赞 {{ article.likeNum || 0 }}</span>
+                                <span class="front-meta-item">收藏 {{ article.favoriteNum || 0 }}</span>
+                            </div>
                             <div class="sidebar-chip-row">
                                 <span @click="goTagArticleListPage(item.id, item.name)" v-for="item in article.tags" :key="item.id" class="front-chip front-chip-success cursor-pointer">
                                     {{ item.name }}
@@ -106,6 +111,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ref } from 'vue'
 import { getTagArticles } from '@/api/frontend/tag'
 import { getCategories } from '@/api/frontend/category'
+import { normalizeArticleSummaryList } from '@/utils/article'
 
 const router = useRouter()
 const route = useRoute()
@@ -135,7 +141,7 @@ function getArticles(currentNo) {
         .then((res) => {
             console.log(res)
             if (res.success == true) {
-                articles.value = res.data
+                articles.value = normalizeArticleSummaryList(res.data || [])
                 current.value = res.current
                 total.value = res.total
                 size.value = res.size

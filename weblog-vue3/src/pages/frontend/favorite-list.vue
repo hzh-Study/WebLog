@@ -29,6 +29,7 @@
                             <div class="meta">
                                 <span>阅读 {{ item.readNum }}</span>
                                 <span>点赞 {{ item.likeNum }}</span>
+                                <span>收藏 {{ item.favoriteNum || 0 }}</span>
                                 <span>{{ item.createTime }}</span>
                             </div>
                         </div>

@@ -80,6 +80,11 @@
                                     {{ article.author.nickname || article.author.username }}
                                 </a>
                             </div>
+                            <div class="front-meta">
+                                <span class="front-meta-item">{{ article.createTime }}</span>
+                                <span class="front-meta-item">点赞 {{ article.likeNum || 0 }}</span>
+                                <span class="front-meta-item">收藏 {{ article.favoriteNum || 0 }}</span>
+                            </div>
                             <div class="sidebar-chip-row">
                                 <span
                                     v-for="(item, ti) in article.tags"
@@ -137,6 +142,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ref, watch, computed } from 'vue'
 import { getIndexArticles } from '@/api/frontend/index'
 import { searchPublicUsers } from '@/api/frontend/user'
+import { normalizeArticleSummaryList } from '@/utils/article'
 
 const router = useRouter()
 const route = useRoute()
@@ -185,7 +191,7 @@ function getArticles(currentNo) {
     getIndexArticles({ current: currentNo, size: size.value, keyword: kw || undefined })
         .then((res) => {
             if (res.success === true) {
-                articles.value = res.data || []
+                articles.value = normalizeArticleSummaryList(res.data || [])
                 current.value = res.current
                 total.value = res.total
                 size.value = res.size

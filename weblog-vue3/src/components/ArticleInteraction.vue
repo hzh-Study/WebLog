@@ -1,17 +1,27 @@
 <template>
   <div class="article-interaction-bar">
-    <button class="interaction-btn" :class="{ active: localLiked }" @click="handleLike">
+    <button
+      class="interaction-btn"
+      :class="{ active: localLiked, 'is-loading': likeLoading }"
+      :disabled="likeLoading || !props.articleId"
+      @click="handleLike"
+    >
       <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 0 0 0 6.364L12 20.364l7.682-7.682a4.5 4.5 0 0 0-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 0 0-6.364 0Z" />
       </svg>
-      <span>点赞 {{ localLikeNum }}</span>
+      <span>{{ likeLoading ? '处理中...' : `点赞 ${localLikeNum}` }}</span>
     </button>
 
-    <button class="interaction-btn" :class="{ active: localFavorited }" @click="handleFavorite">
+    <button
+      class="interaction-btn"
+      :class="{ active: localFavorited, 'is-loading': favoriteLoading }"
+      :disabled="favoriteLoading || !props.articleId"
+      @click="handleFavorite"
+    >
       <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
       </svg>
-      <span>收藏 {{ localFavoriteNum }}</span>
+      <span>{{ favoriteLoading ? '处理中...' : `收藏 ${localFavoriteNum}` }}</span>
     </button>
 
     <el-popover trigger="click" placement="top" :width="200">
@@ -34,12 +44,13 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { likeArticle, favoriteArticle } from '@/api/frontend/article'
+import { getToken } from '@/composables/auth'
 import { ElMessage } from 'element-plus'
 
 const props = defineProps({
   articleId: {
     type: Number,
-    required: true,
+    default: null,
   },
   likeNum: {
     type: Number,
@@ -65,6 +76,8 @@ const localLiked = ref(props.liked)
 const localLikeNum = ref(props.likeNum)
 const localFavorited = ref(props.favorited)
 const localFavoriteNum = ref(props.favoriteNum)
+const likeLoading = ref(false)
+const favoriteLoading = ref(false)
 
 watch(() => props.liked, (v) => { localLiked.value = v })
 watch(() => props.likeNum, (v) => { localLikeNum.value = v })
@@ -72,29 +85,62 @@ watch(() => props.favorited, (v) => { localFavorited.value = v })
 watch(() => props.favoriteNum, (v) => { localFavoriteNum.value = v })
 
 const handleLike = async () => {
+  if (!props.articleId || likeLoading.value) return
+  if (!getToken()) {
+    ElMessage.warning('请先登录后再点赞')
+    return
+  }
+  likeLoading.value = true
   try {
     const res = await likeArticle(props.articleId)
     if (res.success) {
-      localLiked.value = !localLiked.value
-      localLikeNum.value += localLiked.value ? 1 : -1
-      emit('like-toggled', localLiked.value)
+      if (res.data && typeof res.data === 'object') {
+        localLiked.value = res.data.liked ?? !localLiked.value
+        localLikeNum.value = res.data.likeCount ?? (localLiked.value ? localLikeNum.value + 1 : Math.max(0, localLikeNum.value - 1))
+      } else {
+        localLiked.value = !localLiked.value
+        localLikeNum.value += localLiked.value ? 1 : -1
+      }
+      emit('like-toggled', { liked: localLiked.value, likeNum: localLikeNum.value })
+      ElMessage.success(localLiked.value ? '已点赞' : '已取消点赞')
+    } else {
+      ElMessage.warning(res.message || '操作失败')
     }
   } catch (err) {
     console.error(err)
+    ElMessage.error('网络错误，请稍后重试')
+  } finally {
+    likeLoading.value = false
   }
 }
 
 const handleFavorite = async () => {
+  if (!props.articleId || favoriteLoading.value) return
+  if (!getToken()) {
+    ElMessage.warning('请先登录后再收藏')
+    return
+  }
+  favoriteLoading.value = true
   try {
     const res = await favoriteArticle(props.articleId)
     if (res.success) {
-      localFavorited.value = !localFavorited.value
-      localFavoriteNum.value += localFavorited.value ? 1 : -1
-      emit('favorite-toggled', localFavorited.value)
+      if (res.data && typeof res.data === 'object') {
+        localFavorited.value = res.data.favorited ?? !localFavorited.value
+        localFavoriteNum.value = res.data.favoriteCount ?? (localFavorited.value ? localFavoriteNum.value + 1 : Math.max(0, localFavoriteNum.value - 1))
+      } else {
+        localFavorited.value = !localFavorited.value
+        localFavoriteNum.value += localFavorited.value ? 1 : -1
+      }
+      emit('favorite-toggled', { favorited: localFavorited.value, favoriteNum: localFavoriteNum.value })
       ElMessage.success(localFavorited.value ? '已收藏' : '已取消收藏')
+    } else {
+      ElMessage.warning(res.message || '操作失败')
     }
   } catch (err) {
     console.error(err)
+    ElMessage.error('网络错误，请稍后重试')
+  } finally {
+    favoriteLoading.value = false
   }
 }
 
@@ -150,6 +196,16 @@ const shareWeibo = () => {
   background: #fff;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.interaction-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.interaction-btn.is-loading {
+  color: #1d4ed8;
 }
 
 .interaction-btn.active {
